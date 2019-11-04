@@ -85,7 +85,7 @@ public class ChartFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         mBinding = ChartBinding.inflate(inflater, container, false);
         mToolbar = mBinding.toolbar;
-        snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), getResources().getString(R.string.no_connect), Snackbar.LENGTH_INDEFINITE);
+        snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), getResources().getString(R.string.no_connect), Snackbar.LENGTH_LONG);
         KChartView mKChartView = mBinding.kchartView;
         mKChartView.showLoading();
         KChartAdapter mAdapter = new KChartAdapter();
