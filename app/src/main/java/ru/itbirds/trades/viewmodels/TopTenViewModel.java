@@ -6,9 +6,10 @@ import androidx.lifecycle.ViewModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import ru.itbirds.trades.common.INavigator;
+import ru.itbirds.trades.model.Company;
+import ru.itbirds.trades.repository.LocalRepository;
 import ru.itbirds.trades.repository.RemoteRepository;
 
 public class TopTenViewModel extends ViewModel {
@@ -16,18 +17,34 @@ public class TopTenViewModel extends ViewModel {
     private Disposable mDisposableSearch;
     private final RemoteRepository mRemoteRepository;
 
-    public TopTenViewModel(RemoteRepository remoteRepository) {
-        mRemoteRepository = remoteRepository;
+    public LocalRepository getmLocalRepository() {
+        return mLocalRepository;
+    }
 
+    private final LocalRepository mLocalRepository;
+
+    public void setCompany(Company company) {
+        this.mCompany = company;
+    }
+
+    private Company mCompany;
+
+    public TopTenViewModel(RemoteRepository remoteRepository, LocalRepository localRepository) {
+        mRemoteRepository = remoteRepository;
+        mLocalRepository = localRepository;
     }
 
     public void checkSearchInput(final String query) {
-        mDisposableSearch = mRemoteRepository.getCompany(query)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(throwable -> mNavigator.clickForNavigate(null))
-                .subscribe(company -> mNavigator.clickForNavigate(company),
-                        throwable -> Log.d("ViewModelTop", "checkSearchInput: nu takoe"));
+        if (mCompany == null) {
+            mDisposableSearch = mRemoteRepository.getCompany(query)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError(throwable -> mNavigator.clickForNavigate(null))
+                    .subscribe(company1 -> mNavigator.clickForNavigate(company1),
+                            throwable -> Log.d("ViewModelTop", "checkSearchInput: nu takoe"));
+        } else {
+            mNavigator.clickForNavigate(mCompany);
+        }
 
     }
 
@@ -41,4 +58,5 @@ public class TopTenViewModel extends ViewModel {
     public void setOnclickListener(INavigator navigator) {
         mNavigator = navigator;
     }
+
 }

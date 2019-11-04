@@ -6,7 +6,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import ru.itbirds.trades.App;
+import ru.itbirds.trades.common.App;
 import ru.itbirds.trades.db.DataBase;
 import ru.itbirds.trades.db.TradesDao;
 

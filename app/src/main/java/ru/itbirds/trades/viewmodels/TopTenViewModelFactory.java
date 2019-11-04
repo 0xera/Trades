@@ -6,12 +6,15 @@ import androidx.lifecycle.ViewModelProvider;
 
 import javax.inject.Inject;
 
+import ru.itbirds.trades.repository.LocalRepository;
 import ru.itbirds.trades.repository.RemoteRepository;
 
 public class TopTenViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     @Inject
     RemoteRepository remoteRepository;
+    @Inject
+    LocalRepository localRepository;
 
 
     @Inject
@@ -22,6 +25,6 @@ public class TopTenViewModelFactory extends ViewModelProvider.NewInstanceFactory
     @Override
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new TopTenViewModel(remoteRepository);
+        return (T) new TopTenViewModel(remoteRepository, localRepository);
     }
 }

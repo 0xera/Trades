@@ -1,4 +1,4 @@
-package ru.itbirds.trades;
+package ru.itbirds.trades.common;
 
 import android.app.Application;
 

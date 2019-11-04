@@ -17,7 +17,7 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
-import ru.itbirds.trades.App;
+import ru.itbirds.trades.common.App;
 import ru.itbirds.trades.R;
 import ru.itbirds.trades.adapter.StockAdapter;
 import ru.itbirds.trades.common.INavigator;

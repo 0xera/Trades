@@ -27,9 +27,9 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
-import ru.itbirds.trades.App;
 import ru.itbirds.trades.R;
 import ru.itbirds.trades.adapter.ViewPagerAdapter;
+import ru.itbirds.trades.common.App;
 import ru.itbirds.trades.common.INavigator;
 import ru.itbirds.trades.databinding.TopBinding;
 import ru.itbirds.trades.model.Company;
@@ -99,7 +99,6 @@ public class TopTenFragment extends Fragment implements INavigator {
         mViewModel.setOnclickListener(this);
         mBinding.setLifecycleOwner(this);
         mBinding.setVm(mViewModel);
-
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
     }
 
@@ -115,10 +114,8 @@ public class TopTenFragment extends Fragment implements INavigator {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (LiveConnectUtil.getInstance().isInternetOn()) {
-                    searchView.clearFocus();
-                    mViewModel.checkSearchInput(query);
-                } else createToast("No internet connection");
+                searchView.clearFocus();
+                mViewModel.checkSearchInput(query.toUpperCase());
                 return true;
 
             }
@@ -126,6 +123,8 @@ public class TopTenFragment extends Fragment implements INavigator {
             @Override
             public boolean onQueryTextChange(String query) {
                 mQuery = query;
+                mViewModel.getmLocalRepository().getCompany(mQuery.toUpperCase()).observe(TopTenFragment.this,
+                        company -> mViewModel.setCompany(company));
                 return true;
             }
         });
@@ -153,7 +152,8 @@ public class TopTenFragment extends Fragment implements INavigator {
             bundle.putSerializable(COMPANY, company);
             Navigation.findNavController(mBinding.getRoot()).navigate(R.id.chartFragment, bundle);
         } else {
-            createToast("Not found");
+            if (LiveConnectUtil.getInstance().isInternetOn()) createToast("No found");
+            else createToast("No internet connection");
         }
 
     }

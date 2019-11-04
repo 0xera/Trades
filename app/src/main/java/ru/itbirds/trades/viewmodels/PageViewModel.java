@@ -41,7 +41,7 @@ public class PageViewModel extends ViewModel {
     private String mType;
 
     public LiveData<CompanyStock> getCompanyStockLive(String type) {
-        if(companyStockLive == null){
+        if (companyStockLive == null) {
             companyStockLive = mLocalRepository.getCompanyList(type);
         }
         return companyStockLive;
@@ -110,7 +110,7 @@ public class PageViewModel extends ViewModel {
                         throwable -> {
                             setProgress(false);
                             setNoInternet(true);
-                            Log.d("active", "activeUI: error");
+                            Log.d("active", "activeUI: error" + throwable.getMessage());
                         });
     }
 
@@ -126,7 +126,7 @@ public class PageViewModel extends ViewModel {
                         throwable -> {
                             setProgress(false);
                             setNoInternet(true);
-                            Log.d("loser", "losersUI: error");
+                            Log.d("loser", "losersUI: error" + throwable.getMessage());
                         });
     }
 

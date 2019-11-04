@@ -1,10 +1,6 @@
 package ru.itbirds.trades.api;
 
 
-import android.database.Observable;
-
-import com.google.gson.JsonObject;
-
 import java.util.List;
 
 import io.reactivex.Single;
@@ -14,7 +10,7 @@ import ru.itbirds.trades.model.Company;
 import ru.itbirds.trades.model.KLineEntity;
 
 public interface IEXStockAPI {
-    String KEY_API = "?token=pk_60795a66efdd4d1fbccab24ff8fdd7be";
+    String KEY_API = "?token=pk_f7a8c71a8d404542ab7d08028ca8f208";
 
     @GET("stock/{ticker}/quote" + KEY_API)
     Single<Company> getCompany(@Path("ticker") String company);
