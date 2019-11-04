@@ -4,7 +4,7 @@
     <item android:drawable="@color/chart_background" />
 
     <item
-            android:drawable="@drawable/ic_money_graph_with_up_arrow"
+            android:drawable="@drawable/ic_statistics"
             android:gravity="center" />
 
 
