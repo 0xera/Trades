@@ -9,8 +9,10 @@ import java.io.Serializable;
 import static ru.itbirds.trades.util.Constants.IMAGE_EXTENSION;
 import static ru.itbirds.trades.util.Constants.URL_IMAGE;
 
+@Entity
 public class Company implements Serializable {
-
+    @PrimaryKey
+    @NonNull
     private String symbol;
 
     public double getChange() {

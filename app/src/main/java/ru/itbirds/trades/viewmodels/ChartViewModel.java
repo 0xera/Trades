@@ -35,6 +35,7 @@ public class ChartViewModel extends ViewModel {
 
     private Disposable mDisposableCompany;
     private LiveData<CompanyChart> kLineEntitiesLive;
+    private LiveData<Company> companyLive;
 
 
     public ChartViewModel(RemoteRepository remoteRepository, LocalRepository localRepository) {
@@ -49,15 +50,20 @@ public class ChartViewModel extends ViewModel {
         return kLineEntitiesLive;
     }
 
-    public void loadData(Company c) {
-        setCompany(c);
+    public LiveData<Company> getCompanyLive(String symbol) {
+        if (companyLive == null) {
+            companyLive = mLocalRepository.getCompany(symbol);
+        }
+        return companyLive;
+    }
 
+    public void loadData(Company c) {
         mDisposableCompany = mRemoteRepository.getCompany(c.getSymbol())
                 .repeatWhen(objectFlowable -> objectFlowable.delay(2, TimeUnit.SECONDS))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(company -> {
-                            setCompany(company);
+                            mLocalRepository.insertCompany(company);
                             setProgress(false);
                         },
                         throwable -> {
@@ -87,7 +93,7 @@ public class ChartViewModel extends ViewModel {
         progress.set(p);
     }
 
-    private void setCompany(Company c) {
+    public void setCompany(Company c) {
 
         company.postValue(c);
 

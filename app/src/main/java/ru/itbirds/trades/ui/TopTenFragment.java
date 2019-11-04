@@ -115,9 +115,10 @@ public class TopTenFragment extends Fragment implements INavigator {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (LiveConnectUtil.getInstance().isInternetOn())
+                if (LiveConnectUtil.getInstance().isInternetOn()) {
+                    searchView.clearFocus();
                     mViewModel.checkSearchInput(query);
-                else createToast("No internet connection");
+                } else createToast("No internet connection");
                 return true;
 
             }

@@ -17,4 +17,9 @@ public interface LocalRepository {
     void insertKLineEntities(List<KLineEntity> kLineEntities, String symbol);
 
     LiveData<CompanyChart> getKLineEntities(String symbol);
+
+    void insertCompany(Company company);
+
+    LiveData<Company> getCompany(String symbol);
+
 }

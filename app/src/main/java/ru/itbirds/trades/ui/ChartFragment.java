@@ -70,6 +70,10 @@ public class ChartFragment extends Fragment {
                     if (companyChart != null)
                         mViewModel.setData(companyChart.getEntities());
                 });
+                mViewModel.getCompanyLive(company.getSymbol()).observe(this, comp -> {
+                    if (comp != null)
+                        mViewModel.setCompany(comp);
+                });
             }
         }
 

@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import ru.itbirds.trades.model.Company;
 import ru.itbirds.trades.model.CompanyChart;
 import ru.itbirds.trades.model.CompanyStock;
 
@@ -18,6 +19,12 @@ public interface TradesDao {
 
     @Query("SELECT * FROM CompanyStock WHERE type = :string")
     LiveData<CompanyStock> getCompanyStock(String string);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertCompany(Company company);
+
+    @Query("SELECT * FROM company WHERE symbol = :string")
+    LiveData<Company> getCompany(String string);
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

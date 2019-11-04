@@ -41,6 +41,16 @@ public class LocalRepositoryImpl implements LocalRepository {
         return tradesDao.getCompanyChart(symbol);
     }
 
+    @Override
+    public void insertCompany(Company company) {
+        new InsertCompanyAsyncTask(tradesDao).execute(company);
+    }
+
+    @Override
+    public LiveData<Company> getCompany(String symbol) {
+        return tradesDao.getCompany(symbol);
+    }
+
     private static class InsertCompanyListAsyncTask extends AsyncTask<List<Company>, Void, Void> {
 
         private final TradesDao tradesDao;
@@ -81,6 +91,22 @@ public class LocalRepositoryImpl implements LocalRepository {
             companyChart.setEntities(kLineEntities[0]);
             companyChart.setSymbol(symbol);
             tradesDao.insertCompanyChart(companyChart);
+            return null;
+        }
+    }
+
+    private static class InsertCompanyAsyncTask extends AsyncTask<Company, Void, Void> {
+
+        private final TradesDao tradesDao;
+
+        InsertCompanyAsyncTask(TradesDao tradesDao) {
+            this.tradesDao = tradesDao;
+        }
+
+
+        @Override
+        protected Void doInBackground(Company... companies) {
+            tradesDao.insertCompany(companies[0]);
             return null;
         }
     }
