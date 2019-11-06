@@ -12,18 +12,18 @@ import ru.itbirds.trades.repository.RemoteRepository;
 import ru.itbirds.trades.repository.RemoteRepositoryImpl;
 
 @Module
-public class RepositoryModule {
+class RepositoryModule {
 
     @Provides
     @Singleton
-    public RemoteRepository provideRemoteRepository(IEXStockAPI stockAPI) {
+    RemoteRepository provideRemoteRepository(IEXStockAPI stockAPI) {
         return new RemoteRepositoryImpl(stockAPI);
     }
 
 
     @Provides
     @Singleton
-    public LocalRepository provideLocalRepository(TradesDao tradesDao) {
+    LocalRepository provideLocalRepository(TradesDao tradesDao) {
         return new LocalRepositoryImpl(tradesDao);
     }
 }

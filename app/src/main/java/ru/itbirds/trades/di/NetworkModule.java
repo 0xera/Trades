@@ -19,7 +19,7 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public OkHttpClient provideOkHttpClient() {
+    OkHttpClient provideOkHttpClient() {
         return new OkHttpClient.Builder().addInterceptor(new HttpLoggingInterceptor()).build();
 
 
@@ -27,13 +27,13 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public Gson provideGson() {
+    Gson provideGson() {
         return new Gson();
     }
 
     @Provides
     @Singleton
-    public Retrofit provideRetrofit(OkHttpClient client, Gson gson) {
+    Retrofit provideRetrofit(OkHttpClient client, Gson gson) {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import io.fabric.sdk.android.services.concurrency.AsyncTask;
 import ru.itbirds.trades.db.TradesDao;
 import ru.itbirds.trades.model.Company;
 import ru.itbirds.trades.model.CompanyChart;
@@ -22,7 +21,10 @@ public class LocalRepositoryImpl implements LocalRepository {
 
     @Override
     public void insertCompanyList(List<Company> companies, String type) {
-        new InsertCompanyListAsyncTask(tradesDao, type).execute(companies);
+        CompanyStock companyStock = new CompanyStock();
+        companyStock.setCompanies(companies);
+        companyStock.setType(type);
+        tradesDao.insertCompanyStock(companyStock);
     }
 
     @Override
@@ -33,7 +35,10 @@ public class LocalRepositoryImpl implements LocalRepository {
     @Override
     public void insertKLineEntities(List<KLineEntity> kLineEntities, String symbol) {
 
-        new InsertKLineEntitiesAsyncTask(tradesDao, symbol).execute(kLineEntities);
+        CompanyChart companyChart = new CompanyChart();
+        companyChart.setEntities(kLineEntities);
+        companyChart.setSymbol(symbol);
+        tradesDao.insertCompanyChart(companyChart);
     }
 
     @Override
@@ -43,72 +48,12 @@ public class LocalRepositoryImpl implements LocalRepository {
 
     @Override
     public void insertCompany(Company company) {
-        new InsertCompanyAsyncTask(tradesDao).execute(company);
+        tradesDao.insertCompany(company);
     }
 
     @Override
     public LiveData<Company> getCompany(String symbol) {
         return tradesDao.getCompany(symbol);
-    }
-
-    private static class InsertCompanyListAsyncTask extends AsyncTask<List<Company>, Void, Void> {
-
-        private final TradesDao tradesDao;
-        private final String type;
-
-        InsertCompanyListAsyncTask(TradesDao tradesDao, String type) {
-            this.tradesDao = tradesDao;
-            this.type = type;
-        }
-
-
-        @Override
-        protected Void doInBackground(List<Company>... companies) {
-            CompanyStock companyStock = new CompanyStock();
-            companyStock.setCompanies(companies[0]);
-            companyStock.setType(type);
-            tradesDao.insertCompanyStock(companyStock);
-            return null;
-        }
-
-    }
-
-
-    private static class InsertKLineEntitiesAsyncTask extends AsyncTask<List<KLineEntity>, Void, Void> {
-
-        private final TradesDao tradesDao;
-        private final String symbol;
-
-        InsertKLineEntitiesAsyncTask(TradesDao tradesDao, String symbol) {
-            this.tradesDao = tradesDao;
-            this.symbol = symbol;
-        }
-
-
-        @Override
-        protected Void doInBackground(List<KLineEntity>... kLineEntities) {
-            CompanyChart companyChart = new CompanyChart();
-            companyChart.setEntities(kLineEntities[0]);
-            companyChart.setSymbol(symbol);
-            tradesDao.insertCompanyChart(companyChart);
-            return null;
-        }
-    }
-
-    private static class InsertCompanyAsyncTask extends AsyncTask<Company, Void, Void> {
-
-        private final TradesDao tradesDao;
-
-        InsertCompanyAsyncTask(TradesDao tradesDao) {
-            this.tradesDao = tradesDao;
-        }
-
-
-        @Override
-        protected Void doInBackground(Company... companies) {
-            tradesDao.insertCompany(companies[0]);
-            return null;
-        }
     }
 
 }

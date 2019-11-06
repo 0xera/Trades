@@ -40,10 +40,6 @@ public class ChartFragment extends Fragment {
     ChartViewModelFactory chartViewModelFactory;
     private Snackbar snackbar;
 
-
-//    public ChartFragment() {
-//    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

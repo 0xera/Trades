@@ -17,8 +17,6 @@ public class KChartAdapter extends BaseKChartAdapter<KLineEntity> {
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(split[0]) + 7);
             calendar.set(Calendar.MINUTE, Integer.parseInt(split[1]));
-//            date.setHours(Integer.parseInt(split[0]) + 7);
-//            date.setMinutes(Integer.parseInt(split[1]));
             return calendar.getTime();
         } catch (Exception e) {
             e.printStackTrace();

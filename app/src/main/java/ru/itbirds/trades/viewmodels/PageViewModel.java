@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModel;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.itbirds.trades.model.Company;
@@ -80,7 +79,7 @@ public class PageViewModel extends ViewModel {
         mDisposableGainer = mRemoteRepository.getGainers()
                 .doAfterSuccess(companies -> mLocalRepository.insertCompanyList(companies, mType))
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .repeatWhen(objectFlowable -> objectFlowable.delay(2, TimeUnit.SECONDS))
                 .subscribe(companies -> {
                             mLocalRepository.insertCompanyList(companies, mType);
@@ -98,7 +97,7 @@ public class PageViewModel extends ViewModel {
         mDisposableActive = mRemoteRepository.getMostActive()
                 .doAfterSuccess(companies -> mLocalRepository.insertCompanyList(companies, mType))
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> {
                     Log.d("active", "activeUI: doonsub");
                 })
@@ -117,7 +116,7 @@ public class PageViewModel extends ViewModel {
     private void losersUI() {
         mDisposableLosers = mRemoteRepository.getLosers()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .repeatWhen(objectFlowable -> objectFlowable.delay(2, TimeUnit.SECONDS))
                 .subscribe(companies -> {
                             mLocalRepository.insertCompanyList(companies, mType);

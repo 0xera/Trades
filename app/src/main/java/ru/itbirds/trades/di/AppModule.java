@@ -34,7 +34,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public TradesDao getCouponDAO(DataBase dataBase) {
+    TradesDao getCouponDAO(DataBase dataBase) {
         return dataBase.getTradesDao();
     }
 

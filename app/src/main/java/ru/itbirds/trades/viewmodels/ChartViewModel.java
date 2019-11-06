@@ -61,7 +61,7 @@ public class ChartViewModel extends ViewModel {
         mDisposableCompany = mRemoteRepository.getCompany(c.getSymbol())
                 .repeatWhen(objectFlowable -> objectFlowable.delay(2, TimeUnit.SECONDS))
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .subscribe(company -> {
                             mLocalRepository.insertCompany(company);
                             setProgress(false);
@@ -73,7 +73,7 @@ public class ChartViewModel extends ViewModel {
         mDisposableChart = mRemoteRepository.getCompanyChart(c.getSymbol())
                 .repeatWhen(objectFlowable -> objectFlowable.delay(2, TimeUnit.MINUTES))
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .subscribe(kLineEntities -> {
                             mLocalRepository.insertKLineEntities(kLineEntities, c.getSymbol());
                             setProgress(false);
