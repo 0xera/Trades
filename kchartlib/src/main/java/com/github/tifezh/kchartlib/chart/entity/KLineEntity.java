@@ -1,4 +1,4 @@
-package ru.itbirds.trades.model;
+package com.github.tifezh.kchartlib.chart.entity;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
