@@ -17,7 +17,7 @@ import com.github.tifezh.kchartlib.chart.base.IAdapter;
 import com.github.tifezh.kchartlib.chart.base.IChartDraw;
 import com.github.tifezh.kchartlib.chart.base.IDateTimeFormatter;
 import com.github.tifezh.kchartlib.chart.base.IValueFormatter;
-import com.github.tifezh.kchartlib.chart.entity.IKLine;
+
 import com.github.tifezh.kchartlib.chart.formatter.TimeFormatter;
 import com.github.tifezh.kchartlib.chart.formatter.ValueFormatter;
 
@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.core.view.GestureDetectorCompat;
+import com.github.tifezh.kchartlib.chart.entity.IKLine;
+
 
 /**
  * k线图

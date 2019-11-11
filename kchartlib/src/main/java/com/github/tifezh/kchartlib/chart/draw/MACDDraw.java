@@ -9,7 +9,7 @@ import android.util.Pair;
 
 import com.github.tifezh.kchartlib.R;
 import com.github.tifezh.kchartlib.chart.BaseKChartView;
-import com.github.tifezh.kchartlib.chart.entity.IMACD;
+
 import com.github.tifezh.kchartlib.chart.utils.CanvasUtils;
 import com.github.tifezh.kchartlib.chart.utils.XAlign;
 import com.github.tifezh.kchartlib.chart.utils.YAlign;
@@ -17,6 +17,8 @@ import com.github.tifezh.kchartlib.chart.utils.YAlign;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import com.github.tifezh.kchartlib.chart.entity.IMACD;
+
 
 /**
  * Created by tifezh on 2018/3/30.

@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Trades</string>
+    <string name="search">Search</string>
+    <string name="_2f">%.2f</string>
+    <string name="_2fp">%.2f%%</string>
+    <string name="high">High</string>
+    <string name="low">Low</string>
+    <string name="close">Close</string>
+    <string name="open">Open</string>
+    <string name="repeat">repeat</string>
+    <string name="internet_connection_error">Internet connection error</string>
+    <string name="no_connect">No internet connection</string>
+    <string name="connected">Connected</string>
+    <string name="no_found_ticker">No found symbol</string>
+
+</resources>

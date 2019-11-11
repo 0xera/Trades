@@ -7,13 +7,14 @@ import android.graphics.Rect;
 import android.util.Pair;
 
 import com.github.tifezh.kchartlib.chart.BaseKChartView;
-import com.github.tifezh.kchartlib.chart.entity.IKDJ;
+
 import com.github.tifezh.kchartlib.chart.utils.CanvasUtils;
 import com.github.tifezh.kchartlib.chart.utils.XAlign;
 import com.github.tifezh.kchartlib.chart.utils.YAlign;
 
 
 import androidx.annotation.NonNull;
+import com.github.tifezh.kchartlib.chart.entity.IKDJ;
 
 /**
  * KDJ实现类

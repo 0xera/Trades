@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:ignore="ExtraText">
+
+    <data class="PageBinding">
+
+        <import
+                alias="V"
+                type="android.view.View" />
+
+        <variable
+                name="vm"
+                type="ru.itbirds.trades.viewmodels.PageViewModel" />
+
+        <variable
+                name="clickListener"
+                type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/chart_background"
+                    app:datarv="@{vm.companyStock}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <ProgressBar
+                    android:layout_width="@dimen/progbar_width"
+                    android:layout_height="@dimen/progbar_height"
+                    android:layout_gravity="center"
+                    android:visibility="@{(vm.companyStock.size() == 0 &amp;&amp; vm.progress &amp;&amp; vm.noInternet!=true)? V.VISIBLE: V.GONE}"
+
+                    />
+
+            <include
+                    android:id="@+id/error_layout"
+                    layout="@layout/no_data"
+                    android:visibility="@{(vm.companyStock.size() == 0 &amp;&amp; vm.noInternet)? V.VISIBLE: V.GONE}" />
+        </FrameLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

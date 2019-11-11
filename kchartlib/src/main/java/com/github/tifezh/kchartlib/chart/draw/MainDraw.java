@@ -11,8 +11,7 @@ import android.util.Pair;
 import com.github.tifezh.kchartlib.R;
 import com.github.tifezh.kchartlib.chart.BaseKChartView;
 import com.github.tifezh.kchartlib.chart.base.IValueFormatter;
-import com.github.tifezh.kchartlib.chart.entity.ICandle;
-import com.github.tifezh.kchartlib.chart.entity.IKLine;
+
 import com.github.tifezh.kchartlib.chart.formatter.ValueFormatter;
 import com.github.tifezh.kchartlib.chart.utils.CanvasUtils;
 import com.github.tifezh.kchartlib.chart.utils.ViewUtil;
@@ -25,6 +24,8 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import com.github.tifezh.kchartlib.chart.entity.ICandle;
+import com.github.tifezh.kchartlib.chart.entity.IKLine;
 
 /**
  * 主图的实现类

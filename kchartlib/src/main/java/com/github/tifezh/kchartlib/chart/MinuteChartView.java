@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.github.tifezh.kchartlib.R;
 import com.github.tifezh.kchartlib.chart.base.IValueFormatter;
-import com.github.tifezh.kchartlib.chart.entity.IMinuteLine;
+
 import com.github.tifezh.kchartlib.chart.formatter.BigValueFormatter;
 import com.github.tifezh.kchartlib.chart.utils.DateUtil;
 
@@ -25,6 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GestureDetectorCompat;
+import com.github.tifezh.kchartlib.chart.entity.IMinuteLine;
+
 
 /**
  * 分时图

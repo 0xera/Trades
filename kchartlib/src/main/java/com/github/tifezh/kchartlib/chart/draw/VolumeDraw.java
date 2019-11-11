@@ -10,7 +10,7 @@ import android.util.Pair;
 import com.github.tifezh.kchartlib.R;
 import com.github.tifezh.kchartlib.chart.BaseKChartView;
 import com.github.tifezh.kchartlib.chart.base.IValueFormatter;
-import com.github.tifezh.kchartlib.chart.entity.IVolume;
+
 import com.github.tifezh.kchartlib.chart.formatter.BigValueFormatter;
 import com.github.tifezh.kchartlib.chart.utils.CanvasUtils;
 import com.github.tifezh.kchartlib.chart.utils.ViewUtil;
@@ -20,6 +20,7 @@ import com.github.tifezh.kchartlib.chart.utils.YAlign;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import com.github.tifezh.kchartlib.chart.entity.IVolume;
 
 /**
  * 成交量
