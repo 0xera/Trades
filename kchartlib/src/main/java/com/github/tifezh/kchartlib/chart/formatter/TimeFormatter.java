@@ -3,7 +3,6 @@ package com.github.tifezh.kchartlib.chart.formatter;
 import com.github.tifezh.kchartlib.chart.base.IDateTimeFormatter;
 import com.github.tifezh.kchartlib.chart.utils.DateUtil;
 
-
 import java.util.Date;
 
 /**
@@ -17,6 +16,6 @@ public class TimeFormatter implements IDateTimeFormatter {
         if (date == null) {
             return "";
         }
-        return DateUtil.shortTimeFormat.format(date);
+        return DateUtil.ShortTimeFormat.format(date);
     }
 }

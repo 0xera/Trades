@@ -1,21 +1,20 @@
 package ru.itbirds.trades.viewmodels;
 
 
+import com.github.tifezh.kchartlib.chart.entity.KLineEntity;
+
 import java.util.List;
-import java.util.ListIterator;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import io.reactivex.disposables.Disposable;
-import ru.itbirds.domain.interactor.CompanyChartInteractor;
-import ru.itbirds.domain.interactor.CompanyInteractor;
 import ru.itbirds.data.model.Company;
 import ru.itbirds.data.model.CompanyChart;
-import com.github.tifezh.kchartlib.chart.entity.KLineEntity;
-import ru.itbirds.trades.util.DataHelper;
+import ru.itbirds.domain.DataHelper;
+import ru.itbirds.domain.interactor.CompanyChartInteractor;
+import ru.itbirds.domain.interactor.CompanyInteractor;
 
 public class ChartViewModel extends ViewModel {
     private MutableLiveData<KLineEntity> entity = new MutableLiveData<>();
@@ -88,24 +87,12 @@ public class ChartViewModel extends ViewModel {
     }
 
     public void setData(List<KLineEntity> kLineEntities) {
-        removeNullEntity(kLineEntities);
+        DataHelper.removeNullEntity(kLineEntities);
         DataHelper.calculate(kLineEntities);
         data.postValue(kLineEntities);
         setEntity(kLineEntities.get(kLineEntities.size() - 1));
     }
 
-    private void removeNullEntity(List<KLineEntity> kLineEntities) {
-        if (kLineEntities == null || kLineEntities.size() == 0) return;
-        ListIterator<KLineEntity> iterator = kLineEntities.listIterator();
-        KLineEntity next;
-        while (iterator.hasNext()) {
-
-            next = iterator.next();
-            if (next.high == 0.0 || next.close == 0.0 || next.low == 0.0 || next.open == 0.0) {
-                iterator.remove();
-            }
-        }
-    }
 
     public MutableLiveData<KLineEntity> getEntity() {
         return entity;

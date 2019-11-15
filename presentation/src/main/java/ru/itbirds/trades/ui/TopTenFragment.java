@@ -49,8 +49,9 @@ public class TopTenFragment extends Fragment implements INavigator {
     private String mQuery;
     @Inject
     TopTenViewModelFactory topTenViewModelFactory;
-    private Snackbar snackbar;
     private SearchView searchView;
+    private ViewPager mViewPager;
+    private TabLayout mTabLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class TopTenFragment extends Fragment implements INavigator {
         App.getAppComponent().inject(this);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-        mViewModel = ViewModelProviders.of(this, topTenViewModelFactory).get(TopTenViewModel.class);
+        viewModelConfig();
         if (savedInstanceState != null) {
             if (!TextUtils.isEmpty(savedInstanceState.getString(SEARCH_QUERY))) {
                 mQuery = savedInstanceState.getString(SEARCH_QUERY);
@@ -66,14 +67,29 @@ public class TopTenFragment extends Fragment implements INavigator {
         }
     }
 
+    private void viewModelConfig() {
+        mViewModel = ViewModelProviders.of(this, topTenViewModelFactory).get(TopTenViewModel.class);
+        mViewModel.cleanOldData();
+        mViewModel.setOnclickListener(this);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mBinding = TopBinding.inflate(inflater, container, false);
-        TabLayout tabLayout = mBinding.tabs;
-        ViewPager viewPager = mBinding.viewPager;
-        snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), getResources().getString(R.string.no_connect), Snackbar.LENGTH_LONG);
+        mToolbar = mBinding.toolbar;
+        mViewPager = mBinding.viewPager;
+        mTabLayout = mBinding.tabs;
+        mBinding.setLifecycleOwner(this);
+        mBinding.setVm(mViewModel);
+        createSnackbar();
+        viewPagerConfig();
+        return mBinding.getRoot();
+    }
+
+    private void createSnackbar() {
+        Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), getResources().getString(R.string.no_connect), Snackbar.LENGTH_LONG);
         LiveConnectUtil.getInstance().observe(this, aBoolean -> {
             if (aBoolean) {
                 snackbar.dismiss();
@@ -82,23 +98,21 @@ public class TopTenFragment extends Fragment implements INavigator {
                 snackbar.show();
             }
         });
-        mToolbar = mBinding.toolbar;
+    }
+
+    private void viewPagerConfig() {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPagerAdapter.addFragment(PageFragment.newInstance(ACTIVE_FR), ACTIVE_FR);
         viewPagerAdapter.addFragment(PageFragment.newInstance(GAINERS_FR), GAINERS_FR);
         viewPagerAdapter.addFragment(PageFragment.newInstance(LOSERS_FR), LOSERS_FR);
-        viewPager.setAdapter(viewPagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-        viewPager.setOffscreenPageLimit(3);
-        return mBinding.getRoot();
+        mViewPager.setAdapter(viewPagerAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.setOffscreenPageLimit(3);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel.setOnclickListener(this);
-        mBinding.setLifecycleOwner(this);
-        mBinding.setVm(mViewModel);
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
     }
 

@@ -1,11 +1,9 @@
 package com.github.tifezh.kchartlib.chart.entity;
 
+import java.io.Serializable;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import com.github.tifezh.kchartlib.chart.entity.IKLine;
-
-import java.io.Serializable;
 
 
 @Entity
@@ -139,6 +137,7 @@ public class KLineEntity implements IKLine, Serializable {
     }
 
     public String minute;
+    public String date;
     public float open;
     public float high;
     public float low;

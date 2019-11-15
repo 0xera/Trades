@@ -1,8 +1,9 @@
-package ru.itbirds.trades.util;
-
-import java.util.List;
+package ru.itbirds.domain;
 
 import com.github.tifezh.kchartlib.chart.entity.KLineEntity;
+
+import java.util.List;
+import java.util.ListIterator;
 
 
 public class DataHelper {
@@ -179,7 +180,18 @@ public class DataHelper {
             }
         }
     }
+    public static void removeNullEntity(List<KLineEntity> kLineEntities) {
+        if (kLineEntities == null || kLineEntities.size() == 0) return;
+        ListIterator<KLineEntity> iterator = kLineEntities.listIterator();
+        KLineEntity next;
+        while (iterator.hasNext()) {
 
+            next = iterator.next();
+            if (next.high == 0.0 || next.close == 0.0 || next.low == 0.0 || next.open == 0.0) {
+                iterator.remove();
+            }
+        }
+    }
     public static void calculate(List<KLineEntity> datas) {
         calculateMA(datas);
         calculateMACD(datas);

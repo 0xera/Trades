@@ -30,7 +30,6 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
     implementation "android.arch.persistence.room:rxjava2:1.1.1"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

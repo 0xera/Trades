@@ -5,13 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-
 import com.github.tifezh.kchartlib.chart.KChartView;
 import com.github.tifezh.kchartlib.chart.formatter.TimeFormatter;
 import com.google.android.material.snackbar.Snackbar;
@@ -20,12 +13,17 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import ru.itbirds.data.model.Company;
-import ru.itbirds.trades.common.App;
 import ru.itbirds.trades.R;
 import ru.itbirds.trades.adapter.KChartAdapter;
+import ru.itbirds.trades.common.App;
 import ru.itbirds.trades.databinding.ChartBinding;
-
 import ru.itbirds.trades.util.LiveConnectUtil;
 import ru.itbirds.trades.viewmodels.ChartViewModel;
 import ru.itbirds.trades.viewmodels.ChartViewModelFactory;
@@ -40,6 +38,7 @@ public class ChartFragment extends Fragment {
     @Inject
     ChartViewModelFactory chartViewModelFactory;
     private Snackbar snackbar;
+    private KChartView mKChartView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +47,12 @@ public class ChartFragment extends Fragment {
         setRetainInstance(true);
         setHasOptionsMenu(true);
         mViewModel = ViewModelProviders.of(this, chartViewModelFactory).get(ChartViewModel.class);
+        viewModuleConfig();
+
+
+    }
+
+    private void viewModuleConfig() {
         Company company;
         if (getArguments() != null) {
             company = (Company) (getArguments().getSerializable(COMPANY));
@@ -73,26 +78,28 @@ public class ChartFragment extends Fragment {
                 });
             }
         }
-
-
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mBinding = ChartBinding.inflate(inflater, container, false);
+        mBinding.setLifecycleOwner(this);
+        mBinding.setVm(mViewModel);
         mToolbar = mBinding.toolbar;
+        mKChartView = mBinding.kchartView;
+        kChartViewConfig();
         snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), getResources().getString(R.string.no_connect), Snackbar.LENGTH_LONG);
-        KChartView mKChartView = mBinding.kchartView;
+        return mBinding.getRoot();
+    }
+
+    private void kChartViewConfig() {
         mKChartView.showLoading();
         KChartAdapter mAdapter = new KChartAdapter();
         mKChartView.setAdapter(mAdapter);
         mKChartView.setDateTimeFormatter(new TimeFormatter());
         mKChartView.setGridRows(getResources().getInteger(R.integer.rows));
         mKChartView.setGridColumns(getResources().getInteger(R.integer.columns));
-        mBinding.setLifecycleOwner(this);
-        mBinding.setVm(mViewModel);
-        return mBinding.getRoot();
     }
 
     @Override

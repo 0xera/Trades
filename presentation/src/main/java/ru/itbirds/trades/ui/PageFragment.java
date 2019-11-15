@@ -5,19 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.Objects;
-
-import javax.inject.Inject;
-
-import ru.itbirds.trades.R;
 import ru.itbirds.trades.adapter.StockAdapter;
 import ru.itbirds.trades.common.App;
 import ru.itbirds.trades.common.INavigator;
@@ -36,6 +30,7 @@ public class PageFragment extends Fragment {
 
     @Inject
     PageViewModelFactory pageViewModelFactory;
+    private RecyclerView mRecyclerView;
 
 
     public static PageFragment newInstance(String type) {
@@ -55,6 +50,7 @@ public class PageFragment extends Fragment {
         if (getArguments() != null) {
             mType = getArguments().getString(TYPE_KEY);
         }
+        viewModelConfig();
 
 
     }
@@ -64,13 +60,22 @@ public class PageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         PageBinding mBinding = PageBinding.inflate(inflater, container, false);
-        RecyclerView mRecyclerView = mBinding.recyclerview;
+        mBinding.setLifecycleOwner(this);
+        mBinding.setVm(mViewModel);
+        mRecyclerView = mBinding.recyclerview;
+        recyclerViewConfig();
+
+        return mBinding.getRoot();
+    }
+
+    private void recyclerViewConfig() {
         StockAdapter mAdapter = new StockAdapter(((INavigator) getParentFragment()));
         mRecyclerView.setAdapter(mAdapter);
-        mBinding.setLifecycleOwner(this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(null);
-        mBinding.setVm(mViewModel);
+    }
+
+    private void viewModelConfig() {
         LiveConnectUtil.getInstance().observe(this, aBoolean -> {
             if (aBoolean) {
                 loadData();
@@ -86,14 +91,10 @@ public class PageFragment extends Fragment {
             if (companyStock != null)
                 mViewModel.setCompanyStock(companyStock.getCompanies());
         });
-        return mBinding.getRoot();
     }
 
-    void loadData() {
+    private void loadData() {
         mViewModel.loadData(mType);
-        if (!LiveConnectUtil.getInstance().isInternetOn())
-            Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), getResources().getString(R.string.no_connect), Snackbar.LENGTH_LONG).show();
-
 
     }
 

@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import ru.itbirds.data.model.Company;
+import ru.itbirds.domain.interactor.CleanInteractor;
 import ru.itbirds.domain.interactor.CompanyInteractor;
 import ru.itbirds.trades.common.INavigator;
 import ru.itbirds.trades.util.LiveConnectUtil;
@@ -19,15 +20,22 @@ public class TopTenViewModel extends ViewModel {
     private INavigator mNavigator;
     private Disposable mDisposableSearch;
     private CompanyInteractor mCompanyInteractor;
+    private CleanInteractor mCleanInteractor;
     private MediatorLiveData<Company> mCompanyMediatorLive = new MediatorLiveData<>();
 
-    TopTenViewModel(CompanyInteractor companyInteractor) {
+    TopTenViewModel(CompanyInteractor companyInteractor, CleanInteractor cleanInteractor) {
 
         mCompanyInteractor = companyInteractor;
+        mCleanInteractor = cleanInteractor;
         mCompanyMediatorLive.observeForever(company -> mCompany = company);
     }
 
     private Company mCompany = null;
+
+
+    public void cleanOldData() {
+        mCleanInteractor.clean();
+    }
 
     public void searchCompanyLive(String symbol) {
         LiveData<Company> companyLiveData = mCompanyInteractor.getCompany(symbol);

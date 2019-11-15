@@ -1,8 +1,5 @@
 package ru.itbirds.trades.viewmodels;
 
-import android.util.Log;
-
-import java.util.Arrays;
 import java.util.List;
 
 import androidx.databinding.ObservableBoolean;
@@ -69,6 +66,7 @@ public class PageViewModel extends ViewModel {
                 loadLosers();
                 break;
         }
+
     }
 
     private void loadGainers() {

@@ -11,10 +11,9 @@ import android.view.View;
 
 import com.github.tifezh.kchartlib.R;
 import com.github.tifezh.kchartlib.chart.base.IValueFormatter;
-
+import com.github.tifezh.kchartlib.chart.entity.IMinuteLine;
 import com.github.tifezh.kchartlib.chart.formatter.BigValueFormatter;
 import com.github.tifezh.kchartlib.chart.utils.DateUtil;
-
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +24,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GestureDetectorCompat;
-import com.github.tifezh.kchartlib.chart.entity.IMinuteLine;
 
 
 /**
@@ -305,7 +303,7 @@ public class MinuteChartView extends View implements GestureDetector.OnGestureLi
             canvas.drawLine(x, 0, x, mHeight+mVolumeHeight, mTextPaint);
             canvas.drawLine(0, getY(point.getPrice()), mWidth, getY(point.getPrice()), mTextPaint);
             //画指示线的时间
-            String text = DateUtil.shortTimeFormat.format(point.getDate());
+            String text = DateUtil.ShortTimeFormat.format(point.getDate());
             x = x - mTextPaint.measureText(text) / 2;
             if (x < 0) {
                 x = 0;
@@ -422,9 +420,9 @@ public class MinuteChartView extends View implements GestureDetector.OnGestureLi
         }
         //画时间
         float y = mHeight+ mVolumeHeight +baseLine;
-        canvas.drawText(DateUtil.shortTimeFormat.format(mFirstStartTime), 0, y, mTextPaint);
-        canvas.drawText(DateUtil.shortTimeFormat.format(mSecondEndTime),
-                mWidth - mTextPaint.measureText(DateUtil.shortTimeFormat.format(mSecondEndTime)), y, mTextPaint);
+        canvas.drawText(DateUtil.ShortTimeFormat.format(mFirstStartTime), 0, y, mTextPaint);
+        canvas.drawText(DateUtil.ShortTimeFormat.format(mSecondEndTime),
+                mWidth - mTextPaint.measureText(DateUtil.ShortTimeFormat.format(mSecondEndTime)), y, mTextPaint);
         //成交量
         canvas.drawText(mVolumeFormatter.format(mVolumeMax),0,mHeight+baseLine,mTextPaint);
     }

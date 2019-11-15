@@ -5,7 +5,6 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import io.reactivex.Flowable;
 import ru.itbirds.data.model.Company;
 import ru.itbirds.data.model.CompanyChart;
 import ru.itbirds.data.model.CompanyStock;
@@ -35,4 +34,12 @@ public interface TradesDao {
     LiveData<CompanyChart> getCompanyChart(String string);
 
 
+    @Query("SELECT * FROM CompanyChart LIMIT 1")
+    CompanyChart getFirstCompanyChart();
+
+    @Query("DELETE FROM CompanyChart")
+    void deleteCharts();
+
+    @Query("DELETE FROM Company")
+    void deleteCompanies();
 }

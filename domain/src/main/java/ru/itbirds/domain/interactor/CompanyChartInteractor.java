@@ -32,6 +32,7 @@ public class CompanyChartInteractor implements CompanyChartUseCase {
         mLocalRepository.insertKLineEntities(companyChart);
     }
 
+
     @Override
     public LiveData<CompanyChart> getKLineEntities(String symbol) {
         return mLocalRepository.getKLineEntities(symbol);
