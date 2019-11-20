@@ -1,10 +1,6 @@
 package ru.itbirds.data.model;
 
 
-
-
-
-
 import java.io.Serializable;
 
 import androidx.annotation.NonNull;

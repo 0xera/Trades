@@ -1,4 +1,4 @@
-package ru.itbirds.domain.use_case;
+package ru.itbirds.domain.usecase;
 
 import com.github.tifezh.kchartlib.chart.entity.KLineEntity;
 
@@ -13,8 +13,8 @@ public interface CompanyChartUseCase {
 
     void insertKLineEntities(List<KLineEntity> kLineEntities, String ticker);
 
-    public LiveData<CompanyChart> getKLineEntities(String ticker);
+    LiveData<CompanyChart> getKLineEntities(String ticker);
 
 
-    public Flowable<List<KLineEntity>> downloadCompanyChart(String ticker);
+    Flowable<List<KLineEntity>> downloadCompanyChart(String ticker);
 }

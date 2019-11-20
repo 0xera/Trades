@@ -4,11 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.io.BufferedReader;
-
 import ru.itbirds.trades.R;
-import ru.itbirds.trades.ui.SingleActivity;
 
 public class SplashActivity extends AppCompatActivity {
 

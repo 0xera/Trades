@@ -12,7 +12,7 @@ import java.util.concurrent.Executor;
 import ru.itbirds.data.Constants;
 import ru.itbirds.data.model.CompanyChart;
 import ru.itbirds.data.repositories.LocalRepository;
-import ru.itbirds.domain.use_case.CleanUseCase;
+import ru.itbirds.domain.usecase.CleanUseCase;
 
 public class CleanInteractor implements CleanUseCase {
     private Executor mExecutor;

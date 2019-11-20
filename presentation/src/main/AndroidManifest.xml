@@ -24,8 +24,8 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".ui.SingleActivity"
-                android:theme="@style/AppTheme"></activity>
+            android:name=".common.SingleActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
