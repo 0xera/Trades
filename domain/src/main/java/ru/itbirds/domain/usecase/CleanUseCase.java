@@ -1,4 +1,4 @@
-package ru.itbirds.domain.use_case;
+package ru.itbirds.domain.usecase;
 
 import java.text.ParseException;
 import java.util.Date;

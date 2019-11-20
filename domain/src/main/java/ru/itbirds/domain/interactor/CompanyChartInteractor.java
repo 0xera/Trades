@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers;
 import ru.itbirds.data.model.CompanyChart;
 import ru.itbirds.data.repositories.LocalRepository;
 import ru.itbirds.data.repositories.RemoteRepository;
-import ru.itbirds.domain.use_case.CompanyChartUseCase;
+import ru.itbirds.domain.usecase.CompanyChartUseCase;
 
 public class CompanyChartInteractor implements CompanyChartUseCase {
     private LocalRepository mLocalRepository;
@@ -41,9 +41,8 @@ public class CompanyChartInteractor implements CompanyChartUseCase {
     @Override
     public Flowable<List<KLineEntity>> downloadCompanyChart(String symbol) {
         return mRemoteRepository.getCompanyChart(symbol)
-                .repeatWhen(objectFlowable -> objectFlowable.delay(2, TimeUnit.MINUTES))
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
+                .repeatWhen(objectFlowable -> objectFlowable.delay(2, TimeUnit.MINUTES))
                 .observeOn(Schedulers.io());
     }
 

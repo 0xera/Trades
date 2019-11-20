@@ -1,4 +1,4 @@
-package ru.itbirds.domain.use_case;
+package ru.itbirds.domain.usecase;
 
 import java.util.List;
 
@@ -12,11 +12,11 @@ public interface CompanyStockUseCase {
     void insertCompanyStock(List<Company> companies, String type);
 
 
-    public LiveData<CompanyStock> getCompanyStock(String type);
+    LiveData<CompanyStock> getCompanyStock(String type);
 
-    public Flowable<List<Company>> getMostActive();
+    Flowable<List<Company>> getMostActive();
 
-    public Flowable<List<Company>> getGainers();
+    Flowable<List<Company>> getGainers();
 
-    public Flowable<List<Company>> getLosers();
+    Flowable<List<Company>> getLosers();
 }

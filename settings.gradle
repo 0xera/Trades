@@ -1,2 +1,2 @@
-include ':kchartlib', ':data', ':domain', ':presentation'
+include ':domain', ':kchartlib', ':data', ':presentation'
 rootProject.name = 'Trades'

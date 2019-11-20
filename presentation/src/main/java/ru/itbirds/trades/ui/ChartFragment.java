@@ -1,6 +1,7 @@
 package ru.itbirds.trades.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 import ru.itbirds.data.model.Company;
 import ru.itbirds.trades.R;
 import ru.itbirds.trades.adapter.KChartAdapter;
@@ -28,7 +33,7 @@ import ru.itbirds.trades.util.LiveConnectUtil;
 import ru.itbirds.trades.viewmodels.ChartViewModel;
 import ru.itbirds.trades.viewmodels.ChartViewModelFactory;
 
-import static ru.itbirds.trades.util.Constants.COMPANY;
+import static ru.itbirds.trades.util.Constants.COMPANY_SYMBOL;
 
 public class ChartFragment extends Fragment {
 
@@ -47,15 +52,23 @@ public class ChartFragment extends Fragment {
         setRetainInstance(true);
         setHasOptionsMenu(true);
         mViewModel = ViewModelProviders.of(this, chartViewModelFactory).get(ChartViewModel.class);
-        viewModuleConfig();
+
 
 
     }
 
-    private void viewModuleConfig() {
+    @Override
+    public void onResume() {
+        Log.d("myfragments", this.getClass().getSimpleName()+ "onStart: ");
+
+        viewModelConfig();
+        super.onResume();
+    }
+
+    private void viewModelConfig() {
         Company company;
         if (getArguments() != null) {
-            company = (Company) (getArguments().getSerializable(COMPANY));
+            company = (Company) (getArguments().getSerializable(COMPANY_SYMBOL));
             if (company != null) {
                 LiveConnectUtil.getInstance().observe(this, aBoolean -> {
                     if (aBoolean) {
@@ -106,7 +119,13 @@ public class ChartFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayShowTitleEnabled(false);
+        NavController navController = Navigation.findNavController(mBinding.getRoot());
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.action_topTenFragment_to_chartFragment ).build();
+        NavigationUI.setupActionBarWithNavController((AppCompatActivity) getActivity(), navController, appBarConfiguration);
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+
     }
 
     private void loadData(Company company) {
@@ -117,8 +136,9 @@ public class ChartFragment extends Fragment {
     }
 
     @Override
-    public void onDetach() {
+    public void onStop() {
+        Log.d("myfragments", this.getClass().getSimpleName()+ "onStop: ");
         mViewModel.dispatchDetach();
-        super.onDetach();
+        super.onStop();
     }
 }

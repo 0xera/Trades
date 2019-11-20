@@ -2,6 +2,7 @@ package ru.itbirds.trades.ui;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
@@ -37,7 +37,7 @@ import ru.itbirds.trades.viewmodels.TopTenViewModel;
 import ru.itbirds.trades.viewmodels.TopTenViewModelFactory;
 
 import static ru.itbirds.trades.util.Constants.ACTIVE_FR;
-import static ru.itbirds.trades.util.Constants.COMPANY;
+import static ru.itbirds.trades.util.Constants.COMPANY_SYMBOL;
 import static ru.itbirds.trades.util.Constants.GAINERS_FR;
 import static ru.itbirds.trades.util.Constants.LOSERS_FR;
 import static ru.itbirds.trades.util.Constants.SEARCH_QUERY;
@@ -83,22 +83,11 @@ public class TopTenFragment extends Fragment implements INavigator {
         mTabLayout = mBinding.tabs;
         mBinding.setLifecycleOwner(this);
         mBinding.setVm(mViewModel);
-        createSnackbar();
         viewPagerConfig();
         return mBinding.getRoot();
     }
 
-    private void createSnackbar() {
-        Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), getResources().getString(R.string.no_connect), Snackbar.LENGTH_LONG);
-        LiveConnectUtil.getInstance().observe(this, aBoolean -> {
-            if (aBoolean) {
-                snackbar.dismiss();
 
-            } else {
-                snackbar.show();
-            }
-        });
-    }
 
     private void viewPagerConfig() {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
@@ -114,6 +103,7 @@ public class TopTenFragment extends Fragment implements INavigator {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
+        mToolbar.setTitle(this.getString(R.string.app_name));
     }
 
     @Override
@@ -152,19 +142,19 @@ public class TopTenFragment extends Fragment implements INavigator {
     }
 
     @Override
-    public void onDetach() {
+    public void onStop() {
+        Log.d("myfragments", this.getClass().getSimpleName() + "onStop: ");
         mViewModel.dispatchDetach();
-        super.onDetach();
+        super.onStop();
     }
-
 
     @Override
     public void clickForNavigate(Company company) {
         if (company != null) {
             searchView.clearFocus();
             Bundle bundle = new Bundle();
-            bundle.putSerializable(COMPANY, company);
-            Navigation.findNavController(mBinding.getRoot()).navigate(R.id.chartFragment, bundle);
+            bundle.putSerializable(COMPANY_SYMBOL, company);
+            Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_topTenFragment_to_chartFragment, bundle);
         } else {
             if (LiveConnectUtil.getInstance().isInternetOn())
                 createToast(getResources().getString(R.string.no_found_ticker));
