@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
-        app:startDestination="@id/topTenFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/topTenFragment">
 
     <fragment
-            android:id="@+id/topTenFragment"
-            android:name="ru.itbirds.trades.ui.TopTenFragment"
-            android:label="TopTenFragment" >
+        android:id="@+id/topTenFragment"
+        android:name="ru.itbirds.trades.ui.TopTenFragment"
+        tools:layout="@layout/top_fragment">
         <action
             android:id="@+id/action_topTenFragment_to_chartFragment"
             app:destination="@id/chartFragment"
@@ -14,12 +16,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
-        <argument
-                android:name="company"
-                app:argType="ru.itbirds.data.model.Company" />
     </fragment>
     <fragment
-            android:id="@+id/chartFragment"
-            android:name="ru.itbirds.trades.ui.ChartFragment"
-            android:label="ChartFragment" />
+        tools:layout="@layout/chart_fragment"
+        android:id="@+id/chartFragment"
+        android:name="ru.itbirds.trades.ui.ChartFragment"
+        android:label="ChartFragment" />
+    <argument
+        android:name="company"
+        app:argType="ru.itbirds.data.model.Company" />
 </navigation>
