@@ -80,14 +80,14 @@
                 tools:text="MCSF" />
 
 
-            <ru.itbirds.trades.common.StockTextView
+            <TextView
                 android:id="@+id/list_item_price_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="@dimen/list_item_price_text_margin_top"
                 android:layout_marginEnd="@dimen/list_item_price_text_margin_end"
-                android:text="@{String.format(locale.US, @string/_2f, company.latestPrice)}"
+                app:animateText="@{String.format(locale.US, @string/_2f, company.latestPrice)}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/list_item_price_text_size"
                 tools:text="list_ite1" />

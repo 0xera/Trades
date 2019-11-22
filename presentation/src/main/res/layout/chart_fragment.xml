@@ -28,19 +28,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <com.google.android.material.appbar.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    style="@style/Toolbar" />
+                    <com.google.android.material.appbar.CollapsingToolbarLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:titleEnabled="false"
+                        app:toolbarId="@id/toolbar">
+
+                        <androidx.appcompat.widget.Toolbar
+                            android:id="@+id/toolbar"
+                            style="@style/Toolbar" />
+                    </com.google.android.material.appbar.CollapsingToolbarLayout>
+                </com.google.android.material.appbar.AppBarLayout>
 
 
                 <RelativeLayout
@@ -79,14 +92,14 @@
                         android:layout_weight="0.7"
                         android:gravity="center_vertical">
 
-                        <ru.itbirds.trades.common.StockTextView
+                        <TextView
                             android:id="@+id/tv_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:text="@{String.format(locale.US,@string/_2f,vm.company.latestPrice)}"
                             android:textColor="@color/chart_white"
-                            android:textSize="@dimen/price_text_size_chart_fr" />
+                            android:textSize="@dimen/price_text_size_chart_fr"
+                            app:animateText="@{String.format(locale.US,@string/_2f,vm.company.latestPrice)}" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -156,23 +169,23 @@
                             android:layout_marginStart="@dimen/ll_margin_start_chart_fr"
                             android:orientation="vertical">
 
-                            <ru.itbirds.trades.common.StockTextView
+                            <TextView
                                 android:id="@+id/tv_high"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{String.format(locale.US, @string/_2f, vm.entity.high)}"
                                 android:textColor="@color/chart_white"
-                                android:textSize="@dimen/hlec_text_size_chart_fr" />
+                                android:textSize="@dimen/hlec_text_size_chart_fr"
+                                app:animateText="@{String.format(locale.US, @string/_2f, vm.entity.high)}" />
 
 
-                            <ru.itbirds.trades.common.StockTextView
+                            <TextView
                                 android:id="@+id/tv_low"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/lo_pad_top_chart_fr"
-                                android:text="@{String.format(locale.US, @string/_2f, vm.entity.low)}"
                                 android:textColor="@color/chart_white"
-                                android:textSize="@dimen/hlec_text_size_chart_fr" />
+                                android:textSize="@dimen/hlec_text_size_chart_fr"
+                                app:animateText="@{String.format(locale.US, @string/_2f, vm.entity.low)}" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -216,23 +229,23 @@
                             android:layout_marginStart="@dimen/ll_margin_start_chart_fr"
                             android:orientation="vertical">
 
-                            <ru.itbirds.trades.common.StockTextView
+                            <TextView
                                 android:id="@+id/tv_close"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{String.format(locale.US, @string/_2f, vm.entity.close)}"
                                 android:textColor="@color/chart_white"
-                                android:textSize="@dimen/hlec_text_size_chart_fr" />
+                                android:textSize="@dimen/hlec_text_size_chart_fr"
+                                app:animateText="@{String.format(locale.US, @string/_2f, vm.entity.close)}" />
 
 
-                            <ru.itbirds.trades.common.StockTextView
+                            <TextView
                                 android:id="@+id/tv_open"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/lo_pad_top_chart_fr"
-                                android:text="@{String.format(locale.US, @string/_2f, vm.entity.open)}"
                                 android:textColor="@color/chart_white"
-                                android:textSize="@dimen/hlec_text_size_chart_fr" />
+                                android:textSize="@dimen/hlec_text_size_chart_fr"
+                                app:animateText="@{String.format(locale.US, @string/_2f, vm.entity.open)}" />
                         </LinearLayout>
 
 

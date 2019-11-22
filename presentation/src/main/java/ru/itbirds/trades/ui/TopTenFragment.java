@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
@@ -21,7 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -45,7 +45,6 @@ import static ru.itbirds.trades.util.Constants.SEARCH_QUERY;
 public class TopTenFragment extends Fragment implements INavigator {
     private TopTenViewModel mViewModel;
     private TopBinding mBinding;
-    private Toolbar mToolbar;
     private String mQuery;
     @Inject
     TopTenViewModelFactory topTenViewModelFactory;
@@ -78,7 +77,7 @@ public class TopTenFragment extends Fragment implements INavigator {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mBinding = TopBinding.inflate(inflater, container, false);
-        mToolbar = mBinding.toolbar;
+        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mBinding.toolbar);
         mViewPager = mBinding.viewPager;
         mTabLayout = mBinding.tabs;
         mBinding.setLifecycleOwner(this);
@@ -87,7 +86,20 @@ public class TopTenFragment extends Fragment implements INavigator {
         return mBinding.getRoot();
     }
 
+    @Override
+    public void onStart() {
+        Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), getResources().getString(R.string.no_connect), Snackbar.LENGTH_LONG);
+        LiveConnectUtil.getInstance().observe(this, aBoolean -> {
+            if (aBoolean) {
+                snackbar.dismiss();
+            } else {
+                if (!snackbar.isShown())
+                    snackbar.show();
 
+            }
+        });
+        super.onStart();
+    }
 
     private void viewPagerConfig() {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
@@ -102,8 +114,6 @@ public class TopTenFragment extends Fragment implements INavigator {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
-        mToolbar.setTitle(this.getString(R.string.app_name));
     }
 
     @Override
@@ -145,6 +155,7 @@ public class TopTenFragment extends Fragment implements INavigator {
     public void onStop() {
         Log.d("myfragments", this.getClass().getSimpleName() + "onStop: ");
         mViewModel.dispatchDetach();
+        LiveConnectUtil.getInstance().removeObservers(this);
         super.onStop();
     }
 

@@ -54,15 +54,14 @@ public class ChartFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this, chartViewModelFactory).get(ChartViewModel.class);
 
 
-
     }
 
     @Override
-    public void onResume() {
-        Log.d("myfragments", this.getClass().getSimpleName()+ "onStart: ");
+    public void onStart() {
+        Log.d("myfragments", this.getClass().getSimpleName() + "onStart: ");
 
         viewModelConfig();
-        super.onResume();
+        super.onStart();
     }
 
     private void viewModelConfig() {
@@ -100,6 +99,11 @@ public class ChartFragment extends Fragment {
         mBinding.setLifecycleOwner(this);
         mBinding.setVm(mViewModel);
         mToolbar = mBinding.toolbar;
+        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
+
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayShowTitleEnabled(false);
+
+        mToolbar.setNavigationOnClickListener(view -> Navigation.findNavController(view).navigateUp());
         mKChartView = mBinding.kchartView;
         kChartViewConfig();
         snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), getResources().getString(R.string.no_connect), Snackbar.LENGTH_LONG);
@@ -118,12 +122,9 @@ public class ChartFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
-        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayShowTitleEnabled(false);
         NavController navController = Navigation.findNavController(mBinding.getRoot());
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.action_topTenFragment_to_chartFragment ).build();
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.action_topTenFragment_to_chartFragment).build();
         NavigationUI.setupActionBarWithNavController((AppCompatActivity) getActivity(), navController, appBarConfiguration);
-        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
 
     }
@@ -137,8 +138,9 @@ public class ChartFragment extends Fragment {
 
     @Override
     public void onStop() {
-        Log.d("myfragments", this.getClass().getSimpleName()+ "onStop: ");
+        Log.d("myfragments", this.getClass().getSimpleName() + "onStop: ");
         mViewModel.dispatchDetach();
+        LiveConnectUtil.getInstance().removeObservers(this);
         super.onStop();
     }
 }

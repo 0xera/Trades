@@ -39,4 +39,5 @@
     <dimen name="iv_no_data_width">80dp</dimen>
     <dimen name="iv_no_data_height">80dp</dimen>
     <dimen name="no_data_text_size">20sp</dimen>
+    <dimen name="title_margin">12dp</dimen>
 </resources>
