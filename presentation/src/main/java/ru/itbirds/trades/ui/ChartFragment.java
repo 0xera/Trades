@@ -1,8 +1,12 @@
 package ru.itbirds.trades.ui;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,11 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import ru.itbirds.data.model.Company;
 import ru.itbirds.trades.R;
 import ru.itbirds.trades.adapter.KChartAdapter;
 import ru.itbirds.trades.common.App;
@@ -44,6 +44,7 @@ public class ChartFragment extends Fragment {
     ChartViewModelFactory chartViewModelFactory;
     private Snackbar snackbar;
     private KChartView mKChartView;
+    private String mSymbol;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,19 +60,17 @@ public class ChartFragment extends Fragment {
     @Override
     public void onStart() {
         Log.d("myfragments", this.getClass().getSimpleName() + "onStart: ");
-
         viewModelConfig();
         super.onStart();
     }
 
     private void viewModelConfig() {
-        Company company;
         if (getArguments() != null) {
-            company = (Company) (getArguments().getSerializable(COMPANY_SYMBOL));
-            if (company != null) {
+            mSymbol = getArguments().getString(COMPANY_SYMBOL);
+            if (!TextUtils.isEmpty(mSymbol)) {
                 LiveConnectUtil.getInstance().observe(this, aBoolean -> {
                     if (aBoolean) {
-                        loadData(company);
+                        loadData(mSymbol);
                         mViewModel.setProgress(true);
                         snackbar.dismiss();
                     } else {
@@ -80,11 +79,11 @@ public class ChartFragment extends Fragment {
                         snackbar.show();
                     }
                 });
-                mViewModel.getkLineEntitiesLive(company.getSymbol()).observe(this, companyChart -> {
+                mViewModel.getkLineEntitiesLive(mSymbol).observe(this, companyChart -> {
                     if (companyChart != null)
                         mViewModel.setData(companyChart.getEntities());
                 });
-                mViewModel.getCompanyLive(company.getSymbol()).observe(this, comp -> {
+                mViewModel.getCompanyLive(mSymbol).observe(this, comp -> {
                     if (comp != null)
                         mViewModel.setCompany(comp);
                 });
@@ -99,15 +98,18 @@ public class ChartFragment extends Fragment {
         mBinding.setLifecycleOwner(this);
         mBinding.setVm(mViewModel);
         mToolbar = mBinding.toolbar;
-        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
-
-        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayShowTitleEnabled(false);
-
-        mToolbar.setNavigationOnClickListener(view -> Navigation.findNavController(view).navigateUp());
+        configToolbar();
         mKChartView = mBinding.kchartView;
         kChartViewConfig();
         snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), getResources().getString(R.string.no_connect), Snackbar.LENGTH_LONG);
         return mBinding.getRoot();
+    }
+
+    private void configToolbar() {
+        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        mToolbar.setNavigationOnClickListener(view -> Navigation.findNavController(view).navigateUp());
     }
 
     private void kChartViewConfig() {
@@ -119,21 +121,30 @@ public class ChartFragment extends Fragment {
         mKChartView.setGridColumns(getResources().getInteger(R.integer.columns));
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        NavController navController = Navigation.findNavController(mBinding.getRoot());
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.action_topTenFragment_to_chartFragment).build();
-        NavigationUI.setupActionBarWithNavController((AppCompatActivity) getActivity(), navController, appBarConfiguration);
 
+
+    private void loadData(String symbol) {
+        if (LiveConnectUtil.getInstance().isInternetOn()) {
+            mViewModel.loadData(symbol);
+        }
 
     }
 
-    private void loadData(Company company) {
-        if (LiveConnectUtil.getInstance().isInternetOn()) {
-            mViewModel.loadData(company);
-        }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_chat, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.chat_item) {
+            Bundle bundle = new Bundle();
+            bundle.putString(COMPANY_SYMBOL, mSymbol);
+            Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_chartFragment_to_chatFragment, bundle);
+            return true;
+        } else
+            return super.onOptionsItemSelected(item);
     }
 
     @Override

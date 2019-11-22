@@ -1,0 +1,62 @@
+package ru.itbirds.trades;
+
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
+
+import static ru.itbirds.data.Constants.COMPANY;
+
+public class ChatFragment extends Fragment {
+
+    private ChatViewModel mViewModel;
+    private String mSymbol;
+    private TextView mTitle;
+    private Toolbar mToolbar;
+
+    public static ChatFragment newInstance() {
+        return new ChatFragment();
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.chat_fragment, container, false);
+        mToolbar = view.findViewById(R.id.toolbar);
+        configToolbar();
+        mTitle = view.findViewById(R.id.text);
+        if (getArguments() != null) {
+            mSymbol = getArguments().getString(COMPANY);
+            if (!TextUtils.isEmpty(mSymbol)) mTitle.setText(mSymbol);
+        }
+        return view;
+    }
+
+    private void configToolbar() {
+        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        mToolbar.setNavigationOnClickListener(view -> Navigation.findNavController(view).navigateUp());
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(ChatViewModel.class);
+        // TODO: Use the ViewModel
+    }
+
+}

@@ -70,7 +70,7 @@ public class StockAdapter extends ListAdapter<Company, StockAdapter.StockHolder>
         StockHolder(CompanyItemBinding itemBinding, INavigator listener) {
             super(itemBinding.getRoot());
             binding = itemBinding;
-            binding.setClickListener(view -> listener.clickForNavigate(binding.getCompany()));
+            binding.setClickListener(view -> listener.clickForNavigate(binding.getCompany().getSymbol()));
 
         }
 

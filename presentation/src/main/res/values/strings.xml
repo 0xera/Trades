@@ -12,5 +12,6 @@
     <string name="no_connect">No internet connection</string>
     <string name="connected">Connected</string>
     <string name="no_found_ticker">No found symbol</string>
+    <string name="chat">Chat</string>
 
 </resources>

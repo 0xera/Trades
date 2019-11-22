@@ -26,7 +26,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
-import ru.itbirds.data.model.Company;
 import ru.itbirds.trades.R;
 import ru.itbirds.trades.adapter.ViewPagerAdapter;
 import ru.itbirds.trades.common.App;
@@ -160,11 +159,11 @@ public class TopTenFragment extends Fragment implements INavigator {
     }
 
     @Override
-    public void clickForNavigate(Company company) {
-        if (company != null) {
+    public void clickForNavigate(String symbol) {
+        if (!TextUtils.isEmpty(symbol)) {
             searchView.clearFocus();
             Bundle bundle = new Bundle();
-            bundle.putSerializable(COMPANY_SYMBOL, company);
+            bundle.putString(COMPANY_SYMBOL, symbol);
             Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_topTenFragment_to_chartFragment, bundle);
         } else {
             if (LiveConnectUtil.getInstance().isInternetOn())
