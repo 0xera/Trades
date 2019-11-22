@@ -18,11 +18,28 @@
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
-        tools:layout="@layout/chart_fragment"
         android:id="@+id/chartFragment"
         android:name="ru.itbirds.trades.ui.ChartFragment"
-        android:label="ChartFragment" />
-    <argument
-        android:name="company"
-        app:argType="ru.itbirds.data.model.Company" />
+        android:label="ChartFragment"
+        tools:layout="@layout/chart_fragment">
+        <action
+            android:id="@+id/action_chartFragment_to_chatFragment"
+            app:destination="@id/chatFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="symbol"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="ru.itbirds.trades.ChatFragment"
+        android:label="chat_fragment"
+        tools:layout="@layout/chat_fragment">
+        <argument
+            android:name="symbol"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -53,10 +53,10 @@ public class TopTenViewModel extends ViewModel {
             if (LiveConnectUtil.getInstance().isInternetOn()) {
                 mDisposableSearch = mCompanyInteractor.downloadCompany(query)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(company1 -> mNavigator.clickForNavigate(company1), throwable -> Log.d(TAG, "checkSearchInput: boom" + throwable.getMessage()));
+                        .subscribe(company1 -> mNavigator.clickForNavigate(company1.getSymbol()), throwable -> Log.d(TAG, "checkSearchInput: boom" + throwable.getMessage()));
             } else mNavigator.clickForNavigate(null);
         } else {
-            mNavigator.clickForNavigate(mCompany);
+            mNavigator.clickForNavigate(mCompany.getSymbol());
         }
 
     }

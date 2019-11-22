@@ -53,16 +53,16 @@ public class ChartViewModel extends ViewModel {
         return companyLive;
     }
 
-    public void loadData(Company c) {
-        mDisposableCompany = mCompanyInteractor.downloadCompany(c.getSymbol())
+    public void loadData(String symbol) {
+        mDisposableCompany = mCompanyInteractor.downloadCompany(symbol)
                 .subscribe(company -> {
                             mCompanyInteractor.insertCompany(company);
                             setProgress(false);
                         },
                         throwable -> setProgress(false));
-        mDisposableChart = mCompanyChartInteractor.downloadCompanyChart(c.getSymbol())
+        mDisposableChart = mCompanyChartInteractor.downloadCompanyChart(symbol)
                 .subscribe(kLineEntities -> {
-                            mCompanyChartInteractor.insertKLineEntities(kLineEntities, c.getSymbol());
+                            mCompanyChartInteractor.insertKLineEntities(kLineEntities, symbol);
                             setProgress(false);
                         },
                         throwable -> setProgress(false));
