@@ -102,7 +102,7 @@ public class PageFragment extends Fragment {
             }
         });
         mViewModel.getCompanyStockLive(mType).observe(this, companyStock -> {
-            if (companyStock != null)
+            if (companyStock != null && companyStock.getCompanies().size() != 0)
                 mViewModel.setCompanyStock(companyStock.getCompanies());
         });
     }

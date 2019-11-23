@@ -12,7 +12,7 @@ import ru.itbirds.data.model.Company;
 
 
 public interface IEXStockAPI {
-    String KEY_API = "?token=pk_f7a8c71a8d404542ab7d08028ca8f208";
+    String KEY_API = "?token=pk_8ce6a4633288474190db134718cb3e10";
 
     @GET("stock/{symbol}/quote" + KEY_API)
     Single<Company> getCompany(@Path("symbol") String symbol);

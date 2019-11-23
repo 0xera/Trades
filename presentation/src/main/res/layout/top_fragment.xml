@@ -29,6 +29,7 @@
                 android:layout_height="wrap_content"
                 app:layout_collapseMode="parallax"
                 app:layout_scrollFlags="scroll|enterAlways"
+                app:titleEnabled="true"
                 app:toolbarId="@id/toolbar">
 
                 <androidx.appcompat.widget.Toolbar
@@ -37,6 +38,7 @@
                     app:menu="@menu/menu_search">
 
                     <TextView
+                        android:id="@+id/title"
                         style="@style/TextAppearance.AppCompat.Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

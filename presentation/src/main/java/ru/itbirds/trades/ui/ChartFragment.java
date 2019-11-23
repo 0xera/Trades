@@ -52,6 +52,8 @@ public class ChartFragment extends Fragment {
         App.getAppComponent().inject(this);
         setRetainInstance(true);
         setHasOptionsMenu(true);
+        if (getArguments() != null)
+            mSymbol = getArguments().getString(COMPANY_SYMBOL);
         mViewModel = ViewModelProviders.of(this, chartViewModelFactory).get(ChartViewModel.class);
 
 
@@ -65,30 +67,28 @@ public class ChartFragment extends Fragment {
     }
 
     private void viewModelConfig() {
-        if (getArguments() != null) {
-            mSymbol = getArguments().getString(COMPANY_SYMBOL);
-            if (!TextUtils.isEmpty(mSymbol)) {
-                LiveConnectUtil.getInstance().observe(this, aBoolean -> {
-                    if (aBoolean) {
-                        loadData(mSymbol);
-                        mViewModel.setProgress(true);
-                        snackbar.dismiss();
-                    } else {
-                        mViewModel.dispatchDetach();
-                        mViewModel.setProgress(false);
-                        snackbar.show();
-                    }
-                });
-                mViewModel.getkLineEntitiesLive(mSymbol).observe(this, companyChart -> {
-                    if (companyChart != null)
-                        mViewModel.setData(companyChart.getEntities());
-                });
-                mViewModel.getCompanyLive(mSymbol).observe(this, comp -> {
-                    if (comp != null)
-                        mViewModel.setCompany(comp);
-                });
-            }
+        if (!TextUtils.isEmpty(mSymbol)) {
+            LiveConnectUtil.getInstance().observe(this, aBoolean -> {
+                if (aBoolean) {
+                    loadData(mSymbol);
+                    mViewModel.setProgress(true);
+                    snackbar.dismiss();
+                } else {
+                    mViewModel.dispatchDetach();
+                    mViewModel.setProgress(false);
+                    snackbar.show();
+                }
+            });
+            mViewModel.getkLineEntitiesLive(mSymbol).observe(this, companyChart -> {
+                if (companyChart != null && companyChart.getEntities().size() != 0)
+                    mViewModel.setData(companyChart.getEntities());
+            });
+            mViewModel.getCompanyLive(mSymbol).observe(this, comp -> {
+                if (comp != null)
+                    mViewModel.setCompany(comp);
+            });
         }
+
     }
 
     @Override
@@ -98,10 +98,11 @@ public class ChartFragment extends Fragment {
         mBinding.setLifecycleOwner(this);
         mBinding.setVm(mViewModel);
         mToolbar = mBinding.toolbar;
+
         configToolbar();
         mKChartView = mBinding.kchartView;
         kChartViewConfig();
-        snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), getResources().getString(R.string.no_connect), Snackbar.LENGTH_LONG);
+        snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), this.getString(R.string.no_connect), Snackbar.LENGTH_LONG);
         return mBinding.getRoot();
     }
 
@@ -110,6 +111,7 @@ public class ChartFragment extends Fragment {
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayShowTitleEnabled(false);
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         mToolbar.setNavigationOnClickListener(view -> Navigation.findNavController(view).navigateUp());
+        mBinding.title.setText(mSymbol);
     }
 
     private void kChartViewConfig() {
@@ -120,7 +122,6 @@ public class ChartFragment extends Fragment {
         mKChartView.setGridRows(getResources().getInteger(R.integer.rows));
         mKChartView.setGridColumns(getResources().getInteger(R.integer.columns));
     }
-
 
 
     private void loadData(String symbol) {
