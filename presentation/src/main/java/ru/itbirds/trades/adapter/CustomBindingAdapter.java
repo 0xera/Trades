@@ -42,8 +42,8 @@ public class CustomBindingAdapter {
 
     @BindingAdapter({"animateText"})
     public static void animateTextView(TextView textView, String text) {
-        if (!TextUtils.isEmpty(textView.getText()) && !textView.getText().equals("0.00")) {
-            ObjectAnimator objectAnimator = null;
+        ObjectAnimator objectAnimator = null;
+        if (!TextUtils.isEmpty(textView.getText()) && !textView.getText().equals("0.00") && Double.parseDouble(String.valueOf(textView.getText())) != Double.parseDouble(String.valueOf(text))) {
             if (Double.parseDouble(String.valueOf(textView.getText())) > Double.parseDouble(String.valueOf(text))) {
                 objectAnimator = ObjectAnimator.ofObject(textView, "backgroundColor",
                         new ArgbEvaluator(),

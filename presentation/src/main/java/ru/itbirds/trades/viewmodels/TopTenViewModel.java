@@ -1,7 +1,5 @@
 package ru.itbirds.trades.viewmodels;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,8 +10,6 @@ import ru.itbirds.domain.interactor.CleanInteractor;
 import ru.itbirds.domain.interactor.CompanyInteractor;
 import ru.itbirds.trades.common.INavigator;
 import ru.itbirds.trades.util.LiveConnectUtil;
-
-import static io.fabric.sdk.android.Fabric.TAG;
 
 
 public class TopTenViewModel extends ViewModel {
@@ -53,8 +49,8 @@ public class TopTenViewModel extends ViewModel {
             if (LiveConnectUtil.getInstance().isInternetOn()) {
                 mDisposableSearch = mCompanyInteractor.downloadCompany(query)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(company1 -> mNavigator.clickForNavigate(company1.getSymbol()), throwable -> Log.d(TAG, "checkSearchInput: boom" + throwable.getMessage()));
-            } else mNavigator.clickForNavigate(null);
+                        .subscribe(company1 -> mNavigator.clickForNavigate(company1.getSymbol()), throwable -> mNavigator.clickForNavigate(throwable));
+            } else mNavigator.clickForNavigate("");
         } else {
             mNavigator.clickForNavigate(mCompany.getSymbol());
         }

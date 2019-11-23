@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -42,14 +43,15 @@ import static ru.itbirds.trades.util.Constants.LOSERS_FR;
 import static ru.itbirds.trades.util.Constants.SEARCH_QUERY;
 
 public class TopTenFragment extends Fragment implements INavigator {
+    @Inject
+    TopTenViewModelFactory topTenViewModelFactory;
     private TopTenViewModel mViewModel;
     private TopBinding mBinding;
     private String mQuery;
-    @Inject
-    TopTenViewModelFactory topTenViewModelFactory;
     private SearchView searchView;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+    private Toolbar mToolbar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,7 +78,8 @@ public class TopTenFragment extends Fragment implements INavigator {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mBinding = TopBinding.inflate(inflater, container, false);
-        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mBinding.toolbar);
+        mToolbar = mBinding.toolbar;
+        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
         mViewPager = mBinding.viewPager;
         mTabLayout = mBinding.tabs;
         mBinding.setLifecycleOwner(this);
@@ -87,7 +90,7 @@ public class TopTenFragment extends Fragment implements INavigator {
 
     @Override
     public void onStart() {
-        Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), getResources().getString(R.string.no_connect), Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), this.getString(R.string.no_connect), Snackbar.LENGTH_LONG);
         LiveConnectUtil.getInstance().observe(this, aBoolean -> {
             if (aBoolean) {
                 snackbar.dismiss();
@@ -98,6 +101,11 @@ public class TopTenFragment extends Fragment implements INavigator {
             }
         });
         super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     private void viewPagerConfig() {
@@ -161,16 +169,23 @@ public class TopTenFragment extends Fragment implements INavigator {
     @Override
     public void clickForNavigate(String symbol) {
         if (!TextUtils.isEmpty(symbol)) {
+            mQuery = null;
+            mToolbar.collapseActionView();
             searchView.clearFocus();
             Bundle bundle = new Bundle();
             bundle.putString(COMPANY_SYMBOL, symbol);
             Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_topTenFragment_to_chartFragment, bundle);
         } else {
-            if (LiveConnectUtil.getInstance().isInternetOn())
-                createToast(getResources().getString(R.string.no_found_ticker));
-            else createToast(getResources().getString(R.string.no_connect));
+            createToast(this.getString(R.string.no_connect));
         }
 
+    }
+
+    @Override
+    public void clickForNavigate(Throwable throwable) {
+        if (Objects.requireNonNull(throwable.getMessage()).contains(this.getString(R.string.not_found_code)))
+            createToast(this.getString(R.string.no_found_ticker));
+        else createToast(throwable.getMessage());
     }
 
     void createToast(String message) {
