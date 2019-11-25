@@ -43,24 +43,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <com.google.android.material.appbar.CollapsingToolbarLayout
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        style="@style/Toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:titleEnabled="false"
-                        app:toolbarId="@id/toolbar">
+                        android:layout_height="?attr/actionBarSize"
+                        app:menu="@menu/menu_chat">
 
-                        <androidx.appcompat.widget.Toolbar
-                            android:id="@+id/toolbar"
-                            style="@style/Toolbar"
-                            app:menu="@menu/menu_chat">
-
-                            <TextView
-                                android:id="@+id/title"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-                        </androidx.appcompat.widget.Toolbar>
-                    </com.google.android.material.appbar.CollapsingToolbarLayout>
+                    </androidx.appcompat.widget.Toolbar>
                 </com.google.android.material.appbar.AppBarLayout>
 
 

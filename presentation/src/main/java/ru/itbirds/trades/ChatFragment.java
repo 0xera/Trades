@@ -36,10 +36,9 @@ public class ChatFragment extends Fragment {
         View view = inflater.inflate(R.layout.chat_fragment, container, false);
         mToolbar = view.findViewById(R.id.toolbar);
         configToolbar();
-        mTitle = view.findViewById(R.id.text);
         if (getArguments() != null) {
             mSymbol = getArguments().getString(COMPANY);
-            if (!TextUtils.isEmpty(mSymbol)) mTitle.setText(mSymbol);
+            if (!TextUtils.isEmpty(mSymbol)) mToolbar.setTitle(mSymbol);
         }
         return view;
     }

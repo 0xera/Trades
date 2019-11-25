@@ -98,7 +98,6 @@ public class ChartFragment extends Fragment {
         mBinding.setLifecycleOwner(this);
         mBinding.setVm(mViewModel);
         mToolbar = mBinding.toolbar;
-
         configToolbar();
         mKChartView = mBinding.kchartView;
         kChartViewConfig();
@@ -110,8 +109,8 @@ public class ChartFragment extends Fragment {
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayShowTitleEnabled(false);
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(view -> Navigation.findNavController(view).navigateUp());
-        mBinding.title.setText(mSymbol);
+        mToolbar.setNavigationOnClickListener(view -> Navigation.findNavController(mBinding.getRoot()).navigateUp());
+        mToolbar.setTitle(mSymbol);
     }
 
     private void kChartViewConfig() {
