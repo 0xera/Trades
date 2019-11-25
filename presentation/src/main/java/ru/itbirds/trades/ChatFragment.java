@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.Objects;
 
@@ -17,17 +16,25 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
-import static ru.itbirds.data.Constants.COMPANY;
+import static ru.itbirds.trades.util.Constants.COMPANY_SYMBOL;
+
 
 public class ChatFragment extends Fragment {
 
     private ChatViewModel mViewModel;
     private String mSymbol;
-    private TextView mTitle;
     private Toolbar mToolbar;
 
     public static ChatFragment newInstance() {
         return new ChatFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        if (getArguments() != null) {
+            mSymbol = getArguments().getString(COMPANY_SYMBOL);
+        }
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -36,10 +43,7 @@ public class ChatFragment extends Fragment {
         View view = inflater.inflate(R.layout.chat_fragment, container, false);
         mToolbar = view.findViewById(R.id.toolbar);
         configToolbar();
-        if (getArguments() != null) {
-            mSymbol = getArguments().getString(COMPANY);
-            if (!TextUtils.isEmpty(mSymbol)) mToolbar.setTitle(mSymbol);
-        }
+        if (!TextUtils.isEmpty(mSymbol)) mToolbar.setTitle(mSymbol);
         return view;
     }
 
