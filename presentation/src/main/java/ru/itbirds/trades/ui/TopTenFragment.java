@@ -102,6 +102,11 @@ public class TopTenFragment extends Fragment implements INavigator {
         super.onStart();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     private void viewPagerConfig() {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPagerAdapter.addFragment(PageFragment.newInstance(ACTIVE_FR), ACTIVE_FR);
