@@ -25,27 +25,21 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:layout_collapseMode="parallax"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:titleEnabled="true"
+                app:titleEnabled="false"
                 app:toolbarId="@id/toolbar">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     style="@style/Toolbar"
-                    app:menu="@menu/menu_search">
-
-                    <TextView
-                        android:id="@+id/title"
-                        style="@style/TextAppearance.AppCompat.Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/title_margin"
-                        android:gravity="left"
-                        android:text="@string/app_name" />
-                </androidx.appcompat.widget.Toolbar>
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:menu="@menu/menu_search"
+                    app:title="@string/app_name" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
