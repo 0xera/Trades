@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
-import static ru.itbirds.trades.util.Constants.COMPANY_SYMBOL;
+import static ru.itbirds.data.Constants.COMPANY_SYMBOL;
 
 
 public class ChatFragment extends Fragment {

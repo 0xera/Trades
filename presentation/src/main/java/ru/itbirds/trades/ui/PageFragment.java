@@ -22,7 +22,7 @@ import ru.itbirds.trades.util.LiveConnectUtil;
 import ru.itbirds.trades.viewmodels.PageViewModel;
 import ru.itbirds.trades.viewmodels.PageViewModelFactory;
 
-import static ru.itbirds.trades.util.Constants.TYPE_KEY;
+import static ru.itbirds.data.Constants.TYPE_KEY;
 
 
 public class PageFragment extends Fragment {

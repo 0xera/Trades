@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import ru.itbirds.data.model.Company;
 
-import static ru.itbirds.data.Constants.COMPANY;
+import static ru.itbirds.data.Constants.COMPANY_SYMBOL;
 
 
 public class CompanyDiffUtils extends DiffUtil.ItemCallback<Company> {
@@ -27,7 +27,7 @@ public class CompanyDiffUtils extends DiffUtil.ItemCallback<Company> {
     @Override
     public Object getChangePayload(@NonNull Company oldItem, @NonNull Company newItem) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(COMPANY, newItem);
+        bundle.putSerializable(COMPANY_SYMBOL, newItem);
         return bundle;
     }
 }

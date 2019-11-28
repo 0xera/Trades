@@ -15,6 +15,7 @@ import ru.itbirds.trades.util.LiveConnectUtil;
 public class TopTenViewModel extends ViewModel {
     private INavigator mNavigator;
     private Disposable mDisposableSearch;
+    private Disposable mDisposableClean;
     private CompanyInteractor mCompanyInteractor;
     private CleanInteractor mCleanInteractor;
     private MediatorLiveData<Company> mCompanyMediatorLive = new MediatorLiveData<>();
@@ -30,7 +31,7 @@ public class TopTenViewModel extends ViewModel {
 
 
     public void cleanOldData() {
-        mCleanInteractor.clean();
+        mDisposableClean = mCleanInteractor.clean();
     }
 
     public void searchCompanyLive(String symbol) {

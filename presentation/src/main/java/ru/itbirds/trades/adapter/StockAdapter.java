@@ -14,7 +14,7 @@ import ru.itbirds.trades.common.INavigator;
 import ru.itbirds.trades.databinding.CompanyItemBinding;
 import ru.itbirds.trades.util.CompanyDiffUtils;
 
-import static ru.itbirds.data.Constants.COMPANY;
+import static ru.itbirds.data.Constants.COMPANY_SYMBOL;
 
 
 public class StockAdapter extends ListAdapter<Company, StockAdapter.StockHolder> {
@@ -47,8 +47,8 @@ public class StockAdapter extends ListAdapter<Company, StockAdapter.StockHolder>
             Bundle bundle = (Bundle) payloads.get(0);
             Company company = null;
             for (String key : bundle.keySet()) {
-                if (key.equals(COMPANY)) {
-                    company = (Company) bundle.getSerializable(COMPANY);
+                if (key.equals(COMPANY_SYMBOL)) {
+                    company = (Company) bundle.getSerializable(COMPANY_SYMBOL);
                     break;
                 }
             }

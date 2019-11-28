@@ -1,7 +1,5 @@
 package ru.itbirds.trades.di;
 
-import java.util.concurrent.Executors;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -37,6 +35,6 @@ public class InteractorModule {
     @Provides
     @Singleton
     CleanInteractor provideCleanInteractor(LocalRepository localRepository) {
-        return new CleanInteractor(localRepository, Executors.newCachedThreadPool());
+        return new CleanInteractor(localRepository);
     }
 }

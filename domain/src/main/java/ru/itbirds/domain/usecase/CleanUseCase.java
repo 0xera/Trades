@@ -3,8 +3,10 @@ package ru.itbirds.domain.usecase;
 import java.text.ParseException;
 import java.util.Date;
 
+import io.reactivex.disposables.Disposable;
+
 public interface CleanUseCase {
-    void clean();
+    Disposable clean();
 
     boolean isOldDate(Date currentDate) throws ParseException;
 }
