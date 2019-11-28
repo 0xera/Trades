@@ -11,9 +11,9 @@ import ru.itbirds.data.model.Company;
 import ru.itbirds.data.model.CompanyStock;
 import ru.itbirds.domain.interactor.CompanyStockInteractor;
 
-import static ru.itbirds.trades.util.Constants.ACTIVE_FR;
-import static ru.itbirds.trades.util.Constants.GAINERS_FR;
-import static ru.itbirds.trades.util.Constants.LOSERS_FR;
+import static ru.itbirds.data.Constants.ACTIVE_FR;
+import static ru.itbirds.data.Constants.GAINERS_FR;
+import static ru.itbirds.data.Constants.LOSERS_FR;
 
 
 public class PageViewModel extends ViewModel {

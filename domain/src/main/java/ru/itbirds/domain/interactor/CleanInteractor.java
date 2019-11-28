@@ -7,42 +7,41 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Executor;
 
+import io.reactivex.Completable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import ru.itbirds.data.Constants;
 import ru.itbirds.data.model.CompanyChart;
 import ru.itbirds.data.repositories.LocalRepository;
 import ru.itbirds.domain.usecase.CleanUseCase;
 
 public class CleanInteractor implements CleanUseCase {
-    private Executor mExecutor;
     private LocalRepository mLocalRepository;
 
-    public CleanInteractor(LocalRepository localRepository, Executor executor) {
+    public CleanInteractor(LocalRepository localRepository) {
 
         mLocalRepository = localRepository;
-        mExecutor = executor;
     }
 
     @Override
-    public void clean() {
-        mExecutor.execute(() -> {
-            SimpleDateFormat currentDateFormat = DateUtil.LongTimeFormat;
-            //
-            String currentDateString = currentDateFormat.format(new Date());
-            try {
-                Date currentDate = currentDateFormat.parse(currentDateString);
-                if (currentDate != null) {
-                    if (isOldDate(currentDate)) {
-                        mLocalRepository.deleteChartsAndCompanies();
-                    }
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
+    public Disposable clean() {
+        return Completable.fromAction(this::cleaning)
+                .doOnError(Throwable::printStackTrace)
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+
+    }
+
+    private void cleaning() throws ParseException {
+        SimpleDateFormat currentDateFormat = DateUtil.LongTimeFormat;
+        String currentDateString = currentDateFormat.format(new Date());
+        Date currentDate = currentDateFormat.parse(currentDateString);
+        if (currentDate != null) {
+            if (isOldDate(currentDate)) {
+                mLocalRepository.deleteChartsAndCompanies();
             }
-
-
-        });
+        }
     }
 
     @Override

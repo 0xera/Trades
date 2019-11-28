@@ -33,7 +33,8 @@ import ru.itbirds.trades.util.LiveConnectUtil;
 import ru.itbirds.trades.viewmodels.ChartViewModel;
 import ru.itbirds.trades.viewmodels.ChartViewModelFactory;
 
-import static ru.itbirds.trades.util.Constants.COMPANY_SYMBOL;
+import static ru.itbirds.data.Constants.COMPANY_SYMBOL;
+
 
 public class ChartFragment extends Fragment {
 
@@ -109,7 +110,7 @@ public class ChartFragment extends Fragment {
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayShowTitleEnabled(false);
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(view -> Navigation.findNavController(mBinding.getRoot()).navigateUp());
+        mToolbar.setNavigationOnClickListener(view -> Navigation.findNavController(view).navigateUp());
         mToolbar.setTitle(mSymbol);
     }
 

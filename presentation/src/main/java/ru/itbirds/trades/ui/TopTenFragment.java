@@ -35,11 +35,12 @@ import ru.itbirds.trades.util.LiveConnectUtil;
 import ru.itbirds.trades.viewmodels.TopTenViewModel;
 import ru.itbirds.trades.viewmodels.TopTenViewModelFactory;
 
-import static ru.itbirds.trades.util.Constants.ACTIVE_FR;
-import static ru.itbirds.trades.util.Constants.COMPANY_SYMBOL;
-import static ru.itbirds.trades.util.Constants.GAINERS_FR;
-import static ru.itbirds.trades.util.Constants.LOSERS_FR;
-import static ru.itbirds.trades.util.Constants.SEARCH_QUERY;
+import static ru.itbirds.data.Constants.ACTIVE_FR;
+import static ru.itbirds.data.Constants.COMPANY_SYMBOL;
+import static ru.itbirds.data.Constants.GAINERS_FR;
+import static ru.itbirds.data.Constants.LOSERS_FR;
+import static ru.itbirds.data.Constants.SEARCH_QUERY;
+
 
 public class TopTenFragment extends Fragment implements INavigator {
     @Inject
