@@ -14,9 +14,6 @@
                 name="vm"
                 type="ru.itbirds.trades.viewmodels.PageViewModel" />
 
-        <variable
-                name="clickListener"
-                type="android.view.View.OnClickListener" />
 
     </data>
 

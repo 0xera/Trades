@@ -63,6 +63,9 @@ public class TopTenViewModel extends ViewModel {
         if (mDisposableSearch != null) {
             mDisposableSearch.dispose();
         }
+        if (mDisposableClean != null) {
+            mDisposableClean.dispose();
+        }
     }
 
     public void setOnclickListener(INavigator navigator) {

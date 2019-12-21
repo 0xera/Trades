@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "212422211876-64uunos6galevc8ce3ght4v3a8scp45b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.itbirds.trades",
+            "certificate_hash": "7801355493b5a0e74251991d552db2402e709a16"
+          }
+        },
+        {
           "client_id": "212422211876-n4i9t89juoavju05kahhrs05j5ss46i2.apps.googleusercontent.com",
           "client_type": 3
         }

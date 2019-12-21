@@ -14,5 +14,20 @@
     <string name="no_found_ticker">No found ticker</string>
     <string name="chat">Chat</string>
     <string name="not_found_code">404</string>
-
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sing_up">Sign Up</string>
+    <string name="sing_in">Sign In</string>
+    <string name="failed_login">Login failed</string>
+    <string name="empty_login_password">Enter login and password</string>
+    <string name="success">Success</string>
+    <string name="password_again">Password again</string>
+    <string name="name">Name</string>
+    <string name="passwords_are_not_same">Passwords are not same</string>
+    <string name="reg_failed">Registration failed</string>
+    <string name="fill_fields">Fill all of the fields</string>
+    <string name="click_link_message">Please click the email verification link sent to </string>
+    <string name="verify_email_message">Verify your email to activate your account</string>
+    <string name="is_not_email">It is not email</string>
+    <string name="space_error">Spaces cannot be used</string>
 </resources>

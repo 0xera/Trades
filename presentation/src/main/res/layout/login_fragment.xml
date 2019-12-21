@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data class="LoginBinding">
+
+        <variable
+            name="vm"
+            type="ru.itbirds.trades.viewmodels.LoginViewModel" />
+
+        <import
+            alias="V"
+            type="android.view.View" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/chart_background">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/et_margin"
+                android:src="@drawable/ic_statistics" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/logo"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/et_margin"
+                android:layout_marginEnd="@dimen/et_margin"
+                android:textColorHint="@color/gray_light">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="@{vm.progress != true}"
+                    android:hint="@string/email"
+                    android:maxLength="@integer/et_max_len"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/login_text_size" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_password_toggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/login_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginEnd="@dimen/et_margin"
+
+                android:textColorHint="@color/gray_light"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="@{vm.progress != true}"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:maxLength="@integer/et_max_len"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+
+                    android:textSize="@dimen/login_text_size" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/login_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_input_password_toggle"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/sing_btn_margin_top"
+                android:layout_marginEnd="@dimen/et_margin"
+                android:backgroundTint="@color/colorAccent"
+                android:enabled="@{vm.progress != true}"
+                android:text="@string/sing_in"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btn_to_registration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/login_btn"
+                android:layout_centerHorizontal="true"
+                android:layout_marginEnd="@dimen/et_margin"
+                android:background="?android:attr/selectableItemBackground"
+                android:enabled="@{vm.progress != true}"
+                android:text="@string/sing_up"
+                android:textColor="@color/colorAccent" />
+
+            <ProgressBar
+                android:layout_width="@dimen/progbar_width"
+                android:layout_height="@dimen/progbar_height"
+                android:layout_below="@id/btn_to_registration"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/et_margin"
+                android:visibility="@{(vm.progress == true)? V.VISIBLE: V.GONE}" />
+        </RelativeLayout>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

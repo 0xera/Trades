@@ -40,4 +40,10 @@
     <dimen name="iv_no_data_height">80dp</dimen>
     <dimen name="no_data_text_size">20sp</dimen>
     <dimen name="title_margin">12dp</dimen>
+    <dimen name="login_text_size">24sp</dimen>
+    <dimen name="et_margin">56dp</dimen>
+    <dimen name="btn_insets">6dp</dimen>
+    <dimen name="btn_corners_radius">10dp</dimen>
+    <dimen name="sing_btn_margin_top">24dp</dimen>
+    <dimen name="first_et_margin">80dp</dimen>
 </resources>
