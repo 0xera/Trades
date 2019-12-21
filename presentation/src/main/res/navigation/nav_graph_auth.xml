@@ -2,9 +2,36 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/topTenFragment"
+    android:id="@+id/nav_graph_auth"
+    app:startDestination="@id/loginFragment"
     tools:ignore="UnusedNavigation">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="ru.itbirds.trades.ui.LoginFragment"
+        android:label="login_fragment"
+        tools:layout="@layout/login_fragment">
+        <action
+            android:id="@+id/action_loginFragment_to_regFragment"
+            app:destination="@id/regFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_loginFragment_to_topTenFragment"
+            app:destination="@id/topTenFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/regFragment"
+        android:name="ru.itbirds.trades.ui.RegFragment"
+        android:label="RegFragment" />
 
     <fragment
         android:id="@+id/topTenFragment"
@@ -43,6 +70,5 @@
             android:name="symbol"
             app:argType="string" />
     </fragment>
-
 
 </navigation>

@@ -60,6 +60,7 @@ dependencies {
     implementation 'com.wordplat:ikvStockChart:0.1.5'
     implementation 'com.google.firebase:firebase-core:17.2.1'
     implementation 'com.google.firebase:firebase-inappmessaging-display:19.0.1'
+    implementation 'com.google.firebase:firebase-auth:19.1.0'
     implementation "android.arch.persistence.room:runtime:1.1.0"
     annotationProcessor "android.arch.persistence.room:compiler:1.1.0"
 

@@ -3,6 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorAccentRipple">#C23565</color>
 
     <color name="chart_red">#DF3536</color>
     <color name="chart_green">#35DF7E</color>
