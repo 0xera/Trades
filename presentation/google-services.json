@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "212422211876",
+    "firebase_url": "https://trades-cf145.firebaseio.com",
+    "project_id": "trades-cf145",
+    "storage_bucket": "trades-cf145.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212422211876:android:1db6ebcb94da74f4d05bb1",
+        "android_client_info": {
+          "package_name": "ru.itbirds.trades"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "212422211876-64uunos6galevc8ce3ght4v3a8scp45b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.itbirds.trades",
+            "certificate_hash": "7801355493b5a0e74251991d552db2402e709a16"
+          }
+        },
+        {
+          "client_id": "212422211876-n4i9t89juoavju05kahhrs05j5ss46i2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAohayCYu1tv1dTAXZ4-r-gyw_IrBszAaE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "212422211876-n4i9t89juoavju05kahhrs05j5ss46i2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
