@@ -1,4 +1,4 @@
-package ru.itbirds.trades;
+package ru.itbirds.trades.viewmodels;
 
 import android.text.TextUtils;
 
@@ -27,7 +27,7 @@ public class ChatViewModel extends ViewModel {
 
     }
 
-    void sendMessage(String symbol, String message) {
+   public void sendMessage(String symbol, String message) {
         String name = getUser().getDisplayName();
         if (!TextUtils.isEmpty(message)) {
             mDatabase.collection(symbol).add(new Message(getUser().getUid(), name, message));

@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
-        android:name="ru.itbirds.trades.ChatFragment"
+        android:name="ru.itbirds.trades.ui.ChatFragment"
         android:label="chat_fragment"
         tools:layout="@layout/chat_fragment">
         <argument

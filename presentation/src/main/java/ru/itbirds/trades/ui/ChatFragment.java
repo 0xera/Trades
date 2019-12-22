@@ -1,4 +1,4 @@
-package ru.itbirds.trades;
+package ru.itbirds.trades.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.itbirds.trades.adapter.MessageAdapter;
 import ru.itbirds.trades.databinding.ChatBinding;
+import ru.itbirds.trades.viewmodels.ChatViewModel;
 
 import static ru.itbirds.data.Constants.COMPANY_SYMBOL;
 

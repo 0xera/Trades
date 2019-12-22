@@ -9,7 +9,7 @@
 
         <variable
             name="vm"
-            type="ru.itbirds.trades.ChatViewModel" />
+            type="ru.itbirds.trades.viewmodels.ChatViewModel" />
 
         <import
             alias="V"
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/chart_background"
-        tools:context=".ChatFragment">
+        tools:context=".ui.ChatFragment">
 
         <RelativeLayout
             android:layout_width="match_parent"
