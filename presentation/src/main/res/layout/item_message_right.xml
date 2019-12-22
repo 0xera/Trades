@@ -6,6 +6,7 @@
         <variable
             name="message"
             type="ru.itbirds.data.model.Message" />
+
         <import
             alias="dateformat"
             type="android.text.format.DateFormat" />
@@ -25,27 +26,15 @@
             android:layout_marginEnd="@dimen/message_margin"
             android:background="@drawable/message_right_background">
 
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@id/text_message"
-                android:paddingStart="@dimen/name_message_padding"
-                android:paddingTop="@dimen/name_message_padding"
-                android:paddingEnd="@dimen/message_padding"
-                android:paddingBottom="@dimen/name_message_padding"
-                android:text="@{message.name}"
-                android:textColor="@color/colorAccent"
-                tools:text="nameGood" />
 
             <TextView
                 android:id="@+id/text_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/name"
                 android:maxWidth="@dimen/message_max_width"
                 android:minWidth="@dimen/message_min_width"
                 android:paddingLeft="@dimen/message_padding"
+                android:paddingTop="@dimen/name_message_padding"
                 android:paddingRight="@dimen/message_padding"
                 android:text="@{message.text}"
                 android:textColor="@color/white"
@@ -55,9 +44,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_message"
-                android:layout_alignStart="@id/text_message"
+                android:layout_alignEnd="@id/text_message"
                 android:paddingStart="@dimen/padding_time"
-                android:paddingTop="@dimen/name_message_padding"
+
                 android:paddingEnd="@dimen/padding_time"
                 android:paddingBottom="@dimen/name_message_padding"
                 android:text="@{dateformat.format( @string/date_format, message.date)}"

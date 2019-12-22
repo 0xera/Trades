@@ -51,7 +51,7 @@
     <dimen name="message_max_width">304dp</dimen>
     <dimen name="message_padding">12dp</dimen>
     <dimen name="name_message_padding">4dp</dimen>
-    <dimen name="padding_time">16dp</dimen>
+    <dimen name="padding_time">12dp</dimen>
     <dimen name="message_min_width">160dp</dimen>
     <dimen name="et_message_height">48dp</dimen>
 </resources>

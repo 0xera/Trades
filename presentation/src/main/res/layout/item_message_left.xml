@@ -57,7 +57,7 @@
                 android:layout_below="@id/text_message"
                 android:layout_alignEnd="@id/text_message"
                 android:paddingStart="@dimen/padding_time"
-                android:paddingTop="@dimen/name_message_padding"
+
                 android:paddingEnd="@dimen/padding_time"
                 android:paddingBottom="@dimen/name_message_padding"
                 android:textColor="@color/gray_light"
