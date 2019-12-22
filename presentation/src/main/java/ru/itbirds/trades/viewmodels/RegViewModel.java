@@ -49,6 +49,7 @@ public class RegViewModel extends ViewModel {
         });
     }
 
+
     public ObservableBoolean getProgress() {
         return progress;
     }
@@ -57,7 +58,7 @@ public class RegViewModel extends ViewModel {
         progress.set(p);
     }
 
-   public enum RegState {
+    public enum RegState {
         NONE,
         ERROR,
         IN_PROGRESS,

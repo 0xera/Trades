@@ -21,6 +21,8 @@ public class SingleActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host);
         if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
             navController.setGraph(R.navigation.nav_graph);
+        } else{
+            navController.setGraph(R.navigation.nav_graph_auth);
         }
 
     }

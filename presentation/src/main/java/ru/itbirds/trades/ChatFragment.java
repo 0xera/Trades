@@ -1,7 +1,6 @@
 package ru.itbirds.trades;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import ru.itbirds.trades.adapter.MessageAdapter;
+import ru.itbirds.trades.databinding.ChatBinding;
 
 import static ru.itbirds.data.Constants.COMPANY_SYMBOL;
 
@@ -24,6 +27,8 @@ public class ChatFragment extends Fragment {
     private ChatViewModel mViewModel;
     private String mSymbol;
     private Toolbar mToolbar;
+    private ChatBinding mBinding;
+    private MessageAdapter mAdapter;
 
     public static ChatFragment newInstance() {
         return new ChatFragment();
@@ -31,6 +36,7 @@ public class ChatFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        mViewModel = ViewModelProviders.of(this).get(ChatViewModel.class);
         if (getArguments() != null) {
             mSymbol = getArguments().getString(COMPANY_SYMBOL);
         }
@@ -40,11 +46,28 @@ public class ChatFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.chat_fragment, container, false);
-        mToolbar = view.findViewById(R.id.toolbar);
+        mBinding = ChatBinding.inflate(inflater, container, false);
+        mToolbar = mBinding.toolbar;
         configToolbar();
-        if (!TextUtils.isEmpty(mSymbol)) mToolbar.setTitle(mSymbol);
-        return view;
+        mBinding.setVm(mViewModel);
+        mBinding.setClickListener(v -> {
+            mViewModel.sendMessage(mSymbol, mBinding.etMessage.getText().toString());
+            mBinding.etMessage.setText("");
+        });
+
+        mAdapter = new MessageAdapter(mViewModel.getMessages(mSymbol), mViewModel.getUser().getUid());
+        mBinding.recyclerview.setAdapter(mAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        mBinding.recyclerview.setLayoutManager(linearLayoutManager);
+        mBinding.recyclerview.setItemAnimator(null);
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                mBinding.recyclerview.scrollToPosition(positionStart);
+
+            }
+        });
+        return mBinding.getRoot();
     }
 
     private void configToolbar() {
@@ -52,14 +75,20 @@ public class ChatFragment extends Fragment {
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayShowTitleEnabled(false);
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         mToolbar.setNavigationOnClickListener(view -> Navigation.findNavController(view).navigateUp());
+        mToolbar.setTitle(mSymbol);
     }
-
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(ChatViewModel.class);
-        // TODO: Use the ViewModel
+    public void onStart() {
+        if (mAdapter != null)
+            mAdapter.startListening();
+        super.onStart();
     }
 
+    @Override
+    public void onStop() {
+        if (mAdapter != null)
+            mAdapter.stopListening();
+        super.onStop();
+    }
 }

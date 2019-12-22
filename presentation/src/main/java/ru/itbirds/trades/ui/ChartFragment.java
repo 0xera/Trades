@@ -2,7 +2,6 @@ package ru.itbirds.trades.ui;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -62,7 +61,6 @@ public class ChartFragment extends Fragment {
 
     @Override
     public void onStart() {
-        Log.d("myfragments", this.getClass().getSimpleName() + "onStart: ");
         viewModelConfig();
         super.onStart();
     }
@@ -150,7 +148,6 @@ public class ChartFragment extends Fragment {
 
     @Override
     public void onStop() {
-        Log.d("myfragments", this.getClass().getSimpleName() + "onStop: ");
         mViewModel.dispatchDetach();
         LiveConnectUtil.getInstance().removeObservers(this);
         super.onStop();

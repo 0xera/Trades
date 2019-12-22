@@ -15,6 +15,7 @@
 
     <color name="chart_background">#1F2836</color>
     <color name="chart_background_item">#263342</color>
+    <color name="chart_background_item2">#384A5E</color>
     <color name="chart_background2">#1A1D1F</color>
     <color name="chart_grid_line">#353941</color>
     <color name="chart_text">#B1B2B6</color>

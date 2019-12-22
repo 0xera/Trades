@@ -1,43 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ChatFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
+    <data class="ChatBinding">
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="vm"
+            type="ru.itbirds.trades.ChatViewModel" />
+
+        <import
+            alias="V"
+            type="android.view.View" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/chart_background">
+        android:background="@color/chart_background"
+        tools:context=".ChatFragment">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.appbar.AppBarLayout
+            <LinearLayout
+                android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical">
 
-
-                <androidx.appcompat.widget.Toolbar
-
-                    android:id="@+id/toolbar"
-                    style="@style/Toolbar"
+                <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize">
+                    android:layout_height="wrap_content">
 
 
+                    <androidx.appcompat.widget.Toolbar
 
-                </androidx.appcompat.widget.Toolbar>
-            </com.google.android.material.appbar.AppBarLayout>
-
-
-            <!--TODO-->
-
-        </LinearLayout>
-
-    </FrameLayout>
+                        android:id="@+id/toolbar"
+                        style="@style/Toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize">
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                    </androidx.appcompat.widget.Toolbar>
+                </com.google.android.material.appbar.AppBarLayout>
+
+            </LinearLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/et_layout"
+                android:layout_below="@id/toolbar_layout"
+                android:layout_marginBottom="@dimen/message_margin"
+                android:background="@color/chart_background" />
+
+            <LinearLayout
+                android:id="@+id/et_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+                <EditText
+                    android:id="@+id/et_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:background="@color/chart_background_item"
+                    android:hint="@string/input_your_message"
+                    android:padding="@dimen/message_padding"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/gray_light" />
+
+                <ImageButton
+                    android:id="@+id/iv_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1"
+                    android:background="@color/fui_transparent"
+                    android:onClick="@{clickListener}"
+                    android:paddingStart="@dimen/message_padding"
+                    android:paddingEnd="@dimen/message_padding"
+                    android:src="@drawable/ic_send_black_40dp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

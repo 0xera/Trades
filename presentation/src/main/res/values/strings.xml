@@ -30,4 +30,6 @@
     <string name="verify_email_message">Verify your email to activate your account</string>
     <string name="is_not_email">It is not email</string>
     <string name="space_error">Spaces cannot be used</string>
+    <string name="date_format">dd MMM h:mm a</string>
+    <string name="input_your_message">Input your message</string>
 </resources>

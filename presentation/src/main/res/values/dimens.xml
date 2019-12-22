@@ -6,7 +6,7 @@
     <dimen name="name_comapany_min_height_chart_fr">40dp</dimen>
     <dimen name="li_status_height">72dp</dimen>
     <dimen name="rl_margin_end_chart_fr">20dp</dimen>
-    <dimen name="price_text_size_chart_fr">25sp</dimen>
+    <dimen name="price_text_size_chart_fr">24sp</dimen>
     <dimen name="change_margin_top_chart_fr">3dp</dimen>
     <dimen name="change_text_size_chart_fr">12sp</dimen>
     <dimen name="change_per_margin_start_chart_fr">8dp</dimen>
@@ -46,4 +46,12 @@
     <dimen name="btn_corners_radius">10dp</dimen>
     <dimen name="sing_btn_margin_top">24dp</dimen>
     <dimen name="first_et_margin">80dp</dimen>
+    <dimen name="item_message_corners">16dp</dimen>
+    <dimen name="message_margin">4dp</dimen>
+    <dimen name="message_max_width">304dp</dimen>
+    <dimen name="message_padding">12dp</dimen>
+    <dimen name="name_message_padding">4dp</dimen>
+    <dimen name="padding_time">16dp</dimen>
+    <dimen name="message_min_width">160dp</dimen>
+    <dimen name="et_message_height">48dp</dimen>
 </resources>

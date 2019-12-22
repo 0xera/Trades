@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 public class RegRepository {
     private static FirebaseAuth mAuth;
     private static volatile RegRepository instance;
+    private FirebaseUser mUser;
 
     private RegRepository() {
         mAuth = FirebaseAuth.getInstance();
@@ -46,14 +47,17 @@ public class RegRepository {
         mAuth.createUserWithEmailAndPassword(login, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null) {
-                            user.sendEmailVerification()
-                                    .addOnCompleteListener(task1 -> progress.postValue(RegProgress.SUCCESS))
+                        mUser = mAuth.getCurrentUser();
+                        if (mUser != null) {
+                            mUser.sendEmailVerification()
+                                    .addOnCompleteListener(task1 -> {
+                                        progress.postValue(RegProgress.SUCCESS);
+                                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                                .setDisplayName(name)
+                                                .build();
+                                        mUser.updateProfile(profileUpdate);
+                                    })
                                     .addOnFailureListener(e -> progress.postValue(RegProgress.FAILED));
-                            user.updateProfile(new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(name)
-                                    .build());
                         }
                     } else {
                         progress.postValue(RegProgress.FAILED);
@@ -61,7 +65,8 @@ public class RegRepository {
                 });
     }
 
-  public   enum RegProgress {
+
+    public enum RegProgress {
         IN_PROGRESS,
         SUCCESS,
         FAILED
