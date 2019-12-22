@@ -34,7 +34,7 @@
                 android:maxWidth="@dimen/message_max_width"
                 android:minWidth="@dimen/message_min_width"
                 android:paddingLeft="@dimen/message_padding"
-                android:paddingTop="@dimen/name_message_padding"
+                android:paddingTop="@dimen/message_padding"
                 android:paddingRight="@dimen/message_padding"
                 android:text="@{message.text}"
                 android:textColor="@color/white"

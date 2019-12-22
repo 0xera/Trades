@@ -30,6 +30,8 @@ public class ChatFragment extends Fragment {
     private Toolbar mToolbar;
     private ChatBinding mBinding;
     private MessageAdapter mAdapter;
+    private RecyclerView.AdapterDataObserver mAdapterObserver;
+    private RecyclerView mRecyclerview;
 
     public static ChatFragment newInstance() {
         return new ChatFragment();
@@ -59,15 +61,18 @@ public class ChatFragment extends Fragment {
         mAdapter = new MessageAdapter(mViewModel.getMessages(mSymbol), mViewModel.getUser().getUid());
         mBinding.recyclerview.setAdapter(mAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+
         mBinding.recyclerview.setLayoutManager(linearLayoutManager);
-        mBinding.recyclerview.setItemAnimator(null);
-        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+        mRecyclerview = mBinding.recyclerview;
+        mRecyclerview.setItemAnimator(null);
+        mAdapterObserver = new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 mBinding.recyclerview.scrollToPosition(positionStart);
 
             }
-        });
+        };
+        mRecyclerview.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> mRecyclerview.scrollToPosition(mAdapter.getItemCount()-1));
         return mBinding.getRoot();
     }
 
@@ -81,15 +86,20 @@ public class ChatFragment extends Fragment {
 
     @Override
     public void onStart() {
-        if (mAdapter != null)
+        if (mAdapter != null) {
+
+            mAdapter.registerAdapterDataObserver(mAdapterObserver);
             mAdapter.startListening();
+        }
         super.onStart();
     }
 
     @Override
     public void onStop() {
-        if (mAdapter != null)
+        if (mAdapter != null) {
+            mAdapter.unregisterAdapterDataObserver(mAdapterObserver);
             mAdapter.stopListening();
+        }
         super.onStop();
     }
 }

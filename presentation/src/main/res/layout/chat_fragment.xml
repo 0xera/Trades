@@ -67,6 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:background="@color/chart_background_item"
                 android:orientation="horizontal"
                 android:weightSum="5">
 
@@ -82,18 +83,17 @@
                     android:textColorHint="@color/gray_light" />
 
                 <ImageButton
+                    android:background="@color/chart_background_item"
                     android:id="@+id/iv_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_weight="1"
-                    android:background="@color/fui_transparent"
                     android:onClick="@{clickListener}"
                     android:paddingStart="@dimen/message_padding"
                     android:paddingEnd="@dimen/message_padding"
                     android:src="@drawable/ic_send_black_40dp" />
             </LinearLayout>
         </RelativeLayout>
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

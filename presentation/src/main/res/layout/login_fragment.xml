@@ -110,7 +110,13 @@
                 android:layout_marginTop="@dimen/et_margin"
                 android:visibility="@{(vm.progress == true)? V.VISIBLE: V.GONE}" />
         </RelativeLayout>
-
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_gravity="top"
+            android:id="@+id/coordinator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
 </layout>
