@@ -6,6 +6,8 @@ import dagger.Module;
 import dagger.Provides;
 import ru.itbirds.data.api.IEXStockAPI;
 import ru.itbirds.data.db.TradesDao;
+import ru.itbirds.data.repositories.ChatRepository;
+import ru.itbirds.data.repositories.ChatRepositoryImpl;
 import ru.itbirds.data.repositories.LocalRepository;
 import ru.itbirds.data.repositories.LocalRepositoryImpl;
 import ru.itbirds.data.repositories.RemoteRepository;
@@ -20,6 +22,11 @@ class RepositoryModule {
         return new RemoteRepositoryImpl(stockAPI);
     }
 
+    @Provides
+    @Singleton
+    ChatRepository provideChatRepository() {
+        return new ChatRepositoryImpl();
+    }
 
 
     @Provides

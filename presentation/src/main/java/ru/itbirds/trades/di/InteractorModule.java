@@ -4,8 +4,10 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import ru.itbirds.data.repositories.ChatRepository;
 import ru.itbirds.data.repositories.LocalRepository;
 import ru.itbirds.data.repositories.RemoteRepository;
+import ru.itbirds.domain.interactor.ChatInteractor;
 import ru.itbirds.domain.interactor.CleanInteractor;
 import ru.itbirds.domain.interactor.CompanyChartInteractor;
 import ru.itbirds.domain.interactor.CompanyInteractor;
@@ -30,6 +32,12 @@ public class InteractorModule {
     @Singleton
     CompanyStockInteractor provideCompanyStockInteractor(LocalRepository localRepository, RemoteRepository remoteRepository) {
         return new CompanyStockInteractor(localRepository, remoteRepository);
+    }
+
+    @Provides
+    @Singleton
+    ChatInteractor provideChatInteractor(ChatRepository chatRepository) {
+        return new ChatInteractor(chatRepository);
     }
 
     @Provides

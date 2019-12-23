@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import ru.itbirds.trades.ui.ChartFragment;
+import ru.itbirds.trades.ui.ChatFragment;
 import ru.itbirds.trades.ui.PageFragment;
 import ru.itbirds.trades.ui.TopTenFragment;
 
@@ -15,4 +16,6 @@ public interface AppComponent {
     void inject(ChartFragment fragment);
 
     void inject(PageFragment fragment);
+
+    void inject(ChatFragment fragment);
 }

@@ -11,6 +11,7 @@ public class Constants {
     public static final String TYPE_KEY = "type_key";
     public static final String SEARCH_QUERY = "search_query";
     public static final String API_KEY = "api_key";
-
+    public static final String MESSAGE_KEY = "MESSAGE_KEY";
+    public static final String DATE_SORT_FIELD = "date";
 
 }

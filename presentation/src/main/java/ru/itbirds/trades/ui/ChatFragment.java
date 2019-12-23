@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,13 +19,17 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.itbirds.trades.adapter.MessageAdapter;
+import ru.itbirds.trades.common.App;
 import ru.itbirds.trades.databinding.ChatBinding;
 import ru.itbirds.trades.viewmodels.ChatViewModel;
+import ru.itbirds.trades.viewmodels.ChatViewModelFactory;
 
 import static ru.itbirds.data.Constants.COMPANY_SYMBOL;
+import static ru.itbirds.data.Constants.MESSAGE_KEY;
 
 
 public class ChatFragment extends Fragment {
+
 
     private ChatViewModel mViewModel;
     private String mSymbol;
@@ -31,7 +37,9 @@ public class ChatFragment extends Fragment {
     private ChatBinding mBinding;
     private MessageAdapter mAdapter;
     private RecyclerView.AdapterDataObserver mAdapterObserver;
-    private RecyclerView mRecyclerview;
+    private RecyclerView mRecyclerView;
+    @Inject
+    ChatViewModelFactory chatViewModelFactory;
 
     public static ChatFragment newInstance() {
         return new ChatFragment();
@@ -39,10 +47,11 @@ public class ChatFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(ChatViewModel.class);
+        App.getAppComponent().inject(this);
         if (getArguments() != null) {
             mSymbol = getArguments().getString(COMPANY_SYMBOL);
         }
+        mViewModel = ViewModelProviders.of(this, chatViewModelFactory).get(ChatViewModel.class);
         super.onCreate(savedInstanceState);
     }
 
@@ -57,14 +66,19 @@ public class ChatFragment extends Fragment {
             mViewModel.sendMessage(mSymbol, mBinding.etMessage.getText().toString());
             mBinding.etMessage.setText("");
         });
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getString(MESSAGE_KEY) != null)
+                mBinding.etMessage.setText(savedInstanceState.getString(MESSAGE_KEY));
+        }
+        configRecycler();
+        return mBinding.getRoot();
+    }
 
-        mAdapter = new MessageAdapter(mViewModel.getMessages(mSymbol), mViewModel.getUser().getUid());
-        mBinding.recyclerview.setAdapter(mAdapter);
+    private void configRecycler() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-
         mBinding.recyclerview.setLayoutManager(linearLayoutManager);
-        mRecyclerview = mBinding.recyclerview;
-        mRecyclerview.setItemAnimator(null);
+        mRecyclerView = mBinding.recyclerview;
+        mRecyclerView.setItemAnimator(null);
         mAdapterObserver = new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
@@ -72,8 +86,9 @@ public class ChatFragment extends Fragment {
 
             }
         };
-        mRecyclerview.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> mRecyclerview.scrollToPosition(mAdapter.getItemCount()-1));
-        return mBinding.getRoot();
+        mRecyclerView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> mRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1));
+        mAdapter = new MessageAdapter(mViewModel.getMessages(mSymbol), mViewModel.getUser().getUid());
+        mBinding.recyclerview.setAdapter(mAdapter);
     }
 
     private void configToolbar() {
@@ -92,6 +107,13 @@ public class ChatFragment extends Fragment {
             mAdapter.startListening();
         }
         super.onStart();
+    }
+
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(MESSAGE_KEY, mBinding.etMessage.getText().toString());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
