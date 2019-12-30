@@ -41,11 +41,9 @@
     <dimen name="no_data_text_size">20sp</dimen>
     <dimen name="title_margin">12dp</dimen>
     <dimen name="login_text_size">24sp</dimen>
-    <dimen name="et_margin">56dp</dimen>
-    <dimen name="btn_insets">6dp</dimen>
-    <dimen name="btn_corners_radius">10dp</dimen>
+    <dimen name="cv_big_margin">64dp</dimen>
     <dimen name="sing_btn_margin_top">24dp</dimen>
-    <dimen name="first_et_margin">80dp</dimen>
+    <dimen name="cv_margin">16dp</dimen>
     <dimen name="item_message_corners">16dp</dimen>
     <dimen name="message_margin">4dp</dimen>
     <dimen name="message_max_width">304dp</dimen>
@@ -54,4 +52,11 @@
     <dimen name="padding_time">12dp</dimen>
     <dimen name="message_min_width">160dp</dimen>
     <dimen name="et_message_height">48dp</dimen>
+    <dimen name="button_corners">20dp</dimen>
+    <dimen name="forgot_text_margin">24dp</dimen>
+    <dimen name="cv_profile_size">144dp</dimen>
+    <dimen name="first_et_margin">56dp</dimen>
+    <dimen name="avatar_text_size">128sp</dimen>
+    <dimen name="date_text_size">12sp</dimen>
+    <dimen name="circle_button_size">32dp</dimen>
 </resources>

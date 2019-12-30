@@ -22,22 +22,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/logo"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/et_margin"
-                android:src="@drawable/ic_statistics" />
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/login_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/logo"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/et_margin"
-                android:layout_marginEnd="@dimen/et_margin"
+                android:layout_marginTop="@dimen/cv_big_margin"
+                android:layout_marginEnd="@dimen/cv_big_margin"
                 android:textColorHint="@color/gray_light">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -58,8 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/login_layout"
                 android:layout_centerHorizontal="true"
-                android:layout_marginEnd="@dimen/et_margin"
-
+                android:layout_marginEnd="@dimen/cv_big_margin"
                 android:textColorHint="@color/gray_light"
                 app:passwordToggleEnabled="true">
 
@@ -73,19 +63,28 @@
                     android:maxLength="@integer/et_max_len"
                     android:singleLine="true"
                     android:textColor="@color/white"
-
                     android:textSize="@dimen/login_text_size" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_forgot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_input_password_toggle"
+                android:layout_alignEnd="@id/text_input_password_toggle"
+                android:text="@string/forgot_password"
+                android:textColor="@color/colorAccent"
+                android:layout_marginBottom="@dimen/forgot_text_margin">
+            </TextView>
 
             <Button
                 android:id="@+id/login_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/text_input_password_toggle"
+                android:layout_below="@id/tv_forgot"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/sing_btn_margin_top"
-                android:layout_marginEnd="@dimen/et_margin"
-                android:backgroundTint="@color/colorAccent"
+                android:layout_marginEnd="@dimen/cv_big_margin"
+                android:background="@drawable/primary_button"
                 android:enabled="@{vm.progress != true}"
                 android:text="@string/sing_in"
                 android:textColor="@color/white" />
@@ -96,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/login_btn"
                 android:layout_centerHorizontal="true"
-                android:layout_marginEnd="@dimen/et_margin"
+                android:layout_marginEnd="@dimen/cv_big_margin"
                 android:background="?android:attr/selectableItemBackground"
                 android:enabled="@{vm.progress != true}"
                 android:text="@string/sing_up"
@@ -107,14 +106,15 @@
                 android:layout_height="@dimen/progbar_height"
                 android:layout_below="@id/btn_to_registration"
                 android:layout_centerInParent="true"
-                android:layout_marginTop="@dimen/et_margin"
+                android:layout_marginTop="@dimen/cv_big_margin"
                 android:visibility="@{(vm.progress == true)? V.VISIBLE: V.GONE}" />
         </RelativeLayout>
+
         <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:layout_gravity="top"
             android:id="@+id/coordinator"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="top" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

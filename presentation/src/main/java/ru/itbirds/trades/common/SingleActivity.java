@@ -1,5 +1,6 @@
 package ru.itbirds.trades.common;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,11 +18,12 @@ public class SingleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DataBindingUtil.setContentView(this, R.layout.single_activity);
+        findViewById(android.R.id.content).getRootView().setBackgroundColor(Color.TRANSPARENT);
+        DataBindingUtil.setContentView(this, R.layout.activity_single);
         NavController navController = Navigation.findNavController(this, R.id.nav_host);
         if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
             navController.setGraph(R.navigation.nav_graph);
-        } else{
+        } else {
             navController.setGraph(R.navigation.nav_graph_auth);
         }
 

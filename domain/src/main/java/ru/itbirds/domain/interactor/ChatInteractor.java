@@ -29,4 +29,16 @@ public class ChatInteractor implements ChatUseCase {
             mChatRepository.sendMessage(symbol, message);
         }
     }
+
+    @Override
+    public void editMessage(String symbol, String message, String documentId) {
+        if (!TextUtils.isEmpty(message)) {
+            mChatRepository.editMessage(symbol, message, documentId);
+        }
+    }
+
+    @Override
+    public void deleteMessage(String symbol, String documentId) {
+        mChatRepository.deleteMessage(symbol, documentId);
+    }
 }

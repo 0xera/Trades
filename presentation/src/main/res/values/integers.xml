@@ -2,6 +2,8 @@
 <resources>
 
     <integer name="rows">4</integer>
+    <integer name="one">1</integer>
+    <integer name="two">2</integer>
     <integer name="columns">4</integer>
     <integer name="gone">0</integer>
     <integer name="screenPageLimit">3</integer>

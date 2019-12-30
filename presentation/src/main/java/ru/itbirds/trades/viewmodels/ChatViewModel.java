@@ -31,4 +31,12 @@ public class ChatViewModel extends ViewModel {
         mChatInteractor.sendMessage(symbol, message);
     }
 
+    public void editMessage(String symbol, String message, String documentId) {
+        mChatInteractor.editMessage(symbol, message, documentId);
+
+    }
+
+    public void deleteMessage(String symbol, String documentId) {
+        mChatInteractor.deleteMessage(symbol, documentId);
+    }
 }

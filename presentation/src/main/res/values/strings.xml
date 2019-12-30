@@ -26,10 +26,21 @@
     <string name="passwords_are_not_same">Passwords are not same</string>
     <string name="reg_failed">Registration failed</string>
     <string name="fill_fields">Fill all of the fields</string>
+    <string name="fill_field">Fill the field</string>
     <string name="click_link_message">Please click the email verification link sent to </string>
+    <string name="instructions_message">An email with password reset instructions has been sent to </string>
     <string name="verify_email_message">Verify your email to activate your account</string>
+    <string name="check_email_message">Check your email</string>
     <string name="is_not_email">It is not email</string>
+    <string name="email_not_found">Email not found</string>
     <string name="space_error">Spaces cannot be used</string>
-    <string name="date_format">dd MMM h:mm a</string>
+    <string name="date_format">dd MMM HH:mm:ss</string>
     <string name="input_your_message">Input your message</string>
+    <string name="password_lenght_error">Password length cannot be less than 7</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="reset_password">Reset password</string>
+    <string name="positive_ok">OK</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="pencil">✎</string>
 </resources>

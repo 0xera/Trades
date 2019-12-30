@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -26,6 +27,8 @@ import ru.itbirds.trades.databinding.LoginBinding;
 import ru.itbirds.trades.util.LiveConnectUtil;
 import ru.itbirds.trades.viewmodels.LoginViewModel;
 
+import static ru.itbirds.data.Constants.LOGIN_RESET;
+
 
 public class LoginFragment extends Fragment {
 
@@ -44,7 +47,7 @@ public class LoginFragment extends Fragment {
         mBinding = LoginBinding.inflate(inflater, container, false);
         mBinding.setVm(mLoginViewModel);
         mBinding.loginBtn.setOnClickListener(v -> {
-            if (mBinding.etLogin.getText() != null && mBinding.etPassword.getText() != null) {
+            if (!(TextUtils.isEmpty(mBinding.etLogin.getText()) || TextUtils.isEmpty(mBinding.etPassword.getText()))) {
                 InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
                 Objects.requireNonNull(imm).hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                 mLoginViewModel.login(mBinding.etLogin.getText().toString(), mBinding.etPassword.getText().toString());
@@ -52,12 +55,19 @@ public class LoginFragment extends Fragment {
                 createSnackbar(R.string.empty_login_password);
             }
         });
-        textWathcerForEditTexts();
+        mBinding.tvForgot.setOnClickListener(v -> {
+            if (!TextUtils.isEmpty(mBinding.etLogin.getText())) {
+                navigateToReset(mBinding.etLogin.getText().toString());
+            } else {
+                navigateToReset(null);
+            }
+        });
+        textWatcherForEditTexts();
         mBinding.btnToRegistration.setOnClickListener(v -> navigateToReg());
         return mBinding.getRoot();
     }
 
-    private void textWathcerForEditTexts() {
+    private void textWatcherForEditTexts() {
         mBinding.etLogin.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -78,7 +88,11 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                String result = s.toString().replaceAll(" ", "");
+                if (!s.toString().equals(result)) {
+                    mBinding.etLogin.setText(result);
+                    mBinding.etLogin.setSelection(result.length());
+                }
             }
         });
     }
@@ -125,6 +139,12 @@ public class LoginFragment extends Fragment {
 
     private void navigateToTop() {
         Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_loginFragment_to_topTenFragment);
+    }
+
+    private void navigateToReset(@Nullable String login) {
+        Bundle bundle = new Bundle();
+        bundle.putString(LOGIN_RESET, login);
+        Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_loginFragment_to_resetFragment, bundle);
     }
 
     private void createSnackbar(@StringRes int message) {

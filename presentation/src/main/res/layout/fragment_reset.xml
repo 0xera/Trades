@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data class="ResetBinding">
+
+        <variable
+            name="vm"
+            type="ru.itbirds.trades.viewmodels.ResetViewModel" />
+
+        <import
+            alias="V"
+            type="android.view.View" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <androidx.appcompat.widget.Toolbar
+
+                android:id="@+id/toolbar"
+                style="@style/Toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize">
+
+
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/chart_background">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_reset_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/first_et_margin"
+                android:layout_marginEnd="@dimen/cv_big_margin"
+
+                android:textColorHint="@color/gray_light">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/login_reset"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="@{vm.progress != true}"
+                    android:hint="@string/email"
+                    android:maxLength="@integer/et_max_len"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/login_text_size" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <Button
+                android:id="@+id/btn_reset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/login_reset_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/sing_btn_margin_top"
+                android:layout_marginEnd="@dimen/cv_big_margin"
+                android:background="@drawable/primary_button"
+                android:enabled="@{vm.progress != true}"
+                android:text="@string/reset_password"
+                android:textColor="@color/white" />
+
+            <ProgressBar
+                android:layout_width="@dimen/progbar_width"
+                android:layout_height="@dimen/progbar_height"
+                android:layout_below="@id/btn_reset"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/cv_big_margin"
+                android:visibility="@{(vm.progress == true)? V.VISIBLE: V.GONE}" />
+        </RelativeLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

@@ -8,6 +8,10 @@
             type="android.view.View.OnClickListener" />
 
         <variable
+            name="visibleCanel"
+            type="boolean" />
+
+        <variable
             name="vm"
             type="ru.itbirds.trades.viewmodels.ChatViewModel" />
 
@@ -69,7 +73,7 @@
                 android:layout_alignParentBottom="true"
                 android:background="@color/chart_background_item"
                 android:orientation="horizontal"
-                android:weightSum="5">
+                android:weightSum="6">
 
                 <EditText
                     android:id="@+id/et_message"
@@ -83,12 +87,25 @@
                     android:textColorHint="@color/gray_light" />
 
                 <ImageButton
+                    android:id="@+id/iv_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1"
                     android:background="@color/chart_background_item"
+                    android:paddingStart="@dimen/message_padding"
+                    android:paddingEnd="@dimen/message_padding"
+                    android:src="@drawable/ic_clear_black_24dp"
+                    android:visibility="@{visibleCanel?V.VISIBLE:V.INVISIBLE}" />
+
+
+                <ImageButton
                     android:id="@+id/iv_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_weight="1"
+                    android:background="@color/chart_background_item"
                     android:onClick="@{clickListener}"
                     android:paddingStart="@dimen/message_padding"
                     android:paddingEnd="@dimen/message_padding"

@@ -6,7 +6,11 @@ import com.google.firebase.firestore.Query;
 public interface ChatRepository {
     FirebaseUser getUser();
 
-    public Query getMessages(String symbol);
+    Query getMessages(String symbol);
 
-    public void sendMessage(String symbol, String message);
+    void sendMessage(String symbol, String message);
+
+    void editMessage(String symbol, String message, String documentId);
+
+    void deleteMessage(String symbol, String documentId);
 }

@@ -24,18 +24,18 @@ public class RegViewModel extends ViewModel {
         return mRegState;
     }
 
-    public void createAccount(String name, String login, String password) {
+    public void createAccount(String name, String login, String password, byte[] imageBytes) {
         if (!(TextUtils.isEmpty(name) || TextUtils.isEmpty(login) || TextUtils.isEmpty(password)) && mRegState.getValue() != RegState.IN_PROGRESS) {
-            requestReg(name, login, password);
+            requestReg(name, login, password, imageBytes);
         } else if (mRegState.getValue() != RegState.IN_PROGRESS) {
             mRegState.postValue(RegState.ERROR);
         }
     }
 
-    private void requestReg(String name, String login, String password) {
+    private void requestReg(String name, String login, String password, byte[] imageBytes) {
         mRegState.postValue(RegState.IN_PROGRESS);
         setProgress(true);
-        final LiveData<RegRepository.RegProgress> progressLiveData = mRegRepository.createAccount(name, login, password);
+        final LiveData<RegRepository.RegProgress> progressLiveData = mRegRepository.createAccount(name, login, password, imageBytes);
         mRegState.addSource(progressLiveData, regProgress -> {
             if (regProgress == RegRepository.RegProgress.SUCCESS) {
                 mRegState.postValue(RegState.SUCCESS);

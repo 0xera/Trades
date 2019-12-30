@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data class="CurrentUserMessageBinding">
 
@@ -10,50 +10,76 @@
         <import
             alias="dateformat"
             type="android.text.format.DateFormat" />
+
+        <import
+            alias="V"
+            type="android.view.View" />
     </data>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/chart_background">
+        android:orientation="vertical">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/rl_message"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="@dimen/message_margin"
-            android:layout_marginEnd="@dimen/message_margin"
-            android:background="@drawable/message_right_background">
+            android:background="@color/chart_background">
 
-
-            <TextView
-                android:id="@+id/text_message"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxWidth="@dimen/message_max_width"
-                android:minWidth="@dimen/message_min_width"
-                android:paddingLeft="@dimen/message_padding"
-                android:paddingTop="@dimen/message_padding"
-                android:paddingRight="@dimen/message_padding"
-                android:text="@{message.text}"
-                android:textColor="@color/white"
-                tools:text="Hahahahhahaddddddddddddhadddddddddddddddddddddddddhhahahhahahahahahha" />
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/message_margin"
+                android:background="@drawable/message_right_background">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_message"
-                android:layout_alignEnd="@id/text_message"
-                android:paddingStart="@dimen/padding_time"
 
-                android:paddingEnd="@dimen/padding_time"
-                android:paddingBottom="@dimen/name_message_padding"
-                android:text="@{dateformat.format( @string/date_format, message.date)}"
-                android:textColor="@color/gray_light"
-                android:textSize="12sp"
-                tools:text="19:12" />
+                <TextView
+                    android:id="@+id/text_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/message_max_width"
+                    android:minWidth="@dimen/message_min_width"
+                    android:paddingLeft="@dimen/message_padding"
+                    android:paddingTop="@dimen/message_padding"
+                    android:paddingRight="@dimen/message_padding"
+                    android:text="@{message.text}"
+                    android:textColor="@color/white"
+                    tools:text="Hahahahhahaddddddddddddhadddddddddddddddddddddddddhhahahhahahahahahha" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/text_message"
+                    android:layout_toStartOf="@id/date"
+                    android:text="@string/pencil"
+                    android:textColor="@color/gray_light"
+                    android:textSize="@dimen/date_text_size"
+                    android:visibility="@{message.edit? V.VISIBLE:V.INVISIBLE}" />
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/text_message"
+                    android:layout_alignEnd="@id/text_message"
+                    android:paddingStart="@dimen/padding_time"
+                    android:paddingEnd="@dimen/padding_time"
+                    android:paddingBottom="@dimen/name_message_padding"
+                    android:text="@{dateformat.format( @string/date_format, message.date)}"
+                    android:textColor="@color/gray_light"
+                    android:textSize="@dimen/date_text_size"
+                    tools:text="19:12" />
+
+            </RelativeLayout>
         </RelativeLayout>
-    </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@color/chart_background" />
+    </LinearLayout>
+
+
 </layout>

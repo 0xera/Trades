@@ -10,7 +10,7 @@
         android:id="@+id/loginFragment"
         android:name="ru.itbirds.trades.ui.LoginFragment"
         android:label="login_fragment"
-        tools:layout="@layout/login_fragment">
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_regFragment"
             app:destination="@id/regFragment"
@@ -27,6 +27,13 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_loginFragment_to_resetFragment"
+            app:destination="@id/resetFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/regFragment"
@@ -36,7 +43,7 @@
     <fragment
         android:id="@+id/topTenFragment"
         android:name="ru.itbirds.trades.ui.TopTenFragment"
-        tools:layout="@layout/top_fragment">
+        tools:layout="@layout/fragment_top">
         <action
             android:id="@+id/action_topTenFragment_to_chartFragment"
             app:destination="@id/chartFragment"
@@ -49,7 +56,7 @@
         android:id="@+id/chartFragment"
         android:name="ru.itbirds.trades.ui.ChartFragment"
         android:label="ChartFragment"
-        tools:layout="@layout/chart_fragment">
+        tools:layout="@layout/fragment_chart">
         <action
             android:id="@+id/action_chartFragment_to_chatFragment"
             app:destination="@id/chatFragment"
@@ -65,9 +72,17 @@
         android:id="@+id/chatFragment"
         android:name="ru.itbirds.trades.ui.ChatFragment"
         android:label="chat_fragment"
-        tools:layout="@layout/chat_fragment">
+        tools:layout="@layout/fragment_chat">
         <argument
             android:name="symbol"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/resetFragment"
+        android:name="ru.itbirds.trades.ui.ResetFragment"
+        android:label="ResetFragment" >
+        <argument
+            android:name="login"
             app:argType="string" />
     </fragment>
 

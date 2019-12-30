@@ -1,12 +1,54 @@
 package ru.itbirds.data.model;
 
-import java.util.Date;
+import com.google.firebase.firestore.DocumentId;
+
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class Message {
+    @DocumentId
+    private String documentId;
+
     private String id;
     private String name;
     private String text;
     private long date;
+    private String uri;
+    private boolean edit;
+
+    public Message() {
+    }
+
+    public Message(String id, String name, String text, String uri) {
+        this.id = id;
+        this.name = name;
+        this.text = text;
+        this.date = Calendar.getInstance(TimeZone.getTimeZone("UTC+3")).getTimeInMillis();
+        this.uri = uri;
+        this.edit = false;
+
+    }
+
+    public Message(String id, String name, String text, long date, String uri, boolean edit) {
+        this.id = id;
+        this.name = name;
+        this.text = text;
+        this.date = date;
+        this.uri = uri;
+        this.edit = edit;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getUri() {
+        return uri;
+    }
 
     public String getName() {
         return name;
@@ -14,27 +56,6 @@ public class Message {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Message() {
-    }
-
-    public Message(String id, String name, String text) {
-        this.id = id;
-        this.name = name;
-        this.text = text;
-        this.date = new Date().getTime();
-    }
-
-    public Message(String id, String name, String text, long date) {
-        this.id = id;
-        this.name = name;
-        this.text = text;
-        this.date = date;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getText() {
@@ -45,4 +66,7 @@ public class Message {
         return date;
     }
 
+    public boolean isEdit() {
+        return edit;
+    }
 }

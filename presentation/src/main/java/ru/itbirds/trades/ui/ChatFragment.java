@@ -1,9 +1,11 @@
 package ru.itbirds.trades.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import java.util.Objects;
 
@@ -18,8 +20,10 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import ru.itbirds.data.model.Message;
 import ru.itbirds.trades.adapter.MessageAdapter;
 import ru.itbirds.trades.common.App;
+import ru.itbirds.trades.common.IRecyclerItemMenuClickListener;
 import ru.itbirds.trades.databinding.ChatBinding;
 import ru.itbirds.trades.viewmodels.ChatViewModel;
 import ru.itbirds.trades.viewmodels.ChatViewModelFactory;
@@ -28,7 +32,7 @@ import static ru.itbirds.data.Constants.COMPANY_SYMBOL;
 import static ru.itbirds.data.Constants.MESSAGE_KEY;
 
 
-public class ChatFragment extends Fragment {
+public class ChatFragment extends Fragment implements IRecyclerItemMenuClickListener {
 
 
     private ChatViewModel mViewModel;
@@ -40,6 +44,7 @@ public class ChatFragment extends Fragment {
     private RecyclerView mRecyclerView;
     @Inject
     ChatViewModelFactory chatViewModelFactory;
+    private View.OnClickListener onClickListenerSendMessage;
 
     public static ChatFragment newInstance() {
         return new ChatFragment();
@@ -62,14 +67,20 @@ public class ChatFragment extends Fragment {
         mToolbar = mBinding.toolbar;
         configToolbar();
         mBinding.setVm(mViewModel);
-        mBinding.setClickListener(v -> {
+        onClickListenerSendMessage = v -> {
             mViewModel.sendMessage(mSymbol, mBinding.etMessage.getText().toString());
             mBinding.etMessage.setText("");
-        });
+        };
+        mBinding.setClickListener(onClickListenerSendMessage);
         if (savedInstanceState != null) {
             if (savedInstanceState.getString(MESSAGE_KEY) != null)
                 mBinding.etMessage.setText(savedInstanceState.getString(MESSAGE_KEY));
         }
+        mBinding.ivCancel.setOnClickListener(v -> {
+            mBinding.setVisibleCanel(false);
+            mBinding.etMessage.setText("");
+            mBinding.setClickListener(onClickListenerSendMessage);
+        });
         configRecycler();
         return mBinding.getRoot();
     }
@@ -87,8 +98,9 @@ public class ChatFragment extends Fragment {
             }
         };
         mRecyclerView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> mRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1));
-        mAdapter = new MessageAdapter(mViewModel.getMessages(mSymbol), mViewModel.getUser().getUid());
+        mAdapter = new MessageAdapter(mViewModel.getMessages(mSymbol), mViewModel.getUser().getUid(), this);
         mBinding.recyclerview.setAdapter(mAdapter);
+        registerForContextMenu(mBinding.recyclerview);
     }
 
     private void configToolbar() {
@@ -123,5 +135,26 @@ public class ChatFragment extends Fragment {
             mAdapter.stopListening();
         }
         super.onStop();
+    }
+
+    @Override
+    public void editMessage(Message message) {
+        InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
+        mBinding.etMessage.setText(message.getText());
+        mBinding.etMessage.setSelection(message.getText().length());
+        Objects.requireNonNull(imm).showSoftInput(mBinding.etMessage, InputMethodManager.SHOW_IMPLICIT);
+        mBinding.ivCancel.setVisibility(View.VISIBLE);
+        View.OnClickListener onClickListenerEditMessage = v -> {
+            mViewModel.editMessage(mSymbol, mBinding.etMessage.getText().toString(), message.getDocumentId());
+            mBinding.setVisibleCanel(false);
+            mBinding.etMessage.setText("");
+            mBinding.setClickListener(onClickListenerSendMessage);
+        };
+        mBinding.setClickListener(onClickListenerEditMessage);
+    }
+
+    @Override
+    public void deleteMessage(String documentId) {
+        mViewModel.deleteMessage(mSymbol, documentId);
     }
 }

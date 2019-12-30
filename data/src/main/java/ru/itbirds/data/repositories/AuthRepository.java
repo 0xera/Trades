@@ -35,7 +35,7 @@ public class AuthRepository {
 
     private MutableLiveData<AuthProgress> mAuthProgress;
 
-    public LiveData<AuthProgress> login(@NonNull String login, @NonNull String password) {
+    public LiveData<AuthProgress> loginAccount(@NonNull String login, @NonNull String password) {
         if (mAuth.getCurrentUser() != null && mAuth.getCurrentUser().getEmail() != null && mAuthProgress != null) {
             if (TextUtils.equals(login, mAuth.getCurrentUser().getEmail()) && mAuthProgress.getValue() == AuthProgress.IN_PROGRESS) {
                 return mAuthProgress;
@@ -44,18 +44,17 @@ public class AuthRepository {
             }
         }
         mAuthProgress = new MutableLiveData<>(AuthProgress.IN_PROGRESS);
-        login(mAuthProgress, login, password);
+        login(login, password);
         return mAuthProgress;
     }
 
-    private void login(final MutableLiveData<AuthProgress> progress,
-                       @NonNull final String login, @NonNull final String password) {
+    private void login(@NonNull final String login, @NonNull final String password) {
         mAuth.signInWithEmailAndPassword(login, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && mAuth.getCurrentUser() != null && mAuth.getCurrentUser().isEmailVerified()) {
-                        progress.postValue(AuthProgress.SUCCESS);
+                        mAuthProgress.postValue(AuthProgress.SUCCESS);
                     } else {
-                        progress.postValue(AuthProgress.FAILED);
+                        mAuthProgress.postValue(AuthProgress.FAILED);
 
                     }
                 });

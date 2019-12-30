@@ -138,6 +138,7 @@ public class ChartFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.chat_item) {
+            snackbar.dismiss();
             Bundle bundle = new Bundle();
             bundle.putString(COMPANY_SYMBOL, mSymbol);
             Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_chartFragment_to_chatFragment, bundle);

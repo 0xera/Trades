@@ -6,6 +6,10 @@
     <data class="RegBinding">
 
         <variable
+            name="type"
+            type="int" />
+
+        <variable
             name="vm"
             type="ru.itbirds.trades.viewmodels.RegViewModel" />
 
@@ -40,21 +44,52 @@
             android:layout_height="match_parent"
             android:background="@color/chart_background">
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="@dimen/cv_profile_size"
+                android:layout_height="@dimen/cv_profile_size"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/cv_big_margin"
+                android:layout_marginBottom="@dimen/cv_margin"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_person_black_24dp"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="2dp" />
+
+            <Button
+                android:background="@drawable/iv_change_button"
+                android:id="@+id/recreate_image"
+                android:layout_width="@dimen/circle_button_size"
+                android:layout_height="@dimen/circle_button_size"
+                android:layout_alignBottom="@id/iv_profile"
+                android:layout_toEndOf="@id/iv_profile"
+                android:visibility="@{type ==1 ? V.VISIBLE: V.GONE}" />
+
+            <Button
+
+                android:background="@drawable/iv_change_button"
+                android:id="@+id/reset_image"
+                android:layout_width="@dimen/circle_button_size"
+                android:layout_height="@dimen/circle_button_size"
+                android:layout_alignBottom="@id/iv_profile"
+                android:layout_toEndOf="@id/iv_profile"
+                android:text="-"
+                android:visibility="@{type ==2 ? V.VISIBLE: V.GONE}" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/name_reg_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/iv_profile"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/first_et_margin"
-                android:layout_marginEnd="@dimen/et_margin"
-
+                android:layout_marginEnd="@dimen/cv_big_margin"
                 android:textColorHint="@color/gray_light">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:enabled="@{vm.progress != true}"
                     android:id="@+id/name_reg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="@{vm.progress != true}"
                     android:hint="@string/name"
                     android:maxLength="@integer/et_max_len_name"
                     android:singleLine="true"
@@ -64,19 +99,19 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/login_reg_layout"
-                android:layout_below="@id/name_reg_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/name_reg_layout"
                 android:layout_centerHorizontal="true"
-                android:layout_marginEnd="@dimen/et_margin"
+                android:layout_marginEnd="@dimen/cv_big_margin"
 
                 android:textColorHint="@color/gray_light">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/login_reg"
-                    android:enabled="@{vm.progress != true}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="@{vm.progress != true}"
                     android:hint="@string/email"
                     android:maxLength="@integer/et_max_len"
                     android:singleLine="true"
@@ -90,16 +125,16 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/login_reg_layout"
                 android:layout_centerHorizontal="true"
-                android:layout_marginEnd="@dimen/et_margin"
+                android:layout_marginEnd="@dimen/cv_big_margin"
 
                 android:textColorHint="@color/gray_light"
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:enabled="@{vm.progress != true}"
                     android:id="@+id/password_reg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="@{vm.progress != true}"
                     android:hint="@string/password"
                     android:inputType="textPassword"
                     android:maxLength="@integer/et_max_len"
@@ -115,16 +150,16 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_input_password_toggle"
                 android:layout_centerHorizontal="true"
-                android:layout_marginEnd="@dimen/et_margin"
+                android:layout_marginEnd="@dimen/cv_big_margin"
 
                 android:textColorHint="@color/gray_light"
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:enabled="@{vm.progress != true}"
                     android:id="@+id/password_reg_again"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="@{vm.progress != true}"
                     android:hint="@string/password_again"
                     android:inputType="textPassword"
                     android:maxLength="@integer/et_max_len"
@@ -141,8 +176,8 @@
                 android:layout_below="@id/text_input_password_again_toggle"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/sing_btn_margin_top"
-                android:layout_marginEnd="@dimen/et_margin"
-                android:backgroundTint="@color/colorAccent"
+                android:layout_marginEnd="@dimen/cv_big_margin"
+                android:background="@drawable/primary_button"
                 android:enabled="@{vm.progress != true}"
                 android:text="@string/sing_up"
                 android:textColor="@color/white" />
@@ -152,7 +187,7 @@
                 android:layout_height="@dimen/progbar_height"
                 android:layout_below="@id/btn_registration"
                 android:layout_centerInParent="true"
-                android:layout_marginTop="@dimen/et_margin"
+                android:layout_marginTop="@dimen/cv_big_margin"
                 android:visibility="@{(vm.progress == true)? V.VISIBLE: V.GONE}" />
         </RelativeLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

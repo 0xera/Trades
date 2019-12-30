@@ -9,4 +9,8 @@ public interface ChatUseCase {
     public Query getMessages(String symbol);
 
     public void sendMessage(String symbol, String message);
+
+    void editMessage(String symbol, String message, String documentId);
+
+    void deleteMessage(String symbol, String documentId);
 }

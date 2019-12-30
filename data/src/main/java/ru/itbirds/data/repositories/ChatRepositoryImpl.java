@@ -5,6 +5,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 import ru.itbirds.data.model.Message;
 
 import static ru.itbirds.data.Constants.DATE_SORT_FIELD;
@@ -28,8 +32,21 @@ public class ChatRepositoryImpl implements ChatRepository {
     }
 
     public void sendMessage(String symbol, String message) {
-        String name = getUser().getDisplayName();
-        mDatabase.collection(symbol).add(new Message(getUser().getUid(), name, message));
+        mDatabase.collection(symbol).add(new Message(getUser().getUid(), getUser().getDisplayName(), message, Objects.requireNonNull(getUser().getPhotoUrl()).toString()));
 
+    }
+
+    @Override
+    public void editMessage(String symbol, String message, String documentId) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("text", message);
+        updates.put("edit", true);
+        mDatabase.collection(symbol).document(documentId).update(updates);
+
+    }
+
+    @Override
+    public void deleteMessage(String symbol, String documentId) {
+        mDatabase.collection(symbol).document(documentId).delete();
     }
 }

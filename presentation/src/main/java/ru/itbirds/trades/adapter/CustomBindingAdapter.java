@@ -26,13 +26,20 @@ public class CustomBindingAdapter {
 
     @BindingAdapter({"imageUrl"})
     public static void loadImage(ImageView imageView, String url) {
-        Glide.with(imageView.getContext()).load(Uri.parse(url)).into(imageView);
+        if (!TextUtils.isEmpty(url))
+            Glide.with(imageView.getContext()).load(Uri.parse(url)).into(imageView);
+        else
+            Glide.with(imageView.getContext()).load(R.drawable.ic_person_black_24dp).into(imageView);
+
     }
+
 
     @BindingAdapter({"datarv"})
     public static void dataToRecyclerView(RecyclerView recyclerView, List<Company> companyStock) {
         ((StockAdapter) Objects.requireNonNull(recyclerView.getAdapter())).submitList(companyStock);
     }
+
+
 
     @BindingAdapter({"datakcv"})
     public static void dataToKChartView(KChartView kChartView, List<KLineEntity> kLineEntities) {
