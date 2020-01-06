@@ -26,7 +26,7 @@
         <activity
             android:name=".common.SingleActivity"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

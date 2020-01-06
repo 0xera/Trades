@@ -43,4 +43,5 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="pencil">✎</string>
+    <string name="error">Error</string>
 </resources>

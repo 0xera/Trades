@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data class="ChatBinding">
 
-        <variable
-            name="clickListener"
-            type="android.view.View.OnClickListener" />
 
         <variable
-            name="visibleCanel"
+            name="visibleCancel"
+            type="boolean" />
+
+        <variable
+            name="visibleStickers"
+            type="boolean" />
+
+        <variable
+            name="visibleKeyboard"
             type="boolean" />
 
         <variable
@@ -20,15 +27,15 @@
             type="android.view.View" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:tools="http://schemas.android.com/tools"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/chart_background"
+
         tools:context=".ui.ChatFragment">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/toolbar_layout"
@@ -41,7 +48,6 @@
                 <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
 
                     <androidx.appcompat.widget.Toolbar
 
@@ -56,61 +62,116 @@
 
             </LinearLayout>
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview"
                 android:layout_width="match_parent"
+                android:background="@color/chart_background"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/et_layout"
                 android:layout_below="@id/toolbar_layout"
-                android:layout_marginBottom="@dimen/message_margin"
-                android:background="@color/chart_background" />
+                android:paddingTop="@dimen/message_margin"
+                android:paddingBottom="@dimen/message_margin" />
 
-            <LinearLayout
+
+            <RelativeLayout
                 android:id="@+id/et_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="@color/chart_background_item"
-                android:orientation="horizontal"
-                android:weightSum="6">
+                android:layout_above="@id/rl_stickers"
+                android:layout_gravity="bottom"
+                android:background="@color/chart_background_item">
+
+                <ImageView
+                    android:id="@+id/iv_sticker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/et_message"
+                    android:layout_alignParentStart="true"
+                    android:background="@color/chart_background_item"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingStart="@dimen/message_margin"
+                    android:paddingEnd="@dimen/zerodp"
+                    android:src="@drawable/ic_emoticon_black_24dp"
+                    android:visibility="@{(visibleCancel!=true  &amp;&amp; visibleStickers!=true)?V.VISIBLE:V.INVISIBLE}" />
+
+                <ImageView
+                    android:id="@+id/iv_keyboard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/et_message"
+                    android:layout_alignParentStart="true"
+                    android:background="@color/chart_background_item"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingStart="@dimen/message_margin"
+                    android:paddingEnd="@dimen/zerodp"
+                    android:src="@drawable/ic_keyboard_black_24dp"
+                    android:visibility="@{(visibleCancel!=true  &amp;&amp; visibleStickers &amp;&amp; visibleKeyboard!=true)?V.VISIBLE:V.INVISIBLE}" />
+
+                <ImageView
+                    android:id="@+id/iv_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/et_message"
+                    android:layout_alignParentStart="true"
+                    android:background="@color/chart_background_item"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingStart="@dimen/message_margin"
+                    android:paddingEnd="@dimen/zerodp"
+                    android:src="@drawable/ic_clear_black_24dp"
+                    android:visibility="@{visibleCancel ?V.VISIBLE:V.INVISIBLE}" />
+
 
                 <EditText
                     android:id="@+id/et_message"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:background="@color/chart_background_item"
+                    android:layout_toStartOf="@id/iv_send"
+                    android:layout_toEndOf="@id/iv_sticker"
                     android:hint="@string/input_your_message"
                     android:padding="@dimen/message_padding"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/gray_light" />
+                    android:textColorHint="@color/gray_light"
+                    app:backgroundTint="@android:color/transparent" />
 
-                <ImageButton
-                    android:id="@+id/iv_cancel"
+
+                <ImageView
+                    android:id="@+id/iv_send"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/et_message"
+                    android:layout_alignParentEnd="true"
                     android:layout_gravity="bottom"
-                    android:layout_weight="1"
-                    android:background="@color/chart_background_item"
-                    android:paddingStart="@dimen/message_padding"
-                    android:paddingEnd="@dimen/message_padding"
-                    android:src="@drawable/ic_clear_black_24dp"
-                    android:visibility="@{visibleCanel?V.VISIBLE:V.INVISIBLE}" />
-
-
-                <ImageButton
-                    android:id="@+id/iv_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="1"
-                    android:background="@color/chart_background_item"
-                    android:onClick="@{clickListener}"
-                    android:paddingStart="@dimen/message_padding"
-                    android:paddingEnd="@dimen/message_padding"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingStart="@dimen/zerodp"
+                    android:paddingEnd="@dimen/message_margin"
                     android:src="@drawable/ic_send_black_40dp" />
-            </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_stickers"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_alignParentBottom="true">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_stickers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/iv_add_sticker"
+                    android:background="@color/colorPrimary" />
+
+                <ImageView
+                    android:id="@+id/iv_add_sticker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/chart_background"
+                    android:src="@drawable/ic_add_black_24dp" />
+            </RelativeLayout>
         </RelativeLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

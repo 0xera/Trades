@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/first_et_margin"
+                android:layout_marginTop="@dimen/cv_big_margin"
                 android:layout_marginEnd="@dimen/cv_big_margin"
 
                 android:textColorHint="@color/gray_light">

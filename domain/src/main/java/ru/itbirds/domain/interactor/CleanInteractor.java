@@ -49,10 +49,12 @@ public class CleanInteractor implements CleanUseCase {
         CompanyChart companyChart = mLocalRepository.getFirstCompanyChart();
         if (companyChart != null) {
             List<KLineEntity> kLineEntities = companyChart.getEntities();
-            SimpleDateFormat currentDateFormat = DateUtil.LongTimeFormat;
-            Date oldDate = currentDateFormat.parse(createData(kLineEntities));
-            if (oldDate != null) {
-                return currentDate.getTime() - oldDate.getTime() >= Constants.DAY_IN_MILLISECONDS;
+            if (kLineEntities.size() != 0) {
+                SimpleDateFormat currentDateFormat = DateUtil.LongTimeFormat;
+                Date oldDate = currentDateFormat.parse(createData(kLineEntities));
+                if (oldDate != null) {
+                    return currentDate.getTime() - oldDate.getTime() >= Constants.DAY_IN_MILLISECONDS;
+                }
             }
         }
         return false;

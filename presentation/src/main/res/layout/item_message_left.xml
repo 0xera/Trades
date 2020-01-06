@@ -19,18 +19,17 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/chart_background">
+        android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/iv_profile_size"
+            android:layout_height="@dimen/iv_profile_size"
             android:layout_alignBottom="@id/rl_message"
             android:layout_alignParentStart="true"
             android:layout_marginStart="@dimen/message_margin"
             android:src="@drawable/ic_person_black_24dp"
-            app:imageUrl="@{message.uri}" />
+            app:imageUrl="@{message.profile}" />
 
         <RelativeLayout
             android:id="@+id/rl_message"

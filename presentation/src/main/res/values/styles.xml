@@ -14,13 +14,24 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:popupMenuStyle">@style/PopupMenuStyle</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge
+        </item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="PopupMenuStyle" parent="@android:style/Widget.PopupMenu">
         <item name="android:popupBackground">@color/colorPrimary</item>
+    </style>
 
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/gray_light</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
     <style name="myPopupMenuTextAppearanceLarge" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large">

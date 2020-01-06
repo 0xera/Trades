@@ -2,23 +2,24 @@
 <layout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <ImageView
-                android:layout_width="@dimen/iv_no_data_width"
-                android:layout_height="@dimen/iv_no_data_height"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_sentiment_dissatisfied_white_50dp" />
+            android:layout_width="@dimen/iv_no_data_width"
+            android:layout_height="@dimen/iv_no_data_height"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_sentiment_dissatisfied_white_50dp" />
 
         <TextView
-                android:layout_width="wrap_content"
+            android:layout_width="wrap_content"
 
-                android:layout_height="wrap_content"
-                android:text="@string/internet_connection_error"
-                android:textColor="@color/white"
-                android:textSize="@dimen/no_data_text_size" />
+            android:layout_height="wrap_content"
+            android:text="@string/internet_connection_error"
+            android:textColor="@color/white"
+            android:textSize="@dimen/no_data_text_size" />
     </LinearLayout>
 </layout>

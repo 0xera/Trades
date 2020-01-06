@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data class="AnotherUserStickerMessageBinding">
+
+        <variable
+            name="message"
+            type="ru.itbirds.data.model.Message" />
+
+        <import
+            alias="dateformat"
+            type="android.text.format.DateFormat" />
+
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignBottom="@id/rl_message"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="@dimen/message_margin"
+            android:src="@drawable/ic_person_black_24dp"
+            app:imageUrl="@{message.profile}" />
+
+        <RelativeLayout
+            android:id="@+id/rl_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/message_margin"
+            android:layout_marginBottom="@dimen/message_margin"
+            android:layout_toEndOf="@id/iv_profile">
+
+            <ImageView
+                android:id="@+id/sticker_message"
+                android:layout_width="@dimen/iv_size_sticker"
+                android:layout_height="@dimen/iv_size_sticker"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                app:imageUrl="@{message.sticker}" />
+
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sticker_message"
+                android:layout_alignEnd="@id/sticker_message"
+                android:paddingStart="@dimen/padding_time"
+                android:paddingEnd="@dimen/padding_time"
+                android:paddingBottom="@dimen/name_message_padding"
+                android:text="@{dateformat.format(@string/date_format, message.date)}"
+                android:textColor="@color/gray_light"
+                android:textSize="@dimen/date_text_size"
+                tools:text="@string/date_format" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

@@ -56,16 +56,16 @@
                 app:civ_border_color="@color/white"
                 app:civ_border_width="2dp" />
 
-            <Button
+            <ImageButton
                 android:background="@drawable/iv_change_button"
                 android:id="@+id/recreate_image"
                 android:layout_width="@dimen/circle_button_size"
                 android:layout_height="@dimen/circle_button_size"
                 android:layout_alignBottom="@id/iv_profile"
                 android:layout_toEndOf="@id/iv_profile"
-                android:visibility="@{type ==1 ? V.VISIBLE: V.GONE}" />
-
-            <Button
+                android:visibility="@{type ==1 ? V.VISIBLE: V.GONE}"
+                android:src="@drawable/ic_refresh_white_24dp"/>
+            <ImageButton
 
                 android:background="@drawable/iv_change_button"
                 android:id="@+id/reset_image"
@@ -73,7 +73,7 @@
                 android:layout_height="@dimen/circle_button_size"
                 android:layout_alignBottom="@id/iv_profile"
                 android:layout_toEndOf="@id/iv_profile"
-                android:text="-"
+                android:src="@drawable/ic_remove_white_24dp"
                 android:visibility="@{type ==2 ? V.VISIBLE: V.GONE}" />
 
             <com.google.android.material.textfield.TextInputLayout

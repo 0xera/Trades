@@ -1,10 +1,14 @@
 package ru.itbirds.trades.viewmodels;
 
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 import ru.itbirds.data.repositories.AuthRepository;
+import ru.itbirds.trades.R;
 
 public class LoginViewModel extends ViewModel {
 
@@ -50,6 +54,16 @@ public class LoginViewModel extends ViewModel {
 
     public void setProgress(boolean p) {
         progress.set(p);
+    }
+
+    public void getRemoteConfig() {
+        FirebaseRemoteConfig mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(0)
+                .build();
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+        mFirebaseRemoteConfig.setDefaultsAsync(R.xml.configs);
+        mFirebaseRemoteConfig.fetchAndActivate();
     }
 
     public enum LoginState {

@@ -5,6 +5,7 @@
     <integer name="one">1</integer>
     <integer name="two">2</integer>
     <integer name="columns">4</integer>
+    <integer name="columns_sticker">4</integer>
     <integer name="gone">0</integer>
     <integer name="screenPageLimit">3</integer>
     <integer name="slide">200</integer>

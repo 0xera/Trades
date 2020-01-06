@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data class="StickerBinding">
+
+        <variable
+            name="sticker"
+            type="ru.itbirds.data.model.Sticker" />
+
+    </data>
+
+
+    <ImageView
+        android:layout_marginTop="@dimen/sticker_margin"
+        android:layout_width="@dimen/iv_size_sticker_choose"
+        android:layout_height="@dimen/iv_size_sticker_choose"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        app:imageUrl="@{sticker.url}" />
+
+</layout>

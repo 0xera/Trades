@@ -1,8 +1,5 @@
 package ru.itbirds.data.repositories;
 
-import android.net.Uri;
-
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -76,8 +73,8 @@ public class RegRepository {
                 .addOnFailureListener(e -> mRegProgress.postValue(RegProgress.FAILED));
     }
 
-    private Task<Uri> addUserInfo(@NonNull String name, StorageReference child) {
-        return child.getDownloadUrl()
+    private void addUserInfo(@NonNull String name, StorageReference child) {
+        child.getDownloadUrl()
                 .addOnCompleteListener(task21 -> {
                     UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
                             .setDisplayName(name)

@@ -1,5 +1,6 @@
 package ru.itbirds.domain.interactor;
 
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -40,5 +41,20 @@ public class ChatInteractor implements ChatUseCase {
     @Override
     public void deleteMessage(String symbol, String documentId) {
         mChatRepository.deleteMessage(symbol, documentId);
+    }
+
+    @Override
+    public Query getStickers() {
+        return mChatRepository.getStickers();
+    }
+
+    @Override
+    public void uploadSticker(Uri uri) {
+        mChatRepository.uploadSticker(uri);
+    }
+
+    @Override
+    public void sendSticker(String url, String symbol) {
+        mChatRepository.sendSticker(url, symbol);
     }
 }

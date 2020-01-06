@@ -12,11 +12,11 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Patterns;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.android.material.snackbar.Snackbar;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -48,6 +48,8 @@ public class RegFragment extends Fragment {
     private Random mRnd = ThreadLocalRandom.current();
     private boolean isDefaultImage = true;
     private byte[] mImageBytes;
+    private AlertDialog mAlertVerifyDialog;
+    private AlertDialog mAlertErrorDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,7 +87,8 @@ public class RegFragment extends Fragment {
         if (TextUtils.isEmpty(mBinding.textInputPasswordAgainToggle.getError()) && TextUtils.isEmpty(mBinding.nameRegLayout.getError()) && TextUtils.isEmpty(mBinding.loginRegLayout.getError())) {
             if (!(TextUtils.isEmpty(mBinding.nameReg.getText()) || TextUtils.isEmpty(mBinding.loginReg.getText()) || TextUtils.isEmpty(mBinding.passwordReg.getText())))
                 mRegViewModel.createAccount(mBinding.nameReg.getText().toString(), mBinding.loginReg.getText().toString(), mBinding.passwordReg.getText().toString(), mImageBytes);
-        } else createSnackbar(R.string.fill_fields);
+            else createAlertDialogError(R.string.fill_fields);
+        } else createAlertDialogError(R.string.fill_fields);
     }
 
     private void openGallery() {
@@ -121,10 +124,6 @@ public class RegFragment extends Fragment {
     }
 
 
-    private void createSnackbar(@StringRes int message) {
-        Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), this.getString(message), Snackbar.LENGTH_LONG).show();
-    }
-
     @Override
     public void onResume() {
         progressObserve();
@@ -133,13 +132,14 @@ public class RegFragment extends Fragment {
     }
 
     private void connectObserve() {
-        Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), this.getString(R.string.no_connect), Snackbar.LENGTH_LONG);
+//        Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), this.getString(R.string.no_connect), Snackbar.LENGTH_LONG);
+        Toast toast = Toast.makeText(getActivity(), this.getString(R.string.no_connect), Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
         LiveConnectUtil.getInstance().observe(this, aBoolean -> {
             if (aBoolean) {
-                snackbar.dismiss();
+                toast.cancel();
             } else {
-                if (!snackbar.isShown())
-                    snackbar.show();
+                toast.show();
 
             }
         });
@@ -148,17 +148,41 @@ public class RegFragment extends Fragment {
     private void progressObserve() {
         mRegViewModel.getProgressLive().observe(this, regState -> {
             if (regState == RegViewModel.RegState.FAILED) {
-                createSnackbar(R.string.reg_failed);
+                createAlertDialogError(R.string.reg_failed);
             } else if (regState == RegViewModel.RegState.ERROR) {
-                createSnackbar(R.string.fill_fields);
+                createAlertDialogError(R.string.fill_fields);
             } else if (regState == RegViewModel.RegState.SUCCESS) {
-                new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
-                        .setPositiveButton("Ok", (dialog, which) -> Navigation.findNavController(mBinding.getRoot()).popBackStack())
-                        .setMessage(getString(R.string.click_link_message) + "\n" + mBinding.loginReg.getText().toString())
-                        .setTitle(R.string.verify_email_message)
-                        .create().show();
+                createAlertDialogVerify();
+                if (!mAlertVerifyDialog.isShowing())
+                    mAlertVerifyDialog.show();
+
             }
         });
+    }
+
+    private void createAlertDialogVerify() {
+        if (mAlertVerifyDialog == null) {
+            mAlertVerifyDialog = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.DialogTheme)
+                    .setPositiveButton("Ok", (dialog, which) -> Navigation.findNavController(mBinding.getRoot()).popBackStack())
+                    .setTitle(R.string.verify_email_message)
+                    .create();
+        }
+        mAlertVerifyDialog.setMessage(getString(R.string.click_link_message) + "\n" + Objects.requireNonNull(mBinding.loginReg.getText()).toString());
+
+
+    }
+
+    private void createAlertDialogError(@StringRes int message) {
+        if (mAlertErrorDialog == null) {
+            mAlertErrorDialog = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.DialogTheme)
+                    .setPositiveButton("Ok", null)
+                    .setTitle(R.string.error)
+                    .create();
+        }
+        mAlertErrorDialog.setMessage(getString(message));
+        if (!mAlertErrorDialog.isShowing())
+            mAlertErrorDialog.show();
+
     }
 
     @Override

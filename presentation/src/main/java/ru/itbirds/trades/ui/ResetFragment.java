@@ -6,9 +6,11 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Patterns;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -34,6 +36,8 @@ public class ResetFragment extends Fragment {
     private ResetViewModel mResetViewModel;
     private ResetBinding mBinding;
     private String mLogin;
+    private AlertDialog mAlertErrorDialog;
+    private AlertDialog mAlertResetDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +65,7 @@ public class ResetFragment extends Fragment {
         mBinding.btnReset.setOnClickListener(view -> {
             if (TextUtils.isEmpty(mBinding.loginResetLayout.getError()) && !TextUtils.isEmpty(mBinding.loginReset.getText()))
                 mResetViewModel.resetPassword(mBinding.loginReset.getText().toString());
+            else createAlertDialogError(R.string.fill_field);
         });
         textWatcherForEditText();
         mBinding.loginReset.setText(mLogin);
@@ -81,6 +86,19 @@ public class ResetFragment extends Fragment {
         Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), this.getString(message), Snackbar.LENGTH_LONG).show();
     }
 
+    private void createAlertDialogError(@StringRes int message) {
+        if (mAlertErrorDialog == null) {
+            mAlertErrorDialog = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.DialogTheme)
+                    .setPositiveButton("Ok", null)
+                    .setTitle(R.string.error)
+                    .create();
+        }
+        mAlertErrorDialog.setMessage(getString(message));
+        if (!mAlertErrorDialog.isShowing())
+            mAlertErrorDialog.show();
+
+    }
+
     @Override
     public void onResume() {
         progressObserve();
@@ -89,13 +107,14 @@ public class ResetFragment extends Fragment {
     }
 
     private void connectObserve() {
-        Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), this.getString(R.string.no_connect), Snackbar.LENGTH_LONG);
+//        Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content), this.getString(R.string.no_connect), Snackbar.LENGTH_LONG);
+        Toast toast = Toast.makeText(getActivity(), this.getString(R.string.no_connect), Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
         LiveConnectUtil.getInstance().observe(this, aBoolean -> {
             if (aBoolean) {
-                snackbar.dismiss();
+                toast.cancel();
             } else {
-                if (!snackbar.isShown())
-                    snackbar.show();
+                toast.show();
 
             }
         });
@@ -104,17 +123,27 @@ public class ResetFragment extends Fragment {
     private void progressObserve() {
         mResetViewModel.getProgressLive().observe(this, resetState -> {
             if (resetState == ResetViewModel.ResetState.FAILED) {
-                createSnackbar(R.string.email_not_found);
+                createAlertDialogError(R.string.email_not_found);
             } else if (resetState == ResetViewModel.ResetState.ERROR) {
-                createSnackbar(R.string.fill_field);
+                createAlertDialogError(R.string.fill_field);
             } else if (resetState == ResetViewModel.ResetState.SUCCESS) {
-                new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
-                        .setPositiveButton(R.string.positive_ok, (dialog, which) -> Navigation.findNavController(mBinding.getRoot()).popBackStack())
-                        .setTitle(R.string.check_email_message)
-                        .setMessage(getString(R.string.instructions_message) + "\n" + mBinding.loginReset.getText().toString())
-                        .create().show();
+                createAlertDialogReset();
+                if (!mAlertResetDialog.isShowing())
+                    mAlertResetDialog.show();
             }
         });
+    }
+
+    private void createAlertDialogReset() {
+        if (mAlertResetDialog == null) {
+            mAlertResetDialog = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.DialogTheme)
+                    .setPositiveButton(R.string.positive_ok, (dialog, which) -> Navigation.findNavController(mBinding.getRoot()).popBackStack())
+                    .setTitle(R.string.check_email_message)
+                    .create();
+        }
+        mAlertResetDialog.setMessage(getString(R.string.instructions_message) + "\n" + Objects.requireNonNull(mBinding.loginReset.getText()).toString());
+
+
     }
 
     @Override
