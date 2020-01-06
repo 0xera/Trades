@@ -39,6 +39,7 @@ import ru.itbirds.trades.common.IRecyclerItemMenuClickListener;
 import ru.itbirds.trades.common.IStickerSender;
 import ru.itbirds.trades.common.ItemOffsetDecoration;
 import ru.itbirds.trades.databinding.ChatBinding;
+import ru.itbirds.trades.util.NavBarSizeUtil;
 import ru.itbirds.trades.viewmodels.ChatViewModel;
 import ru.itbirds.trades.viewmodels.ChatViewModelFactory;
 
@@ -56,14 +57,12 @@ public class ChatFragment extends Fragment implements IRecyclerItemMenuClickList
     private Toolbar mToolbar;
     private ChatBinding mBinding;
     private MessageAdapter mAdapterMessage;
-    private RecyclerView.AdapterDataObserver mAdapterObserver;
     private RecyclerView mRecyclerViewMessage;
     private int mKeyboardHeight;
     private ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener;
     private View.OnClickListener onClickListenerSendMessage;
     private InputMethodManager mImm;
     private SharedPreferences mSharedPreferences;
-    private StickersAdapter mAdapterStickers;
     private static final int RESULT_LOAD_IMAGE = 101;
     @Inject
     ChatViewModelFactory chatViewModelFactory;
@@ -186,7 +185,7 @@ public class ChatFragment extends Fragment implements IRecyclerItemMenuClickList
                 if (resId > 0)
                     heightDiff -= getResources().getDimensionPixelSize(resId);
                 int resIdNav = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
-                if (resId > 0)
+                if (resIdNav > 0 && NavBarSizeUtil.getNavigationBarSize(getContext()).x != 0)
                     heightDiff -= getResources().getDimensionPixelSize(resIdNav);
 
                 if (heightDiff >= 150) {
@@ -209,6 +208,7 @@ public class ChatFragment extends Fragment implements IRecyclerItemMenuClickList
         };
     }
 
+
     private void saveKeyboardHeight() {
         mSharedPreferences.edit().putInt(KEYBOARD_HEIGHT, mKeyboardHeight).apply();
     }
@@ -222,7 +222,7 @@ public class ChatFragment extends Fragment implements IRecyclerItemMenuClickList
     private void configRecyclerStickers() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), getResources().getInteger(R.integer.columns_sticker));
         FirestoreRecyclerOptions<Sticker> stickersOptions = mViewModel.getStickers().setLifecycleOwner(this).build();
-        mAdapterStickers = new StickersAdapter(stickersOptions, this);
+        StickersAdapter mAdapterStickers = new StickersAdapter(stickersOptions, this);
         mBinding.rvStickers.addItemDecoration(new ItemOffsetDecoration(getResources().getInteger(R.integer.columns_sticker)));
         mBinding.rvStickers.setAdapter(mAdapterStickers);
         mBinding.rvStickers.setLayoutManager(gridLayoutManager);
@@ -264,7 +264,7 @@ public class ChatFragment extends Fragment implements IRecyclerItemMenuClickList
 //                }
 //            }
 //        });
-        mAdapterObserver = new RecyclerView.AdapterDataObserver() {
+        RecyclerView.AdapterDataObserver mAdapterObserver = new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 scrollToNewMessage();
@@ -316,6 +316,7 @@ public class ChatFragment extends Fragment implements IRecyclerItemMenuClickList
         super.onPause();
     }
 
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putString(MESSAGE_KEY, mBinding.etMessage.getText().toString());
@@ -343,6 +344,7 @@ public class ChatFragment extends Fragment implements IRecyclerItemMenuClickList
     @Override
     public void sendSticker(String url) {
         mViewModel.sendSticker(url, mSymbol);
+        mRecyclerViewMessage.scrollToPosition(mAdapterMessage.getItemCount() - 1);
     }
 
     @Override
