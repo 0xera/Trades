@@ -69,6 +69,7 @@ public class ChatFragment extends Fragment implements IRecyclerItemMenuClickList
     private LinearLayoutManager mLinearLayoutManager;
     private int mLastVisibleItemPosition;
     private boolean mNeedToScroll = true;
+    private String mEditMessageText;
 
     public static ChatFragment newInstance() {
         return new ChatFragment();
@@ -103,7 +104,7 @@ public class ChatFragment extends Fragment implements IRecyclerItemMenuClickList
         mBinding.setVisibleKeyboard(false);
         mBinding.setVisibleStickers(false);
         mBinding.setVisibleCancel(false);
-        configRecyclerMessage();
+        configRecyclerMessage(savedInstanceState);
         configRecyclerStickers();
         configGlobalLayoutListener();
         buttonsListener();
@@ -228,42 +229,12 @@ public class ChatFragment extends Fragment implements IRecyclerItemMenuClickList
         mBinding.rvStickers.setLayoutManager(gridLayoutManager);
     }
 
-    private void configRecyclerMessage() {
+    private void configRecyclerMessage(Bundle savedInstanceState) {
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mBinding.recyclerview.setLayoutManager(mLinearLayoutManager);
         mRecyclerViewMessage = mBinding.recyclerview;
         mRecyclerViewMessage.setItemAnimator(null);
 
-        //TODO баги не исправляются
-        ///  View.OnLayoutChangeListener onLayoutChangeListener = (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> mRecyclerViewMessage.scrollToPosition(0);
-//        mRecyclerViewMessage.addOnLayoutChangeListener(onLayoutChangeListener);
-//        mRecyclerViewMessage.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//
-//                if (RecyclerView.SCROLL_STATE_DRAGGING == newState) {
-//                    mRecyclerViewMessage.removeOnLayoutChangeListener(onLayoutChangeListener);
-//                } else {
-//                    mRecyclerViewMessage.addOnLayoutChangeListener(onLayoutChangeListener);
-//                }
-//                super.onScrollStateChanged(recyclerView, newState);
-//            }
-//        });
-//        mAdapterMessage.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-//            @Override
-//            public void onItemRangeInserted(int positionStart, int itemCount) {
-//                super.onItemRangeInserted(positionStart, itemCount);
-//                int messageCount = mAdapterMessage.getItemCount();
-//                int lastVisiblePosition =
-//                        mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
-//
-//                if (lastVisiblePosition == -1 ||
-//                        (positionStart >= (messageCount - 1) &&
-//                                lastVisiblePosition == (positionStart - 1))) {
-//                    mRecyclerViewMessage.scrollToPosition(positionStart);
-//                }
-//            }
-//        });
         RecyclerView.AdapterDataObserver mAdapterObserver = new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
@@ -272,7 +243,8 @@ public class ChatFragment extends Fragment implements IRecyclerItemMenuClickList
             }
         };
         FirestoreRecyclerOptions<Message> messagesOptions = mViewModel.getMessages(mSymbol).setLifecycleOwner(this).build();
-        mAdapterMessage = new MessageAdapter(messagesOptions, mViewModel.getUser().getUid(), this);
+        mViewModel.initSnapshot(messagesOptions.getSnapshots());
+        mAdapterMessage = new MessageAdapter(messagesOptions, mViewModel.getUser().getUid(), this, mRecyclerViewMessage, savedInstanceState);
         mAdapterMessage.registerAdapterDataObserver(mAdapterObserver);
         mRecyclerViewMessage.setAdapter(mAdapterMessage);
         mRecyclerViewMessage.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -284,6 +256,7 @@ public class ChatFragment extends Fragment implements IRecyclerItemMenuClickList
         });
 
     }
+
 
     private void scrollToNewMessage() {
         if (mAdapterMessage.getItemCount() - 2 == mLinearLayoutManager.findLastVisibleItemPosition())
@@ -320,6 +293,7 @@ public class ChatFragment extends Fragment implements IRecyclerItemMenuClickList
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putString(MESSAGE_KEY, mBinding.etMessage.getText().toString());
+        mAdapterMessage.onSaveInstanceState(outState);
         super.onSaveInstanceState(outState);
     }
 
@@ -328,11 +302,13 @@ public class ChatFragment extends Fragment implements IRecyclerItemMenuClickList
     public void editMessage(Message message) {
         mBinding.setVisibleCancel(true);
         mBinding.etMessage.requestFocus();
-        mBinding.etMessage.setText(message.getText());
+        mEditMessageText = message.getText();
+        mBinding.etMessage.setText(mEditMessageText);
         mBinding.etMessage.setSelection(message.getText().length());
         showKeyboard();
         View.OnClickListener onClickListenerEditMessage = v -> {
-            mViewModel.editMessage(mSymbol, mBinding.etMessage.getText().toString(), message.getDocumentId());
+            if (!mEditMessageText.equals(mBinding.etMessage.getText().toString()))
+                mViewModel.editMessage(mSymbol, mBinding.etMessage.getText().toString(), message.getDocumentId());
             mBinding.setVisibleCancel(false);
             mBinding.etMessage.setText("");
             mRecyclerViewMessage.scrollToPosition(mAdapterMessage.getItemCount() - 1);

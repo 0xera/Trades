@@ -56,7 +56,6 @@ public class ChartFragment extends Fragment {
             mSymbol = getArguments().getString(COMPANY_SYMBOL);
         mViewModel = ViewModelProviders.of(this, chartViewModelFactory).get(ChartViewModel.class);
 
-
     }
 
     @Override

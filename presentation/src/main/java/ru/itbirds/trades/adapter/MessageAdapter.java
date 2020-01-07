@@ -1,5 +1,7 @@
 package ru.itbirds.trades.adapter;
 
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -25,22 +27,50 @@ import static android.view.MotionEvent.ACTION_CANCEL;
 import static android.view.MotionEvent.ACTION_OUTSIDE;
 import static android.view.MotionEvent.ACTION_SCROLL;
 import static android.view.MotionEvent.ACTION_UP;
+import static ru.itbirds.data.Constants.STATE_CHAT;
 import static ru.itbirds.data.Constants.STICKER_TYPE;
 
 public class MessageAdapter extends FirestoreRecyclerAdapter<Message, MessageAdapter.MessageHolder> {
     private final int STICKER_ANOTHER_USER = 2;
     private final int MESSAGE_CURRENT_USER = 3;
     private final int STICKER_CURRENT_USER = 4;
-    private String userId;
+    private Parcelable mState;
+    private RecyclerView mRecyclerView;
+    private String mUserId;
     private IRecyclerItemMenuClickListener mMenuClickListener;
 
 
-    public MessageAdapter(@NonNull FirestoreRecyclerOptions<Message> options, String userId, IRecyclerItemMenuClickListener listener) {
+    public MessageAdapter(@NonNull FirestoreRecyclerOptions<Message> options, String userId, IRecyclerItemMenuClickListener listener, RecyclerView recyclerView, Bundle state) {
         super(options);
-        this.userId = userId;
+        this.mUserId = userId;
         this.mMenuClickListener = listener;
+        this.mRecyclerView = recyclerView;
+        if (state != null && state.getParcelable(STATE_CHAT) != null)
+            this.mState = state.getParcelable(STATE_CHAT);
     }
 
+    @Override
+    public void stopListening() {
+        if (mRecyclerView != null && mRecyclerView.getLayoutManager() != null)
+            mState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+        super.stopListening();
+    }
+
+    @Override
+    public void onDataChanged() {
+        if (mState != null) {
+            if (mRecyclerView != null && mRecyclerView.getLayoutManager() != null) {
+                mRecyclerView.getLayoutManager().onRestoreInstanceState(mState);
+                mState = null;
+            }
+        }
+
+    }
+
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        if (mRecyclerView != null && mRecyclerView.getLayoutManager() != null)
+            outState.putParcelable(STATE_CHAT, mRecyclerView.getLayoutManager().onSaveInstanceState());
+    }
 
     @Override
     protected void onBindViewHolder(@NonNull MessageHolder holder, int position, @NonNull Message model) {
@@ -66,7 +96,7 @@ public class MessageAdapter extends FirestoreRecyclerAdapter<Message, MessageAda
 
     @Override
     public int getItemViewType(int position) {
-        if (getItem(position).getId().equals(userId)) {
+        if (getItem(position).getId().equals(mUserId)) {
             if (getItem(position).getType().equals(STICKER_TYPE))
                 return STICKER_CURRENT_USER;
             return MESSAGE_CURRENT_USER;
