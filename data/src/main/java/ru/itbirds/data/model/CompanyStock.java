@@ -1,8 +1,6 @@
 package ru.itbirds.data.model;
 
 
-
-
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -18,11 +16,12 @@ public class CompanyStock {
     private String type;
     private List<Company> companies;
 
+    @NonNull
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(@NonNull String type) {
         this.type = type;
     }
 

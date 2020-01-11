@@ -26,8 +26,7 @@ public class SingleActivity extends AppCompatActivity {
         } else {
             navController.setGraph(R.navigation.nav_graph_auth);
         }
-
     }
-
 }
+
 

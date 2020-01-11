@@ -80,7 +80,8 @@
                     android:orientation="horizontal"
                     android:paddingLeft="@dimen/li_status_padding"
                     android:paddingRight="@dimen/li_status_padding"
-                    android:visibility="@{@bool/is_port ? V.VISIBLE:V.GONE}">
+                    android:visibility="@{@bool/is_port ? V.VISIBLE:V.GONE}"
+                    android:baselineAligned="false">
 
                     <RelativeLayout
                         android:layout_width="@dimen/zerodp"

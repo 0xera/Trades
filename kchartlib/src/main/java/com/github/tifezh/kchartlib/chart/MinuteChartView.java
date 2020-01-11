@@ -1,5 +1,6 @@
 package com.github.tifezh.kchartlib.chart;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -109,6 +110,7 @@ public class MinuteChartView extends View implements GestureDetector.OnGestureLi
         mVolumeFormatter=new BigValueFormatter();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         this.mDetector.onTouchEvent(event);

@@ -44,11 +44,12 @@ public class Company implements Serializable {
         this.latestPrice = latestPrice;
     }
 
+    @NonNull
     public String getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(String symbol) {
+    public void setSymbol(@NonNull String symbol) {
         this.symbol = symbol;
     }
 

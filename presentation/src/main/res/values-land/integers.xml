@@ -3,6 +3,5 @@
 
     <integer name="rows">3</integer>
     <integer name="columns">8</integer>
-    <integer name="gone">8</integer>
 
 </resources>

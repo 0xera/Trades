@@ -41,7 +41,6 @@ public abstract class BaseChartDraw<T> implements IChartDraw<T> {
         mKChartView = KChartView;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void draw(Canvas canvas) {
         canvas.save();

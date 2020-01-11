@@ -54,9 +54,7 @@ public class RegRepository {
                         mUser = mAuth.getCurrentUser();
                         if (mUser != null) {
                             mUser.sendEmailVerification()
-                                    .addOnCompleteListener(task1 -> {
-                                        uploadImage(name, imageBytes);
-                                    })
+                                    .addOnCompleteListener(task1 -> uploadImage(name, imageBytes))
                                     .addOnFailureListener(e -> mRegProgress.postValue(RegProgress.FAILED));
                         }
                     } else {

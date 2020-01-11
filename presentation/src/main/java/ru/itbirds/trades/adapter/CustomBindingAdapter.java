@@ -42,7 +42,7 @@ public class CustomBindingAdapter {
 
     @BindingAdapter({"datakcv"})
     public static void dataToKChartView(KChartView kChartView, List<KLineEntity> kLineEntities) {
-        ((KChartAdapter) kChartView.getAdapter()).setNewData(kLineEntities);
+        kChartView.getAdapter().setNewData(kLineEntities);
         kChartView.refreshEnd();
     }
 

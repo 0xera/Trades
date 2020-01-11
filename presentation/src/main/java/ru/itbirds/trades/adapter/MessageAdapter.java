@@ -1,5 +1,6 @@
 package ru.itbirds.trades.adapter;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
@@ -218,6 +219,7 @@ public class MessageAdapter extends FirestoreRecyclerAdapter<Message, MessageAda
             return true;
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             switch (event.getAction()) {

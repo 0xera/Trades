@@ -70,7 +70,6 @@ public class CanvasUtils {
      * @param strings 画笔和对应文本的集合
      */
     @SafeVarargs
-    @SuppressWarnings("ConstantConditions")
     public static void drawTexts(Canvas canvas, float x, float y, XAlign xAlign, YAlign yAlign, Pair<Paint, String>... strings){
 
         if (strings == null || strings.length == 0) {

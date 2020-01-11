@@ -134,7 +134,9 @@
                     android:padding="@dimen/message_padding"
                     android:textColor="@color/white"
                     android:textColorHint="@color/gray_light"
-                    app:backgroundTint="@android:color/transparent" />
+                    app:backgroundTint="@android:color/transparent"
+                    android:inputType="text"
+                    android:importantForAutofill="no" />
 
 
                 <ImageView

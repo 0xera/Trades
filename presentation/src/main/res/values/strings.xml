@@ -7,10 +7,8 @@
     <string name="low">Low:</string>
     <string name="close">Close:</string>
     <string name="open">Open:</string>
-    <string name="repeat">repeat</string>
     <string name="internet_connection_error">Internet connection error</string>
     <string name="no_connect">No internet connection</string>
-    <string name="connected">Connected</string>
     <string name="no_found_ticker">No found ticker</string>
     <string name="chat">Chat</string>
     <string name="not_found_code">404</string>

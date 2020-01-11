@@ -39,7 +39,6 @@
     <dimen name="iv_no_data_width">80dp</dimen>
     <dimen name="iv_no_data_height">80dp</dimen>
     <dimen name="no_data_text_size">20sp</dimen>
-    <dimen name="title_margin">12dp</dimen>
     <dimen name="login_text_size">24sp</dimen>
     <dimen name="cv_big_margin">64dp</dimen>
     <dimen name="sing_btn_margin_top">24dp</dimen>
@@ -55,7 +54,6 @@
     <dimen name="button_corners">20dp</dimen>
     <dimen name="forgot_text_margin">24dp</dimen>
     <dimen name="cv_profile_size">144dp</dimen>
-    <dimen name="first_et_margin">56dp</dimen>
     <dimen name="avatar_text_size">128sp</dimen>
     <dimen name="date_text_size">12sp</dimen>
     <dimen name="circle_button_size">32dp</dimen>
