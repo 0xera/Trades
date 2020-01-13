@@ -28,8 +28,8 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import ru.itbirds.trades.R;
+import ru.itbirds.trades.common.SingleActivity;
 import ru.itbirds.trades.databinding.LoginBinding;
 import ru.itbirds.trades.util.LiveConnectUtil;
 import ru.itbirds.trades.viewmodels.LoginViewModel;
@@ -47,6 +47,10 @@ public class LoginFragment extends Fragment {
     private ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener;
     private SharedPreferences mSharedPreferences;
     private AlertDialog mAlertErrorDialog;
+
+    public static LoginFragment newInstance() {
+        return new LoginFragment();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -198,13 +202,13 @@ public class LoginFragment extends Fragment {
 
     private void navigateToTop() {
         mLoginViewModel.getRemoteConfig();
-        Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_loginFragment_to_topTenFragment);
+        ((SingleActivity) Objects.requireNonNull(getActivity())).changeFragment(TopTenFragment.newInstance(), false);
     }
 
     private void navigateToReset(@Nullable String login) {
         Bundle bundle = new Bundle();
         bundle.putString(LOGIN_RESET, login);
-        Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_loginFragment_to_resetFragment, bundle);
+        ((SingleActivity) Objects.requireNonNull(getActivity())).changeFragment(ResetFragment.newInstance(bundle), true);
     }
 
     private void createSnackbar(@StringRes int message) {
@@ -225,7 +229,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void navigateToReg() {
-        Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_loginFragment_to_regFragment);
+        ((SingleActivity) Objects.requireNonNull(getActivity())).changeFragment(RegFragment.newInstance(), true);
     }
 
     @Override

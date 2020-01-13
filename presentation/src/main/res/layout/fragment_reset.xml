@@ -33,11 +33,11 @@
 
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
-
+<!--  todo      android:background="@color/chart_background"-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/chart_background">
+            >
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/login_reset_layout"

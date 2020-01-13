@@ -5,7 +5,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import java.util.List;
 
-import io.reactivex.Single;
+import io.reactivex.Flowable;
 import ru.itbirds.data.api.IEXStockAPI;
 import ru.itbirds.data.model.Company;
 
@@ -24,27 +24,27 @@ public class RemoteRepositoryImpl implements RemoteRepository {
     private final IEXStockAPI stockAPI;
 
     @Override
-    public Single<Company> getCompany(String symbol) {
+    public Flowable<Company> getCompany(String symbol) {
         return stockAPI.getCompany(symbol, KEY_API);
     }
 
     @Override
-    public Single<List<KLineEntity>> getCompanyChart(String symbol) {
+    public Flowable<List<KLineEntity>> getCompanyChart(String symbol) {
         return stockAPI.getCompanyChart(symbol, KEY_API);
     }
 
     @Override
-    public Single<List<Company>> getMostActive() {
+    public Flowable<List<Company>> getMostActive() {
         return stockAPI.getMostActive(KEY_API);
     }
 
     @Override
-    public Single<List<Company>> getGainers() {
+    public Flowable<List<Company>> getGainers() {
         return stockAPI.getGainers(KEY_API);
     }
 
     @Override
-    public Single<List<Company>> getLosers() {
+    public Flowable<List<Company>> getLosers() {
         return stockAPI.getLosers(KEY_API);
     }
 }

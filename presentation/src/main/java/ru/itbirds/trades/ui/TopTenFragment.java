@@ -24,12 +24,12 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 import ru.itbirds.trades.R;
 import ru.itbirds.trades.adapter.ViewPagerAdapter;
 import ru.itbirds.trades.common.App;
 import ru.itbirds.trades.common.INavigator;
+import ru.itbirds.trades.common.SingleActivity;
 import ru.itbirds.trades.databinding.TopBinding;
 import ru.itbirds.trades.util.LiveConnectUtil;
 import ru.itbirds.trades.viewmodels.TopTenViewModel;
@@ -52,6 +52,10 @@ public class TopTenFragment extends Fragment implements INavigator {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private Toolbar mToolbar;
+
+    public static TopTenFragment newInstance() {
+        return new TopTenFragment();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -168,7 +172,7 @@ public class TopTenFragment extends Fragment implements INavigator {
             searchView.clearFocus();
             Bundle bundle = new Bundle();
             bundle.putString(COMPANY_SYMBOL, symbol);
-            Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_topTenFragment_to_chartFragment, bundle);
+            ((SingleActivity) Objects.requireNonNull(getActivity())).changeFragment(ChartFragment.newInstance(bundle), true);
         } else {
             createToast(this.getString(R.string.no_connect));
         }

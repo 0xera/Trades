@@ -4,24 +4,24 @@ import com.github.tifezh.kchartlib.chart.entity.KLineEntity;
 
 import java.util.List;
 
-import io.reactivex.Single;
+import io.reactivex.Flowable;
 import ru.itbirds.data.model.Company;
 
 
 public interface RemoteRepository {
 
-    Single<Company> getCompany(String symbol);
+    Flowable<Company> getCompany(String symbol);
 
 
-    Single<List<KLineEntity>> getCompanyChart(String symbol);
+    Flowable<List<KLineEntity>> getCompanyChart(String symbol);
 
 
-    Single<List<Company>> getMostActive();
+    Flowable<List<Company>> getMostActive();
 
 
-    Single<List<Company>> getGainers();
+    Flowable<List<Company>> getGainers();
 
 
-    Single<List<Company>> getLosers();
+    Flowable<List<Company>> getLosers();
 
 }

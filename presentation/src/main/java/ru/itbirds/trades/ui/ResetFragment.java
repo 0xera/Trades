@@ -23,8 +23,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import ru.itbirds.trades.R;
+import ru.itbirds.trades.common.SingleActivity;
 import ru.itbirds.trades.databinding.ResetBinding;
 import ru.itbirds.trades.util.LiveConnectUtil;
 import ru.itbirds.trades.viewmodels.ResetViewModel;
@@ -38,6 +38,12 @@ public class ResetFragment extends Fragment {
     private String mLogin;
     private AlertDialog mAlertErrorDialog;
     private AlertDialog mAlertResetDialog;
+
+    static ResetFragment newInstance(Bundle bundle) {
+        ResetFragment resetFragment = new ResetFragment();
+        resetFragment.setArguments(bundle);
+        return resetFragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,7 +84,7 @@ public class ResetFragment extends Fragment {
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mBinding.toolbar);
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayShowTitleEnabled(false);
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        mBinding.toolbar.setNavigationOnClickListener(view -> Navigation.findNavController(view).navigateUp());
+        mBinding.toolbar.setNavigationOnClickListener(view -> popUp());
     }
 
 
@@ -137,13 +143,17 @@ public class ResetFragment extends Fragment {
     private void createAlertDialogReset() {
         if (mAlertResetDialog == null) {
             mAlertResetDialog = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.DialogTheme)
-                    .setPositiveButton(R.string.positive_ok, (dialog, which) -> Navigation.findNavController(mBinding.getRoot()).popBackStack())
+                    .setPositiveButton(R.string.positive_ok, (dialog, which) -> popUp())
                     .setTitle(R.string.check_email_message)
                     .create();
         }
         mAlertResetDialog.setMessage(getString(R.string.instructions_message) + "\n" + Objects.requireNonNull(mBinding.loginReset.getText()).toString());
 
 
+    }
+
+    private void popUp() {
+        ((SingleActivity) Objects.requireNonNull(getActivity())).popBackStack(false);
     }
 
     @Override

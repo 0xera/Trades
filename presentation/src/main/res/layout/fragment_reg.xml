@@ -38,11 +38,11 @@
 
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
-
+<!--        android:background="@color/chart_background" todo-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/chart_background">
+            >
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_profile"

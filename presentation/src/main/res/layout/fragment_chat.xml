@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data class="ChatBinding">
@@ -61,11 +60,11 @@
                 </com.google.android.material.appbar.AppBarLayout>
 
             </LinearLayout>
-
+<!--            android:background="@color/chart_background" todo-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview"
                 android:layout_width="match_parent"
-                android:background="@color/chart_background"
+
                 android:layout_height="wrap_content"
                 android:layout_above="@id/et_layout"
                 android:layout_below="@id/toolbar_layout"
@@ -79,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/rl_stickers"
                 android:layout_gravity="bottom"
-                android:background="@color/chart_background_item">
+              >
 
                 <ImageView
                     android:id="@+id/iv_sticker"
@@ -134,12 +133,13 @@
                     android:padding="@dimen/message_padding"
                     android:textColor="@color/white"
                     android:textColorHint="@color/gray_light"
-                    app:backgroundTint="@android:color/transparent"
+                    android:background="@color/chart_background_item"
                     android:inputType="text"
                     android:importantForAutofill="no" />
 
 
                 <ImageView
+                    android:background="@color/chart_background_item"
                     android:id="@+id/iv_send"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -171,7 +171,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/chart_background"
                     android:src="@drawable/ic_add_black_24dp" />
             </RelativeLayout>
         </RelativeLayout>

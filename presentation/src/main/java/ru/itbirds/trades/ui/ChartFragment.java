@@ -23,10 +23,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import ru.itbirds.trades.R;
 import ru.itbirds.trades.adapter.KChartAdapter;
 import ru.itbirds.trades.common.App;
+import ru.itbirds.trades.common.SingleActivity;
 import ru.itbirds.trades.databinding.ChartBinding;
 import ru.itbirds.trades.util.LiveConnectUtil;
 import ru.itbirds.trades.viewmodels.ChartViewModel;
@@ -45,6 +45,12 @@ public class ChartFragment extends Fragment {
     private Snackbar snackbar;
     private KChartView mKChartView;
     private String mSymbol;
+
+    static ChartFragment newInstance(Bundle bundle) {
+        ChartFragment chartFragment = new ChartFragment();
+        chartFragment.setArguments(bundle);
+        return chartFragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,8 +113,12 @@ public class ChartFragment extends Fragment {
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayShowTitleEnabled(false);
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(view -> Navigation.findNavController(view).navigateUp());
+        mToolbar.setNavigationOnClickListener(view -> popUp());
         mToolbar.setTitle(mSymbol);
+    }
+
+    private void popUp() {
+        ((SingleActivity) Objects.requireNonNull(getActivity())).popBackStack(false);
     }
 
     private void kChartViewConfig() {
@@ -140,7 +150,7 @@ public class ChartFragment extends Fragment {
             snackbar.dismiss();
             Bundle bundle = new Bundle();
             bundle.putString(COMPANY_SYMBOL, mSymbol);
-            Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_chartFragment_to_chatFragment, bundle);
+            ((SingleActivity) Objects.requireNonNull(getActivity())).changeFragment(ChatFragment.newInstance(bundle), true);
             return true;
         } else
             return super.onOptionsItemSelected(item);

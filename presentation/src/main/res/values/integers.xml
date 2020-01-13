@@ -4,7 +4,7 @@
     <integer name="rows">4</integer>
     <integer name="columns">4</integer>
     <integer name="columns_sticker">4</integer>
-    <integer name="slide">150</integer>
+    <integer name="slide">100</integer>
     <integer name="et_max_len">30</integer>
     <integer name="et_max_len_name">10</integer>
 </resources>

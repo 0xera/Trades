@@ -37,8 +37,7 @@ public class CompanyStockInteractor implements CompanyStockUseCase {
 
     @Override
     public Flowable<List<Company>> getMostActive() {
-        return mRemoteRepository.getMostActive()
-                .subscribeOn(Schedulers.io())
+        return mRemoteRepository.getMostActive().subscribeOn(Schedulers.io())
                 .repeatWhen(objectFlowable -> objectFlowable.delay(2, TimeUnit.SECONDS))
                 .observeOn(Schedulers.io());
     }

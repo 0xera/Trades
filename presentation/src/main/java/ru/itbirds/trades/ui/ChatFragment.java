@@ -25,7 +25,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +37,7 @@ import ru.itbirds.trades.common.App;
 import ru.itbirds.trades.common.IRecyclerItemMenuClickListener;
 import ru.itbirds.trades.common.IStickerSender;
 import ru.itbirds.trades.common.ItemOffsetDecoration;
+import ru.itbirds.trades.common.SingleActivity;
 import ru.itbirds.trades.databinding.ChatBinding;
 import ru.itbirds.trades.util.NavBarSizeUtil;
 import ru.itbirds.trades.viewmodels.ChatViewModel;
@@ -71,8 +71,10 @@ public class ChatFragment extends Fragment implements IRecyclerItemMenuClickList
     private boolean mNeedToScroll = true;
     private String mEditMessageText;
 
-    public static ChatFragment newInstance() {
-        return new ChatFragment();
+    static ChatFragment newInstance(Bundle bundle) {
+        ChatFragment chatFragment = new ChatFragment();
+        chatFragment.setArguments(bundle);
+        return chatFragment;
     }
 
     @Override
@@ -272,7 +274,7 @@ public class ChatFragment extends Fragment implements IRecyclerItemMenuClickList
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolbar);
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayShowTitleEnabled(false);
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(view -> Navigation.findNavController(view).navigateUp());
+        mToolbar.setNavigationOnClickListener(view -> ((SingleActivity) Objects.requireNonNull(getActivity())).popBackStack(false));
         mToolbar.setTitle(mSymbol);
     }
 

@@ -31,8 +31,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import ru.itbirds.trades.R;
+import ru.itbirds.trades.common.SingleActivity;
 import ru.itbirds.trades.databinding.RegBinding;
 import ru.itbirds.trades.util.LiveConnectUtil;
 import ru.itbirds.trades.viewmodels.RegViewModel;
@@ -50,6 +50,10 @@ public class RegFragment extends Fragment {
     private byte[] mImageBytes;
     private AlertDialog mAlertVerifyDialog;
     private AlertDialog mAlertErrorDialog;
+
+    public static RegFragment newInstance() {
+        return new RegFragment();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -120,7 +124,7 @@ public class RegFragment extends Fragment {
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mBinding.toolbar);
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayShowTitleEnabled(false);
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        mBinding.toolbar.setNavigationOnClickListener(view -> Navigation.findNavController(view).navigateUp());
+        mBinding.toolbar.setNavigationOnClickListener(view -> popUp());
     }
 
 
@@ -160,10 +164,14 @@ public class RegFragment extends Fragment {
         });
     }
 
+    private void popUp() {
+        ((SingleActivity) Objects.requireNonNull(getActivity())).popBackStack(false);
+    }
+
     private void createAlertDialogVerify() {
         if (mAlertVerifyDialog == null) {
             mAlertVerifyDialog = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.DialogTheme)
-                    .setPositiveButton("Ok", (dialog, which) -> Navigation.findNavController(mBinding.getRoot()).popBackStack())
+                    .setPositiveButton("Ok", (dialog, which) -> popUp())
                     .setTitle(R.string.verify_email_message)
                     .create();
         }

@@ -12,11 +12,11 @@
             alias="V"
             type="android.view.View" />
     </data>
-
+<!--    android:background="@color/chart_background" todo -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/chart_background">
+      >
 
         <RelativeLayout
             android:layout_width="match_parent"

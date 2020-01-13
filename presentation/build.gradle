@@ -32,7 +32,6 @@ dependencies {
     implementation project(path: ':kchartlib')
     implementation project(path: ':data')
     implementation project(path: ':domain')
-    implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
@@ -68,14 +67,15 @@ dependencies {
     // debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-3'
 
     implementation 'com.jjoe64:graphview:4.2.2'
-    implementation 'androidx.navigation:navigation-fragment:2.2.0-rc04'
-    implementation 'androidx.navigation:navigation-ui:2.2.0-rc04'
 
     implementation 'com.google.dagger:dagger-android:2.22'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.20'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.20'
     implementation 'de.hdodenhof:circleimageview:3.0.1'
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0-rc03'
+    implementation 'com.google.android.material:material:1.1.0-rc01'
+    implementation 'androidx.fragment:fragment:1.2.0-rc04'
+
 
 
 }

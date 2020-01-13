@@ -17,39 +17,32 @@
 
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-       >
 
-        <FrameLayout
-            android:background="@color/chart_background"
+    <!--        android:background="@color/chart_background todo"-->
+    <FrameLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            app:datarv="@{vm.companyStock}"
+            tools:listitem="@layout/item_stock"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
+        <ProgressBar
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:datarv="@{vm.companyStock}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+            android:layout_width="@dimen/progbar_width"
+            android:layout_height="@dimen/progbar_height"
+            android:layout_gravity="center"
+            android:visibility="@{(vm.companyStock.size() == 0 &amp;&amp; vm.progress &amp;&amp; vm.noInternet!=true)? V.VISIBLE: V.GONE}" />
 
-            </androidx.recyclerview.widget.RecyclerView>
-
-            <ProgressBar
-                android:layout_width="@dimen/progbar_width"
-                android:layout_height="@dimen/progbar_height"
-                android:layout_gravity="center"
-                android:visibility="@{(vm.companyStock.size() == 0 &amp;&amp; vm.progress &amp;&amp; vm.noInternet!=true)? V.VISIBLE: V.GONE}"
-
-                />
-
-            <include
-                android:id="@+id/error_layout"
-                layout="@layout/no_data"
-                android:visibility="@{(vm.companyStock.size() == 0 &amp;&amp; vm.noInternet)? V.VISIBLE: V.GONE}" />
-        </FrameLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <include
+            android:id="@+id/error_layout"
+            layout="@layout/no_data"
+            android:visibility="@{(vm.companyStock.size() == 0 &amp;&amp; vm.noInternet)? V.VISIBLE: V.GONE}" />
+    </FrameLayout>
 </layout>
