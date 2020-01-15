@@ -2,14 +2,13 @@ package ru.itbirds.trades.viewmodels;
 
 import java.util.List;
 
-import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import io.reactivex.disposables.Disposable;
 import ru.itbirds.data.model.Company;
 import ru.itbirds.data.model.CompanyStock;
-import ru.itbirds.domain.interactor.CompanyStockInteractor;
+import ru.itbirds.domain.usecase.CompanyStockUseCase;
 
 import static ru.itbirds.data.Constants.ACTIVE_FR;
 import static ru.itbirds.data.Constants.GAINERS_FR;
@@ -20,11 +19,11 @@ public class PageViewModel extends ViewModel {
     private Disposable mDisposableGainer;
     private Disposable mDisposableActive;
     private Disposable mDisposableLosers;
-    private CompanyStockInteractor mCompanyStockInteractor;
+    private CompanyStockUseCase mCompanyStockUseCase;
 
-    public PageViewModel(CompanyStockInteractor companyStockInteractor) {
+    public PageViewModel(CompanyStockUseCase companyStockUseCase) {
 
-        mCompanyStockInteractor = companyStockInteractor;
+        mCompanyStockUseCase = companyStockUseCase;
     }
 
     public void setCompanyStock(List<Company> companyStock) {
@@ -32,16 +31,16 @@ public class PageViewModel extends ViewModel {
     }
 
     private MutableLiveData<List<Company>> companyStock = new MutableLiveData<>();
-    private ObservableBoolean progress = new ObservableBoolean();
+    private MutableLiveData<Boolean> progress = new MutableLiveData<>(true);
+    private MutableLiveData<Boolean> noInternet = new MutableLiveData<>(false);
 
-    private ObservableBoolean noInternet = new ObservableBoolean();
     private String mType;
 
     private LiveData<CompanyStock> companyStockLive;
 
     public LiveData<CompanyStock> getCompanyStockLive(String type) {
         if (companyStockLive == null) {
-            companyStockLive = mCompanyStockInteractor.getCompanyStock(type);
+            companyStockLive = mCompanyStockUseCase.getCompanyStock(type);
         }
         return companyStockLive;
     }
@@ -70,40 +69,16 @@ public class PageViewModel extends ViewModel {
     }
 
     private void loadGainers() {
-        mDisposableGainer = mCompanyStockInteractor.getGainers()
-                .subscribe(companies -> {
-                            mCompanyStockInteractor.insertCompanyStock(companies, mType);
-                            setProgress(false);
-                        },
-                        throwable -> {
-                            setProgress(false);
-                            setNoInternet(true);
-                        });
+        mDisposableGainer = mCompanyStockUseCase.getGainers(progress, progress);
     }
 
 
     private void loadActive() {
-        mDisposableActive = mCompanyStockInteractor.getMostActive()
-                .subscribe(companies -> {
-                            mCompanyStockInteractor.insertCompanyStock(companies, mType);
-                            setProgress(false);
-                        },
-                        throwable -> {
-                            setProgress(false);
-                            setNoInternet(true);
-                        });
+        mDisposableActive = mCompanyStockUseCase.getMostActive(progress, noInternet);
     }
 
     private void loadLosers() {
-        mDisposableLosers = mCompanyStockInteractor.getLosers()
-                .subscribe(companies -> {
-                            mCompanyStockInteractor.insertCompanyStock(companies, mType);
-                            setProgress(false);
-                        },
-                        throwable -> {
-                            setProgress(false);
-                            setNoInternet(true);
-                        });
+        mDisposableLosers = mCompanyStockUseCase.getLosers(progress, noInternet);
     }
 
     public void dispatchDetach() {
@@ -118,19 +93,19 @@ public class PageViewModel extends ViewModel {
         }
     }
 
-    public ObservableBoolean getProgress() {
+    public MutableLiveData<Boolean> getProgress() {
         return progress;
     }
 
-    public void setProgress(boolean p) {
-        progress.set(p);
+    public void setProgress(boolean value) {
+        progress.postValue(value);
     }
 
-    public ObservableBoolean getNoInternet() {
+    public MutableLiveData<Boolean> getNoInternet() {
         return noInternet;
     }
 
     public void setNoInternet(Boolean ni) {
-        noInternet.set(ni);
+        noInternet.postValue(ni);
     }
 }

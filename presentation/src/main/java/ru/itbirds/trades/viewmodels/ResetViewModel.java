@@ -1,5 +1,6 @@
 package ru.itbirds.trades.viewmodels;
 
+import android.text.Editable;
 import android.text.TextUtils;
 
 import androidx.databinding.ObservableBoolean;
@@ -7,25 +8,26 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 import ru.itbirds.data.repositories.ResetRepository;
+import ru.itbirds.domain.usecase.ResetUseCase;
 
 public class ResetViewModel extends ViewModel {
     private ObservableBoolean progress = new ObservableBoolean();
 
-    private ResetRepository mResetRepository;
+    private ResetUseCase mResetUseCase;
     private MediatorLiveData<ResetState> mResetState = new MediatorLiveData<>();
 
-    public ResetViewModel() {
+    public ResetViewModel(ResetUseCase resetUseCase) {
         mResetState.setValue(ResetState.NONE);
-        mResetRepository = ResetRepository.getInstance();
+        mResetUseCase = resetUseCase;
     }
 
     public MediatorLiveData<ResetState> getProgressLive() {
         return mResetState;
     }
 
-    public void resetPassword(String login) {
+    public void resetPassword(Editable login) {
         if (!TextUtils.isEmpty(login) && mResetState.getValue() != ResetState.IN_PROGRESS) {
-            reset(login);
+            reset(login.toString());
         } else if (mResetState.getValue() != ResetState.IN_PROGRESS) {
             mResetState.postValue(ResetState.ERROR);
         }
@@ -34,15 +36,15 @@ public class ResetViewModel extends ViewModel {
     private void reset(String login) {
         mResetState.postValue(ResetState.IN_PROGRESS);
         setProgress(true);
-        final LiveData<ResetRepository.ResetProgress> progressLiveData = mResetRepository.resetPassword(login);
-        mResetState.addSource(progressLiveData, regProgress -> {
+        LiveData<ResetRepository.ResetProgress> source = mResetUseCase.resetPassword(login);
+        mResetState.addSource(source, regProgress -> {
             if (regProgress == ResetRepository.ResetProgress.SUCCESS) {
                 mResetState.postValue(ResetState.SUCCESS);
-                mResetState.removeSource(progressLiveData);
+                mResetState.removeSource(source);
                 setProgress(false);
             } else if (regProgress == ResetRepository.ResetProgress.FAILED) {
                 mResetState.postValue(ResetState.FAILED);
-                mResetState.removeSource(progressLiveData);
+                mResetState.removeSource(source);
                 setProgress(false);
             }
         });

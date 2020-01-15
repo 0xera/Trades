@@ -32,8 +32,8 @@ import ru.itbirds.trades.common.INavigator;
 import ru.itbirds.trades.common.SingleActivity;
 import ru.itbirds.trades.databinding.TopBinding;
 import ru.itbirds.trades.util.LiveConnectUtil;
+import ru.itbirds.trades.viewmodel_factories.TopTenViewModelFactory;
 import ru.itbirds.trades.viewmodels.TopTenViewModel;
-import ru.itbirds.trades.viewmodels.TopTenViewModelFactory;
 
 import static ru.itbirds.data.Constants.ACTIVE_FR;
 import static ru.itbirds.data.Constants.COMPANY_SYMBOL;

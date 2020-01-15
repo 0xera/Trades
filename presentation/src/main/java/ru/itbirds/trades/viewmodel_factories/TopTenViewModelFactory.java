@@ -1,20 +1,21 @@
-package ru.itbirds.trades.viewmodels;
+package ru.itbirds.trades.viewmodel_factories;
 
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import ru.itbirds.domain.interactor.CleanInteractor;
-import ru.itbirds.domain.interactor.CompanyInteractor;
+import ru.itbirds.domain.usecase.CleanUseCase;
+import ru.itbirds.domain.usecase.CompanyUseCase;
+import ru.itbirds.trades.viewmodels.TopTenViewModel;
 
 
 public class TopTenViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     @Inject
-    CompanyInteractor companyInteractor;
+    CompanyUseCase companyUseCase;
     @Inject
-    CleanInteractor cleanInteractor;
+    CleanUseCase cleanUseCase;
 
 
     @Inject
@@ -25,6 +26,6 @@ public class TopTenViewModelFactory extends ViewModelProvider.NewInstanceFactory
     @Override
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new TopTenViewModel(companyInteractor, cleanInteractor);
+        return (T) new TopTenViewModel(companyUseCase, cleanUseCase);
     }
 }

@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import ru.itbirds.data.model.Company;
-import ru.itbirds.domain.interactor.CleanInteractor;
-import ru.itbirds.domain.interactor.CompanyInteractor;
+import ru.itbirds.domain.usecase.CleanUseCase;
+import ru.itbirds.domain.usecase.CompanyUseCase;
 import ru.itbirds.trades.common.INavigator;
 import ru.itbirds.trades.util.LiveConnectUtil;
 
@@ -16,14 +16,14 @@ public class TopTenViewModel extends ViewModel {
     private INavigator mNavigator;
     private Disposable mDisposableSearch;
     private Disposable mDisposableClean;
-    private CompanyInteractor mCompanyInteractor;
-    private CleanInteractor mCleanInteractor;
+    private CompanyUseCase mCompanyUseCase;
+    private CleanUseCase mCleanUseCase;
     private MediatorLiveData<Company> mCompanyMediatorLive = new MediatorLiveData<>();
 
-    TopTenViewModel(CompanyInteractor companyInteractor, CleanInteractor cleanInteractor) {
+    public TopTenViewModel(CompanyUseCase companyInteractor, CleanUseCase cleanInteractor) {
 
-        mCompanyInteractor = companyInteractor;
-        mCleanInteractor = cleanInteractor;
+        mCompanyUseCase = companyInteractor;
+        mCleanUseCase = cleanInteractor;
         mCompanyMediatorLive.observeForever(company -> mCompany = company);
     }
 
@@ -31,11 +31,11 @@ public class TopTenViewModel extends ViewModel {
 
 
     public void cleanOldData() {
-        mDisposableClean = mCleanInteractor.clean();
+        mDisposableClean = mCleanUseCase.clean();
     }
 
     public void searchCompanyLive(String symbol) {
-        LiveData<Company> companyLiveData = mCompanyInteractor.getCompany(symbol);
+        LiveData<Company> companyLiveData = mCompanyUseCase.getCompany(symbol);
         mCompanyMediatorLive.addSource(companyLiveData, company -> {
             mCompany = company;
             if (company == null) mCompanyMediatorLive.removeSource(companyLiveData);
@@ -48,7 +48,7 @@ public class TopTenViewModel extends ViewModel {
     public void checkSearchInput(final String query) {
         if (mCompany == null) {
             if (LiveConnectUtil.getInstance().isInternetOn()) {
-                mDisposableSearch = mCompanyInteractor.downloadCompany(query)
+                mDisposableSearch = mCompanyUseCase.downloadCompany(query)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(company1 -> mNavigator.clickForNavigate(company1.getSymbol()), throwable -> mNavigator.clickForNavigate(throwable));
             } else mNavigator.clickForNavigate("");

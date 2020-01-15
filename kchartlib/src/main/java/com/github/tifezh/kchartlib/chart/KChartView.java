@@ -3,7 +3,7 @@ package com.github.tifezh.kchartlib.chart;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -86,7 +86,7 @@ public class KChartView extends BaseKChartView {
                 setTextSize(array.getDimension(R.styleable.KChartView_kc_text_size,getDimension(R.dimen.chart_text_size)));
                 setTextColor(array.getColor(R.styleable.KChartView_kc_text_color,getColor(R.color.chart_text)));
                 setLineWidth(array.getDimension(R.styleable.KChartView_kc_line_width,getDimension(R.dimen.chart_line_width)));
-                setBackgroundColor(array.getColor(R.styleable.KChartView_kc_background_color,getColor(R.color.chart_background)));
+                setBackgroundColor(Color.TRANSPARENT);
                 setSelectedLineColor(array.getColor(R.styleable.KChartView_kc_selected_line_color,getColor(R.color.chart_text)));
                 setSelectedLineWidth(array.getDimension(R.styleable.KChartView_kc_selected_line_width,getDimension(R.dimen.chart_line_width)));
                 setGridLineWidth(array.getDimension(R.styleable.KChartView_kc_grid_line_width,getDimension(R.dimen.chart_grid_line_width)));

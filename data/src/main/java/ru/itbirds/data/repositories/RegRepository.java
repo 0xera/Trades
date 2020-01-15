@@ -14,26 +14,12 @@ import androidx.lifecycle.MutableLiveData;
 public class RegRepository {
     private static FirebaseAuth mAuth;
     private static FirebaseStorage mStorage;
-    private static volatile RegRepository instance;
     private FirebaseUser mUser;
 
-    private RegRepository() {
-        mStorage = FirebaseStorage.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-    }
 
-    @NonNull
-    public static RegRepository getInstance() {
-        RegRepository localInstance = instance;
-        if (localInstance == null) {
-            synchronized (RegRepository.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new RegRepository();
-                }
-            }
-        }
-        return localInstance;
+    public RegRepository(FirebaseAuth auth, FirebaseStorage storage) {
+        mStorage = storage;
+        mAuth = auth;
     }
 
     private MutableLiveData<RegProgress> mRegProgress;

@@ -29,8 +29,8 @@ import ru.itbirds.trades.common.App;
 import ru.itbirds.trades.common.SingleActivity;
 import ru.itbirds.trades.databinding.ChartBinding;
 import ru.itbirds.trades.util.LiveConnectUtil;
+import ru.itbirds.trades.viewmodel_factories.ChartViewModelFactory;
 import ru.itbirds.trades.viewmodels.ChartViewModel;
-import ru.itbirds.trades.viewmodels.ChartViewModelFactory;
 
 import static ru.itbirds.data.Constants.COMPANY_SYMBOL;
 

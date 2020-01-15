@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
@@ -22,6 +21,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -29,9 +30,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import ru.itbirds.trades.R;
+import ru.itbirds.trades.common.App;
 import ru.itbirds.trades.common.SingleActivity;
 import ru.itbirds.trades.databinding.LoginBinding;
 import ru.itbirds.trades.util.LiveConnectUtil;
+import ru.itbirds.trades.viewmodel_factories.LoginViewModelFactory;
 import ru.itbirds.trades.viewmodels.LoginViewModel;
 
 import static ru.itbirds.data.Constants.KEYBOARD_HEIGHT;
@@ -47,7 +50,8 @@ public class LoginFragment extends Fragment {
     private ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener;
     private SharedPreferences mSharedPreferences;
     private AlertDialog mAlertErrorDialog;
-
+    @Inject
+    LoginViewModelFactory loginViewModelFactory;
     public static LoginFragment newInstance() {
         return new LoginFragment();
     }
@@ -55,7 +59,8 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mLoginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        App.getAppComponent().inject(this);
+        mLoginViewModel = ViewModelProviders.of(this, loginViewModelFactory).get(LoginViewModel.class);
         mSharedPreferences = Objects.requireNonNull(getActivity()).getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         if (mSharedPreferences.contains(KEYBOARD_HEIGHT))
             mKeyboardHeight = mSharedPreferences.getInt(KEYBOARD_HEIGHT, 0);
@@ -71,22 +76,8 @@ public class LoginFragment extends Fragment {
         mBinding = LoginBinding.inflate(inflater, container, false);
         mBinding.setVm(mLoginViewModel);
         configGlobalLayoutListener();
-        mBinding.loginBtn.setOnClickListener(v -> {
-            if (!(TextUtils.isEmpty(mBinding.etLogin.getText()) || TextUtils.isEmpty(mBinding.etPassword.getText()))) {
-                InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
-                Objects.requireNonNull(imm).hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
-                mLoginViewModel.login(mBinding.etLogin.getText().toString(), mBinding.etPassword.getText().toString());
-            } else {
-                createAlertDialogError(R.string.empty_login_password);
-            }
-        });
-        mBinding.tvForgot.setOnClickListener(v -> {
-            if (!TextUtils.isEmpty(mBinding.etLogin.getText())) {
-                navigateToReset(mBinding.etLogin.getText().toString());
-            } else {
-                navigateToReset(null);
-            }
-        });
+        mBinding.loginBtn.setOnClickListener(v -> mLoginViewModel.login(mBinding.etLogin.getText(), mBinding.etPassword.getText()));
+        mBinding.tvForgot.setOnClickListener(v -> navigateToReset(mBinding.etLogin.getText()));
         textWatcherForEditTexts();
         mBinding.btnToRegistration.setOnClickListener(v -> navigateToReg());
         return mBinding.getRoot();
@@ -174,14 +165,22 @@ public class LoginFragment extends Fragment {
 
     private void progressObserve() {
         mLoginViewModel.getProgressState().observe(this, loginState -> {
-            if (loginState == LoginViewModel.LoginState.FAILED) {
-                createAlertDialogError(R.string.failed_login);
-            } else if (loginState == LoginViewModel.LoginState.ERROR) {
-                createAlertDialogError(R.string.empty_login_password);
-            } else if (loginState == LoginViewModel.LoginState.SUCCESS) {
-                createSnackbar(R.string.success);
-                navigateToTop();
+            switch (loginState) {
+                case IN_PROGRESS:
+                    InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
+                    Objects.requireNonNull(imm).hideSoftInputFromWindow(mBinding.loginBtn.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+                    break;
+                case FAILED:
+                    createAlertDialogError(R.string.failed_login);
+                    break;
+                case ERROR:
+                    createAlertDialogError(R.string.empty_login_password);
+                    break;
+                case SUCCESS:
+                    createSnackbar(R.string.success);
+                    navigateToTop();
 
+                    break;
             }
         });
     }
@@ -205,9 +204,10 @@ public class LoginFragment extends Fragment {
         ((SingleActivity) Objects.requireNonNull(getActivity())).changeFragment(TopTenFragment.newInstance(), false);
     }
 
-    private void navigateToReset(@Nullable String login) {
+    private void navigateToReset(@Nullable Editable login) {
         Bundle bundle = new Bundle();
-        bundle.putString(LOGIN_RESET, login);
+        String text = (login == null) ? null : login.toString();
+        bundle.putString(LOGIN_RESET, text);
         ((SingleActivity) Objects.requireNonNull(getActivity())).changeFragment(ResetFragment.newInstance(bundle), true);
     }
 

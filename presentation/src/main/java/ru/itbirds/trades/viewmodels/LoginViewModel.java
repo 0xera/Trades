@@ -1,5 +1,8 @@
 package ru.itbirds.trades.viewmodels;
 
+import android.text.Editable;
+import android.text.TextUtils;
+
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
@@ -7,42 +10,45 @@ import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
-import ru.itbirds.data.repositories.AuthRepository;
+import ru.itbirds.data.repositories.LoginRepository;
+import ru.itbirds.domain.usecase.LoginUseCase;
 import ru.itbirds.trades.R;
 
 public class LoginViewModel extends ViewModel {
 
     private MediatorLiveData<LoginState> mLoginState = new MediatorLiveData<>();
-    private AuthRepository authRepository;
+    private LoginUseCase mLoginUseCase;
     private ObservableBoolean progress = new ObservableBoolean();
 
-    public LoginViewModel() {
+    public LoginViewModel(LoginUseCase loginUseCase) {
         mLoginState.setValue(LoginState.NONE);
-        authRepository = AuthRepository.getInstance();
+        mLoginUseCase = loginUseCase;
     }
 
     public LiveData<LoginState> getProgressState() {
         return mLoginState;
     }
 
-    public void login(String login, String password) {
-        if (mLoginState.getValue() != LoginState.IN_PROGRESS) {
-            requestLogin(login, password);
+    public void login(Editable login, Editable password) {
+        if (TextUtils.isEmpty(login) || TextUtils.isEmpty(password)) {
+            mLoginState.setValue(LoginState.ERROR);
+        } else if (mLoginState.getValue() != LoginState.IN_PROGRESS) {
+            requestLogin(login.toString(), password.toString());
         }
     }
 
     private void requestLogin(String login, String password) {
         mLoginState.postValue(LoginState.IN_PROGRESS);
         setProgress(true);
-        final LiveData<AuthRepository.AuthProgress> progressLiveData = authRepository.loginAccount(login, password);
-        mLoginState.addSource(progressLiveData, authProgress -> {
-            if (authProgress == AuthRepository.AuthProgress.SUCCESS) {
+        LiveData<LoginRepository.AuthProgress> source = mLoginUseCase.loginAccount(login, password);
+        mLoginState.addSource(source, authProgress -> {
+            if (authProgress == LoginRepository.AuthProgress.SUCCESS) {
                 mLoginState.postValue(LoginState.SUCCESS);
-                mLoginState.removeSource(progressLiveData);
+                mLoginState.removeSource(source);
                 setProgress(false);
-            } else if (authProgress == AuthRepository.AuthProgress.FAILED) {
+            } else if (authProgress == LoginRepository.AuthProgress.FAILED) {
                 mLoginState.postValue(LoginState.FAILED);
-                mLoginState.removeSource(progressLiveData);
+                mLoginState.removeSource(source);
                 setProgress(false);
             }
         });

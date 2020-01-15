@@ -19,15 +19,15 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.lifecycle.ViewModel;
 import ru.itbirds.data.model.Message;
 import ru.itbirds.data.model.Sticker;
-import ru.itbirds.domain.interactor.ChatInteractor;
+import ru.itbirds.domain.usecase.ChatUseCase;
 
 public class ChatViewModel extends ViewModel implements DefaultLifecycleObserver {
-    private ChatInteractor mChatInteractor;
+    private ChatUseCase mChatUseCase;
     private ObservableSnapshotArray<Message> mMessagesSnapshot;
     private ChangeEventListener mChangeEventListener;
 
-    ChatViewModel(ChatInteractor chatInteractor) {
-        mChatInteractor = chatInteractor;
+    public ChatViewModel(ChatUseCase chatUseCase) {
+        mChatUseCase = chatUseCase;
     }
 
     public FirebaseUser getUser() {
@@ -35,7 +35,7 @@ public class ChatViewModel extends ViewModel implements DefaultLifecycleObserver
     }
 
     public FirestoreRecyclerOptions.Builder<Message> getMessages(String symbol) {
-        Query query = mChatInteractor.getMessages(symbol);
+        Query query = mChatUseCase.getMessages(symbol);
         return new FirestoreRecyclerOptions.Builder<Message>()
                 .setQuery(query, Message.class);
 
@@ -73,31 +73,31 @@ public class ChatViewModel extends ViewModel implements DefaultLifecycleObserver
     }
 
     public void sendMessage(String symbol, String message) {
-        mChatInteractor.sendMessage(symbol, message);
+        mChatUseCase.sendMessage(symbol, message);
     }
 
     public void sendSticker(String url, String symbol) {
-        mChatInteractor.sendSticker(url, symbol);
+        mChatUseCase.sendSticker(url, symbol);
     }
 
     public void editMessage(String symbol, String message, String documentId) {
-        mChatInteractor.editMessage(symbol, message, documentId);
+        mChatUseCase.editMessage(symbol, message, documentId);
 
     }
 
     public void deleteMessage(String symbol, String documentId) {
-        mChatInteractor.deleteMessage(symbol, documentId);
+        mChatUseCase.deleteMessage(symbol, documentId);
     }
 
     public FirestoreRecyclerOptions.Builder<Sticker> getStickers() {
-        Query query = mChatInteractor.getStickers();
+        Query query = mChatUseCase.getStickers();
         return new FirestoreRecyclerOptions.Builder<Sticker>()
                 .setQuery(query, Sticker.class);
 
     }
 
     public void uploadSticker(Uri uri) {
-        mChatInteractor.uploadSticker(uri);
+        mChatUseCase.uploadSticker(uri);
     }
 
 

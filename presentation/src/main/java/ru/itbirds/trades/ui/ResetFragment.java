@@ -16,6 +16,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -24,9 +26,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import ru.itbirds.trades.R;
+import ru.itbirds.trades.common.App;
 import ru.itbirds.trades.common.SingleActivity;
 import ru.itbirds.trades.databinding.ResetBinding;
 import ru.itbirds.trades.util.LiveConnectUtil;
+import ru.itbirds.trades.viewmodel_factories.ResetViewModelFactory;
 import ru.itbirds.trades.viewmodels.ResetViewModel;
 
 import static ru.itbirds.data.Constants.LOGIN_RESET;
@@ -38,7 +42,8 @@ public class ResetFragment extends Fragment {
     private String mLogin;
     private AlertDialog mAlertErrorDialog;
     private AlertDialog mAlertResetDialog;
-
+    @Inject
+    ResetViewModelFactory resetViewModelFactory;
     static ResetFragment newInstance(Bundle bundle) {
         ResetFragment resetFragment = new ResetFragment();
         resetFragment.setArguments(bundle);
@@ -47,7 +52,8 @@ public class ResetFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        mResetViewModel = ViewModelProviders.of(this).get(ResetViewModel.class);
+        App.getAppComponent().inject(this);
+        mResetViewModel = ViewModelProviders.of(this, resetViewModelFactory).get(ResetViewModel.class);
         if (getArguments() != null) {
             mLogin = getArguments().getString(LOGIN_RESET);
         }
@@ -69,9 +75,8 @@ public class ResetFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = ResetBinding.inflate(inflater, container, false);
         mBinding.btnReset.setOnClickListener(view -> {
-            if (TextUtils.isEmpty(mBinding.loginResetLayout.getError()) && !TextUtils.isEmpty(mBinding.loginReset.getText()))
-                mResetViewModel.resetPassword(mBinding.loginReset.getText().toString());
-            else createAlertDialogError(R.string.fill_field);
+            if (TextUtils.isEmpty(mBinding.loginResetLayout.getError()))
+                mResetViewModel.resetPassword(mBinding.loginReset.getText());
         });
         textWatcherForEditText();
         mBinding.loginReset.setText(mLogin);
@@ -128,14 +133,18 @@ public class ResetFragment extends Fragment {
 
     private void progressObserve() {
         mResetViewModel.getProgressLive().observe(this, resetState -> {
-            if (resetState == ResetViewModel.ResetState.FAILED) {
-                createAlertDialogError(R.string.email_not_found);
-            } else if (resetState == ResetViewModel.ResetState.ERROR) {
-                createAlertDialogError(R.string.fill_field);
-            } else if (resetState == ResetViewModel.ResetState.SUCCESS) {
-                createAlertDialogReset();
-                if (!mAlertResetDialog.isShowing())
-                    mAlertResetDialog.show();
+            switch (resetState) {
+                case FAILED:
+                    createAlertDialogError(R.string.email_not_found);
+                    break;
+                case ERROR:
+                    createAlertDialogError(R.string.fill_field);
+                    break;
+                case SUCCESS:
+                    createAlertDialogReset();
+                    if (!mAlertResetDialog.isShowing())
+                        mAlertResetDialog.show();
+                    break;
             }
         });
     }

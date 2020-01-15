@@ -1,5 +1,7 @@
 package ru.itbirds.trades.di;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.gson.Gson;
 
 import javax.inject.Singleton;
@@ -47,6 +49,20 @@ public class NetworkModule {
     @Singleton
     public IEXStockAPI provideApi(Retrofit retrofit) {
         return retrofit.create(IEXStockAPI.class);
+
+    }
+
+    @Provides
+    @Singleton
+    public FirebaseAuth provideAuth() {
+        return FirebaseAuth.getInstance();
+
+    }
+
+    @Provides
+    @Singleton
+    public FirebaseStorage provideStorage() {
+        return FirebaseStorage.getInstance();
 
     }
 

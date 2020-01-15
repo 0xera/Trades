@@ -2,11 +2,10 @@ package ru.itbirds.domain.usecase;
 
 import android.net.Uri;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.Query;
 
 public interface ChatUseCase {
-    FirebaseUser getUser();
+
 
     Query getMessages(String symbol);
 

@@ -4,11 +4,9 @@ import android.app.Application;
 
 import ru.itbirds.trades.di.AppComponent;
 import ru.itbirds.trades.di.AppModule;
-
-
 import ru.itbirds.trades.di.DaggerAppComponent;
-import ru.itbirds.trades.di.InteractorModule;
 import ru.itbirds.trades.di.NetworkModule;
+import ru.itbirds.trades.di.UseCaseModule;
 import ru.itbirds.trades.util.LiveConnectUtil;
 
 public class App extends Application {
@@ -22,7 +20,7 @@ public class App extends Application {
         sAppComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .networkModule(new NetworkModule())
-                .interactorModule(new InteractorModule())
+                .useCaseModule(new UseCaseModule())
                 .build();
     }
 

@@ -3,7 +3,8 @@ package ru.itbirds.domain.usecase;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
-import io.reactivex.Flowable;
+import androidx.lifecycle.MutableLiveData;
+import io.reactivex.disposables.Disposable;
 import ru.itbirds.data.model.Company;
 import ru.itbirds.data.model.CompanyStock;
 
@@ -14,9 +15,9 @@ public interface CompanyStockUseCase {
 
     LiveData<CompanyStock> getCompanyStock(String type);
 
-    Flowable<List<Company>> getMostActive();
+    Disposable getMostActive(MutableLiveData<Boolean> progress, MutableLiveData<Boolean> noInternet);
 
-    Flowable<List<Company>> getGainers();
+    Disposable getGainers(MutableLiveData<Boolean> progress, MutableLiveData<Boolean> booleanMutableLiveData);
 
-    Flowable<List<Company>> getLosers();
+    Disposable getLosers(MutableLiveData<Boolean> progress, MutableLiveData<Boolean> noInternet);
 }

@@ -30,14 +30,9 @@ public class SingleActivity extends AppCompatActivity {
     }
 
     public void changeFragment(Fragment fragment, boolean addToBackStack) {
-        FragmentTransaction transaction = getSupportFragmentManager()
-                .beginTransaction().setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-        transaction.replace(R.id.container, fragment);
-        if (addToBackStack) {
-            transaction.addToBackStack(fragment.getClass().getSimpleName());
-        }
-
-        transaction.commit();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (addToBackStack) transaction.addToBackStack(fragment.getClass().getSimpleName());
+        transaction.replace(R.id.container, fragment).commit();
     }
 
     public void popBackStack(boolean inclusive) {

@@ -24,6 +24,8 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -32,9 +34,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import ru.itbirds.trades.R;
+import ru.itbirds.trades.common.App;
 import ru.itbirds.trades.common.SingleActivity;
 import ru.itbirds.trades.databinding.RegBinding;
 import ru.itbirds.trades.util.LiveConnectUtil;
+import ru.itbirds.trades.viewmodel_factories.RegViewModelFactory;
 import ru.itbirds.trades.viewmodels.RegViewModel;
 
 import static android.app.Activity.RESULT_OK;
@@ -50,14 +54,16 @@ public class RegFragment extends Fragment {
     private byte[] mImageBytes;
     private AlertDialog mAlertVerifyDialog;
     private AlertDialog mAlertErrorDialog;
-
+    @Inject
+    RegViewModelFactory regViewModelFactory;
     public static RegFragment newInstance() {
         return new RegFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        mRegViewModel = ViewModelProviders.of(this).get(RegViewModel.class);
+        App.getAppComponent().inject(this);
+        mRegViewModel = ViewModelProviders.of(this, regViewModelFactory).get(RegViewModel.class);
         super.onCreate(savedInstanceState);
     }
 
@@ -88,11 +94,8 @@ public class RegFragment extends Fragment {
     }
 
     private void createAccount() {
-        if (TextUtils.isEmpty(mBinding.textInputPasswordAgainToggle.getError()) && TextUtils.isEmpty(mBinding.nameRegLayout.getError()) && TextUtils.isEmpty(mBinding.loginRegLayout.getError())) {
-            if (!(TextUtils.isEmpty(mBinding.nameReg.getText()) || TextUtils.isEmpty(mBinding.loginReg.getText()) || TextUtils.isEmpty(mBinding.passwordReg.getText())))
-                mRegViewModel.createAccount(mBinding.nameReg.getText().toString(), mBinding.loginReg.getText().toString(), mBinding.passwordReg.getText().toString(), mImageBytes);
-            else createAlertDialogError(R.string.fill_fields);
-        } else createAlertDialogError(R.string.fill_fields);
+        if (TextUtils.isEmpty(mBinding.textInputPasswordAgainToggle.getError()) && TextUtils.isEmpty(mBinding.nameRegLayout.getError()) && TextUtils.isEmpty(mBinding.loginRegLayout.getError()))
+            mRegViewModel.createAccount(mBinding.nameReg.getText(), mBinding.loginReg.getText(), mBinding.passwordReg.getText(), mImageBytes);
     }
 
     private void openGallery() {
@@ -151,15 +154,19 @@ public class RegFragment extends Fragment {
 
     private void progressObserve() {
         mRegViewModel.getProgressLive().observe(this, regState -> {
-            if (regState == RegViewModel.RegState.FAILED) {
-                createAlertDialogError(R.string.reg_failed);
-            } else if (regState == RegViewModel.RegState.ERROR) {
-                createAlertDialogError(R.string.fill_fields);
-            } else if (regState == RegViewModel.RegState.SUCCESS) {
-                createAlertDialogVerify();
-                if (!mAlertVerifyDialog.isShowing())
-                    mAlertVerifyDialog.show();
+            switch (regState) {
+                case FAILED:
+                    createAlertDialogError(R.string.reg_failed);
+                    break;
+                case ERROR:
+                    createAlertDialogError(R.string.fill_fields);
+                    break;
+                case SUCCESS:
+                    createAlertDialogVerify();
+                    if (!mAlertVerifyDialog.isShowing())
+                        mAlertVerifyDialog.show();
 
+                    break;
             }
         });
     }

@@ -3,7 +3,6 @@ package ru.itbirds.domain.interactor;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.Query;
 
 import ru.itbirds.data.repositories.ChatRepository;
@@ -17,9 +16,6 @@ public class ChatInteractor implements ChatUseCase {
 
     }
 
-    public FirebaseUser getUser() {
-        return mChatRepository.getUser();
-    }
 
     public Query getMessages(String symbol) {
         return mChatRepository.getMessages(symbol);

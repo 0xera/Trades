@@ -5,7 +5,6 @@ import com.github.tifezh.kchartlib.chart.entity.KLineEntity;
 
 import java.util.List;
 
-import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -13,12 +12,12 @@ import io.reactivex.disposables.Disposable;
 import ru.itbirds.data.model.Company;
 import ru.itbirds.data.model.CompanyChart;
 import ru.itbirds.domain.DataHelper;
-import ru.itbirds.domain.interactor.CompanyChartInteractor;
-import ru.itbirds.domain.interactor.CompanyInteractor;
+import ru.itbirds.domain.usecase.CompanyChartUseCase;
+import ru.itbirds.domain.usecase.CompanyUseCase;
 
 public class ChartViewModel extends ViewModel {
     private MutableLiveData<KLineEntity> entity = new MutableLiveData<>();
-    private ObservableBoolean progress = new ObservableBoolean();
+    private MutableLiveData<Boolean> progress = new MutableLiveData<>(true);
 
 
     private MutableLiveData<Company> company = new MutableLiveData<>();
@@ -29,51 +28,37 @@ public class ChartViewModel extends ViewModel {
     private Disposable mDisposableCompany;
     private LiveData<CompanyChart> kLineEntitiesLive;
     private LiveData<Company> companyLive;
-    private CompanyChartInteractor mCompanyChartInteractor;
-    private CompanyInteractor mCompanyInteractor;
+    private CompanyChartUseCase mCompanyChartUseCase;
+    private CompanyUseCase mCompanyUseCase;
 
 
-    public ChartViewModel(CompanyChartInteractor companyChartInteractor, CompanyInteractor companyInteractor) {
+    public ChartViewModel(CompanyChartUseCase companyChartUseCase, CompanyUseCase companyUseCase) {
 
-        mCompanyChartInteractor = companyChartInteractor;
-        mCompanyInteractor = companyInteractor;
+        mCompanyChartUseCase = companyChartUseCase;
+        mCompanyUseCase = companyUseCase;
     }
 
     public LiveData<CompanyChart> getkLineEntitiesLive(String symbol) {
         if (kLineEntitiesLive == null) {
-            kLineEntitiesLive = mCompanyChartInteractor.getKLineEntities(symbol);
+            kLineEntitiesLive = mCompanyChartUseCase.getKLineEntities(symbol);
         }
         return kLineEntitiesLive;
     }
 
     public LiveData<Company> getCompanyLive(String symbol) {
         if (companyLive == null) {
-            companyLive = mCompanyInteractor.getCompany(symbol);
+            companyLive = mCompanyUseCase.getCompany(symbol);
         }
         return companyLive;
     }
 
     public void loadData(String symbol) {
-        mDisposableCompany = mCompanyInteractor.downloadCompany(symbol)
-                .subscribe(company -> {
-                            mCompanyInteractor.insertCompany(company);
-                            setProgress(false);
-                        },
-                        throwable -> setProgress(false));
-        mDisposableChart = mCompanyChartInteractor.downloadCompanyChart(symbol)
-                .subscribe(kLineEntities -> {
-                            mCompanyChartInteractor.insertKLineEntities(kLineEntities, symbol);
-                            setProgress(false);
-                        },
-                        throwable -> setProgress(false));
+        mDisposableCompany = mCompanyUseCase.downloadCompany(symbol, progress);
+        mDisposableChart = mCompanyChartUseCase.downloadCompanyChart(symbol, progress);
     }
 
-    public ObservableBoolean getProgress() {
+    public MutableLiveData<Boolean> getProgress() {
         return progress;
-    }
-
-    public void setProgress(boolean p) {
-        progress.set(p);
     }
 
     public void setCompany(Company c) {
@@ -113,5 +98,9 @@ public class ChartViewModel extends ViewModel {
         if (mDisposableCompany != null) {
             mDisposableCompany.dispose();
         }
+    }
+
+    public void setProgress(boolean value) {
+        progress.postValue(value);
     }
 }

@@ -19,8 +19,8 @@ import ru.itbirds.trades.common.INavigator;
 import ru.itbirds.trades.common.ItemAnimator;
 import ru.itbirds.trades.databinding.PageBinding;
 import ru.itbirds.trades.util.LiveConnectUtil;
+import ru.itbirds.trades.viewmodel_factories.PageViewModelFactory;
 import ru.itbirds.trades.viewmodels.PageViewModel;
-import ru.itbirds.trades.viewmodels.PageViewModelFactory;
 
 import static ru.itbirds.data.Constants.TYPE_KEY;
 

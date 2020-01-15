@@ -40,8 +40,8 @@ import ru.itbirds.trades.common.ItemOffsetDecoration;
 import ru.itbirds.trades.common.SingleActivity;
 import ru.itbirds.trades.databinding.ChatBinding;
 import ru.itbirds.trades.util.NavBarSizeUtil;
+import ru.itbirds.trades.viewmodel_factories.ChatViewModelFactory;
 import ru.itbirds.trades.viewmodels.ChatViewModel;
-import ru.itbirds.trades.viewmodels.ChatViewModelFactory;
 
 import static android.app.Activity.RESULT_OK;
 import static ru.itbirds.data.Constants.COMPANY_SYMBOL;

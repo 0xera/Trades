@@ -1,5 +1,6 @@
 package ru.itbirds.trades.viewmodels;
 
+import android.text.Editable;
 import android.text.TextUtils;
 
 import androidx.databinding.ObservableBoolean;
@@ -7,26 +8,27 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 import ru.itbirds.data.repositories.RegRepository;
+import ru.itbirds.domain.usecase.RegUseCase;
 
 public class RegViewModel extends ViewModel {
 
     private ObservableBoolean progress = new ObservableBoolean();
 
-    private RegRepository mRegRepository;
+    private RegUseCase mRegUseCase;
     private MediatorLiveData<RegState> mRegState = new MediatorLiveData<>();
 
-    public RegViewModel() {
+    public RegViewModel(RegUseCase regUseCase) {
+        mRegUseCase = regUseCase;
         mRegState.setValue(RegState.NONE);
-        mRegRepository = RegRepository.getInstance();
     }
 
     public MediatorLiveData<RegState> getProgressLive() {
         return mRegState;
     }
 
-    public void createAccount(String name, String login, String password, byte[] imageBytes) {
+    public void createAccount(Editable name, Editable login, Editable password, byte[] imageBytes) {
         if (!(TextUtils.isEmpty(name) || TextUtils.isEmpty(login) || TextUtils.isEmpty(password)) && mRegState.getValue() != RegState.IN_PROGRESS) {
-            requestReg(name, login, password, imageBytes);
+            requestReg(name.toString(), login.toString(), password.toString(), imageBytes);
         } else if (mRegState.getValue() != RegState.IN_PROGRESS) {
             mRegState.postValue(RegState.ERROR);
         }
@@ -35,15 +37,15 @@ public class RegViewModel extends ViewModel {
     private void requestReg(String name, String login, String password, byte[] imageBytes) {
         mRegState.postValue(RegState.IN_PROGRESS);
         setProgress(true);
-        final LiveData<RegRepository.RegProgress> progressLiveData = mRegRepository.createAccount(name, login, password, imageBytes);
-        mRegState.addSource(progressLiveData, regProgress -> {
+        LiveData<RegRepository.RegProgress> source = mRegUseCase.createAccount(name, login, password, imageBytes);
+        mRegState.addSource(source, regProgress -> {
             if (regProgress == RegRepository.RegProgress.SUCCESS) {
                 mRegState.postValue(RegState.SUCCESS);
-                mRegState.removeSource(progressLiveData);
+                mRegState.removeSource(source);
                 setProgress(false);
             } else if (regProgress == RegRepository.RegProgress.FAILED) {
                 mRegState.postValue(RegState.FAILED);
-                mRegState.removeSource(progressLiveData);
+                mRegState.removeSource(source);
                 setProgress(false);
             }
         });

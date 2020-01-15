@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import androidx.lifecycle.LiveData;
-import io.reactivex.Flowable;
+import androidx.lifecycle.MutableLiveData;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.itbirds.data.model.CompanyChart;
 import ru.itbirds.data.repositories.LocalRepository;
@@ -39,11 +40,17 @@ public class CompanyChartInteractor implements CompanyChartUseCase {
     }
 
     @Override
-    public Flowable<List<KLineEntity>> downloadCompanyChart(String symbol) {
+    public Disposable downloadCompanyChart(String symbol, MutableLiveData<Boolean> progress) {
         return mRemoteRepository.getCompanyChart(symbol)
                 .subscribeOn(Schedulers.io())
                 .repeatWhen(objectFlowable -> objectFlowable.delay(2, TimeUnit.MINUTES))
-                .observeOn(Schedulers.io());
+                .observeOn(Schedulers.io())
+                .subscribe(kLineEntities -> {
+                            insertKLineEntities(kLineEntities, symbol);
+                            progress.postValue(false);
+                        },
+                        throwable -> progress.postValue(false));
+
     }
 
 }

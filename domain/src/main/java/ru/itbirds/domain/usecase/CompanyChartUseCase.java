@@ -5,7 +5,8 @@ import com.github.tifezh.kchartlib.chart.entity.KLineEntity;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
-import io.reactivex.Flowable;
+import androidx.lifecycle.MutableLiveData;
+import io.reactivex.disposables.Disposable;
 import ru.itbirds.data.model.CompanyChart;
 
 
@@ -16,5 +17,5 @@ public interface CompanyChartUseCase {
     LiveData<CompanyChart> getKLineEntities(String ticker);
 
 
-    Flowable<List<KLineEntity>> downloadCompanyChart(String ticker);
+    Disposable downloadCompanyChart(String ticker, MutableLiveData<Boolean> progress);
 }

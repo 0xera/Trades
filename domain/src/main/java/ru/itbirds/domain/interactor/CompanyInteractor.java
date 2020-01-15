@@ -4,7 +4,9 @@ package ru.itbirds.domain.interactor;
 import java.util.concurrent.TimeUnit;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import io.reactivex.Flowable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.itbirds.data.model.Company;
 import ru.itbirds.data.repositories.LocalRepository;
@@ -32,12 +34,25 @@ public class CompanyInteractor implements CompanyUseCase {
     }
 
     @Override
+    public Disposable downloadCompany(String symbol, MutableLiveData<Boolean> progress) {
+        return mRemoteRepository.getCompany(symbol)
+                .subscribeOn(Schedulers.io())
+                .repeatWhen(objectFlowable -> objectFlowable.delay(2, TimeUnit.SECONDS))
+                .observeOn(Schedulers.io())
+                .subscribe(company -> {
+                            insertCompany(company);
+                            progress.postValue(false);
+                        },
+                        throwable -> progress.postValue(false));
+
+    }
+
+    @Override
     public Flowable<Company> downloadCompany(String symbol) {
         return mRemoteRepository.getCompany(symbol)
                 .subscribeOn(Schedulers.io())
                 .repeatWhen(objectFlowable -> objectFlowable.delay(2, TimeUnit.SECONDS))
                 .observeOn(Schedulers.io());
-
     }
 
 

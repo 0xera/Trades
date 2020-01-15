@@ -9,25 +9,11 @@ import androidx.lifecycle.MutableLiveData;
 public class ResetRepository {
     private FirebaseAuth mAuth;
 
-    private static volatile ResetRepository instance;
 
-    private ResetRepository() {
-        mAuth = FirebaseAuth.getInstance();
+    public ResetRepository(FirebaseAuth auth) {
+        mAuth = auth;
     }
 
-    @NonNull
-    public static ResetRepository getInstance() {
-        ResetRepository localInstance = instance;
-        if (localInstance == null) {
-            synchronized (ResetRepository.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new ResetRepository();
-                }
-            }
-        }
-        return localInstance;
-    }
 
 
     private MutableLiveData<ResetProgress> mResetProgress;

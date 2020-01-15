@@ -9,27 +9,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 
-public class AuthRepository {
+public class LoginRepository {
     private FirebaseAuth mAuth;
 
-    private static volatile AuthRepository instance;
 
-    private AuthRepository() {
-        mAuth = FirebaseAuth.getInstance();
-    }
-
-    @NonNull
-    public static AuthRepository getInstance() {
-        AuthRepository localInstance = instance;
-        if (localInstance == null) {
-            synchronized (AuthRepository.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new AuthRepository();
-                }
-            }
-        }
-        return localInstance;
+    public LoginRepository(FirebaseAuth auth) {
+        mAuth = auth;
     }
 
 
