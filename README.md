@@ -1,4 +1,4 @@
 # Trades
-Проект Trades для mail.ru команды IT Birds 
-Приложение с котировками и графиками. апи для работы : IEX. 
-Будет два экрана: со списком и графиком, который будет открываться при нажатии на элемент списка. 
+IEXCloud API
+Firebase Storage, Authentication, Firestore, UI
+RxJava2, Dagger2, Retrofit, Room, LiveData, DataBinding, Glide, kchartlib
